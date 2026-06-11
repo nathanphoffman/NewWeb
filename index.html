@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NewWeb</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; line-height: 1.6; padding: 2rem; max-width: 720px; margin: 0 auto; }
+    #content h1, #content h2, #content h3 { margin: 1.2em 0 0.4em; }
+    #content p  { margin: 0.6em 0; }
+    #content ul, #content ol { margin: 0.6em 0 0.6em 1.5em; }
+    #content a  { color: #0066cc; }
+    #content pre, #content code { font-family: monospace; background: #f4f4f4; padding: 0.1em 0.3em; border-radius: 3px; }
+    #content pre { padding: 0.8em; overflow-x: auto; }
+    #content blockquote { border-left: 3px solid #ccc; padding-left: 1em; color: #555; }
+
+    /* spinner */
+    #nw-spinner { position: fixed; top: 1rem; right: 1rem; width: 20px; height: 20px;
+      border: 3px solid #ccc; border-top-color: #0066cc; border-radius: 50%;
+      animation: spin 0.6s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* toasts */
+    .nw-toast { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
+      padding: 0.6em 1.2em; border-radius: 4px; font-size: 0.9em; z-index: 100; }
+    .nw-toast-info  { background: #d0e8ff; color: #003; }
+    .nw-toast-error { background: #fdd; color: #600; }
+
+    /* modal */
+    dialog { padding: 1.5rem; border: 1px solid #ccc; border-radius: 6px; max-width: 540px; width: 90%; }
+    dialog::backdrop { background: rgba(0,0,0,0.4); }
+    .nw-modal-close { margin-top: 1rem; padding: 0.4em 1em; cursor: pointer; }
+
+    /* suspended bar */
+    #nw-suspended { position: fixed; bottom: 0; left: 0; right: 0; background: #fff3cd;
+      padding: 0.6em 1rem; border-top: 1px solid #e0c060; display: flex; gap: 0.5rem; align-items: center; }
+    #nw-suspended button { padding: 0.2em 0.8em; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="content"><p>Loading…</p></div>
+  <div id="nw-spinner"></div>
+  <script src="wasm_exec.js"></script>
+  <script src="engine.js"></script>
+</body>
+</html>
