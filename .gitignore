@@ -1,2 +1,2 @@
-engine.wasm
-wasm_exec.js
+engine/engine.wasm
+engine/wasm_exec.js

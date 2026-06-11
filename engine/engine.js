@@ -35,14 +35,16 @@ async function handleMore(a) {
 }
 
 async function handleMd(a) {
-  const url = a.getAttribute('href').replace('md:', '');
-  const md = await fetchMd(url);
-  renderPage(md);
+  await navigateTo(a.getAttribute('href').replace('md:', ''));
 }
 
 async function handleNav(a) {
-  const url = a.getAttribute('href');
+  await navigateTo(a.getAttribute('href'));
+}
+
+async function navigateTo(url) {
   const md = await fetchMd(url);
+  history.pushState({ mdUrl: url }, '', '#' + url);
   renderPage(md);
 }
 
@@ -173,12 +175,36 @@ function renderPage(md) {
   document.getElementById('content').innerHTML = html;
 }
 
+// theme picker
+(function () {
+  const sel = document.getElementById('nw-theme-select');
+  const apply = theme => {
+    document.documentElement.setAttribute('data-theme', theme);
+    sel.value = theme;
+  };
+  const saved = localStorage.getItem('nw-theme');
+  if (saved) apply(saved);
+  sel.addEventListener('change', e => {
+    apply(e.target.value);
+    localStorage.setItem('nw-theme', e.target.value);
+  });
+})();
+
+// back/forward navigation
+window.addEventListener('popstate', async e => {
+  const url = e.state?.mdUrl ?? 'main.md';
+  const md = await fetchMd(url);
+  renderPage(md);
+});
+
 // WASM bootstrap + initial page load
 (async () => {
   const go = new Go();
-  const result = await WebAssembly.instantiateStreaming(fetch('engine.wasm'), go.importObject);
+  const result = await WebAssembly.instantiateStreaming(fetch('engine/engine.wasm'), go.importObject);
   go.run(result.instance);
-  const md = await fetchMd('main.md');
+  const initial = location.hash ? location.hash.slice(1) : 'main.md';
+  history.replaceState({ mdUrl: initial }, '', location.hash || '#main.md');
+  const md = await fetchMd(initial);
   renderPage(md);
 })().catch(err => {
   document.getElementById('content').innerHTML = `<pre>Boot error: ${err}</pre>`;

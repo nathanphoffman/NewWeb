@@ -1,47 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="default">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NewWeb</title>
   <style>
+    /* ── theme tokens ─────────────────────────────────────── */
+    :root {
+      --bg:        #ffffff;
+      --fg:        #111111;
+      --muted:     #555555;
+      --link:      #0066cc;
+      --border:    #dddddd;
+      --code-bg:   #f4f4f4;
+      --bar-bg:    #f0f0f0;
+      --bar-fg:    #333333;
+      --bar-border:#cccccc;
+      --font:      system-ui, sans-serif;
+      --font-mono: 'Courier New', monospace;
+      --width:     720px;
+    }
+
+    [data-theme="newspaper"] {
+      --bg:        #f5f0e8;
+      --fg:        #1a1209;
+      --muted:     #5a4a3a;
+      --link:      #8b0000;
+      --border:    #c8b89a;
+      --code-bg:   #ede5d8;
+      --bar-bg:    #e8e0d0;
+      --bar-fg:    #1a1209;
+      --bar-border:#b8a890;
+      --font:      Georgia, 'Times New Roman', serif;
+    }
+
+    [data-theme="dark"] {
+      --bg:        #1a1a1a;
+      --fg:        #e0e0e0;
+      --muted:     #999999;
+      --link:      #66aaff;
+      --border:    #333333;
+      --code-bg:   #242424;
+      --bar-bg:    #252525;
+      --bar-fg:    #cccccc;
+      --bar-border:#333333;
+    }
+
+    [data-theme="terminal"] {
+      --bg:        #0d0d0d;
+      --fg:        #00ff41;
+      --muted:     #00aa2a;
+      --link:      #00ff41;
+      --border:    #005515;
+      --code-bg:   #001a07;
+      --bar-bg:    #050505;
+      --bar-fg:    #00ff41;
+      --bar-border:#005515;
+      --font:      'Courier New', monospace;
+    }
+
+    [data-theme="warm"] {
+      --bg:        #fdf6ec;
+      --fg:        #3d2b1f;
+      --muted:     #7a5c44;
+      --link:      #b05c2a;
+      --border:    #e0cdb8;
+      --code-bg:   #f5ece0;
+      --bar-bg:    #f0e4d0;
+      --bar-fg:    #3d2b1f;
+      --bar-border:#d4b898;
+      --font:      Georgia, serif;
+    }
+
+    /* ── reset ────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, sans-serif; line-height: 1.6; padding: 2rem; max-width: 720px; margin: 0 auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      line-height: 1.6;
+    }
+
+    /* ── top bar ──────────────────────────────────────────── */
+    #nw-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: var(--bar-bg);
+      border-bottom: 1px solid var(--bar-border);
+      color: var(--bar-fg);
+      font-family: system-ui, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    #nw-bar .nw-logo {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-right: auto;
+      opacity: 0.7;
+    }
+
+    #nw-bar select {
+      padding: 0.2em 0.5em;
+      border: 1px solid var(--bar-border);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* ── page content ─────────────────────────────────────── */
+    #content {
+      max-width: var(--width);
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
     #content h1, #content h2, #content h3 { margin: 1.2em 0 0.4em; }
-    #content p  { margin: 0.6em 0; }
+    #content p   { margin: 0.6em 0; }
     #content ul, #content ol { margin: 0.6em 0 0.6em 1.5em; }
-    #content a  { color: #0066cc; }
-    #content pre, #content code { font-family: monospace; background: #f4f4f4; padding: 0.1em 0.3em; border-radius: 3px; }
-    #content pre { padding: 0.8em; overflow-x: auto; }
-    #content blockquote { border-left: 3px solid #ccc; padding-left: 1em; color: #555; }
+    #content a   { color: var(--link); }
+    #content blockquote {
+      border-left: 3px solid var(--border);
+      padding-left: 1em;
+      color: var(--muted);
+    }
+    #content code {
+      font-family: var(--font-mono);
+      background: var(--code-bg);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    #content pre {
+      font-family: var(--font-mono);
+      background: var(--code-bg);
+      padding: 0.8em;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    #content pre code { background: none; padding: 0; }
 
-    /* spinner */
-    #nw-spinner { position: fixed; top: 1rem; right: 1rem; width: 20px; height: 20px;
-      border: 3px solid #ccc; border-top-color: #0066cc; border-radius: 50%;
-      animation: spin 0.6s linear infinite; display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* ── spinner ──────────────────────────────────────────── */
+    #nw-spinner {
+      position: fixed; top: 0.5rem; right: 1rem;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--link);
+      border-radius: 50%;
+      animation: nw-spin 0.6s linear infinite;
+      display: none;
+    }
+    @keyframes nw-spin { to { transform: rotate(360deg); } }
 
-    /* toasts */
-    .nw-toast { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
-      padding: 0.6em 1.2em; border-radius: 4px; font-size: 0.9em; z-index: 100; }
-    .nw-toast-info  { background: #d0e8ff; color: #003; }
+    /* ── toasts ───────────────────────────────────────────── */
+    .nw-toast {
+      position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
+      padding: 0.5em 1.2em; border-radius: 4px; font-size: 0.88em;
+      font-family: system-ui, sans-serif; z-index: 200;
+      border: 1px solid var(--border);
+    }
+    .nw-toast-info  { background: var(--code-bg); color: var(--fg); }
     .nw-toast-error { background: #fdd; color: #600; }
 
-    /* modal */
-    dialog { padding: 1.5rem; border: 1px solid #ccc; border-radius: 6px; max-width: 540px; width: 90%; }
-    dialog::backdrop { background: rgba(0,0,0,0.4); }
-    .nw-modal-close { margin-top: 1rem; padding: 0.4em 1em; cursor: pointer; }
+    /* ── modal ────────────────────────────────────────────── */
+    dialog {
+      background: var(--bg); color: var(--fg);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 1.5rem; max-width: 540px; width: 90%;
+    }
+    dialog::backdrop { background: rgba(0,0,0,0.45); }
+    .nw-modal-close { margin-top: 1rem; padding: 0.3em 1em; cursor: pointer; }
 
-    /* suspended bar */
-    #nw-suspended { position: fixed; bottom: 0; left: 0; right: 0; background: #fff3cd;
-      padding: 0.6em 1rem; border-top: 1px solid #e0c060; display: flex; gap: 0.5rem; align-items: center; }
+    /* ── suspended bar ────────────────────────────────────── */
+    #nw-suspended {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff3cd; color: #333;
+      padding: 0.5em 1rem; border-top: 1px solid #e0c060;
+      display: flex; gap: 0.5rem; align-items: center;
+      font-family: system-ui, sans-serif; font-size: 0.88em;
+    }
     #nw-suspended button { padding: 0.2em 0.8em; cursor: pointer; }
   </style>
 </head>
 <body>
+  <div id="nw-bar">
+    <span class="nw-logo">newweb</span>
+    <label for="nw-theme-select" style="opacity:0.6">Theme</label>
+    <select id="nw-theme-select">
+      <option value="default">Default</option>
+      <option value="newspaper">Newspaper</option>
+      <option value="dark">Dark</option>
+      <option value="terminal">Terminal</option>
+      <option value="warm">Warm</option>
+    </select>
+  </div>
+
   <div id="content"><p>Loading…</p></div>
   <div id="nw-spinner"></div>
-  <script src="wasm_exec.js"></script>
-  <script src="engine.js"></script>
+
+  <script src="engine/wasm_exec.js"></script>
+  <script src="engine/engine.js"></script>
 </body>
 </html>
