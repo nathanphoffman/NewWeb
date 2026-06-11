@@ -206,9 +206,38 @@ function renderPage(md) {
 // theme picker
 (function () {
   const sel = document.getElementById('nw-theme-select');
+
+  const CAT_DEFS = [
+    { x: '6%',  y: '22%', size: 64, dur: 4.0, delay: 0    },
+    { x: '83%', y: '14%', size: 48, dur: 6.2, delay: -2.1 },
+    { x: '13%', y: '70%', size: 56, dur: 5.1, delay: -1.3 },
+    { x: '77%', y: '66%', size: 52, dur: 7.8, delay: -3.5 },
+    { x: '46%', y: '80%', size: 44, dur: 3.4, delay: -0.7 },
+    { x: '90%', y: '44%', size: 60, dur: 8.3, delay: -4.1 },
+    { x: '2%',  y: '48%', size: 46, dur: 4.7, delay: -1.8 },
+    { x: '60%', y: '30%', size: 50, dur: 5.9, delay: -2.9 },
+  ];
+
+  function addCats() {
+    removeCats();
+    CAT_DEFS.forEach(d => {
+      const img = document.createElement('img');
+      img.src = 'engine/cat.svg';
+      img.className = 'nw-spinning-cat';
+      img.style.cssText = `left:${d.x};top:${d.y};width:${d.size}px;height:${d.size}px;` +
+        `animation-duration:${d.dur}s;animation-delay:${d.delay}s`;
+      document.body.appendChild(img);
+    });
+  }
+
+  function removeCats() {
+    document.querySelectorAll('.nw-spinning-cat').forEach(el => el.remove());
+  }
+
   const apply = theme => {
     document.documentElement.setAttribute('data-theme', theme);
     sel.value = theme;
+    if (theme === 'cats') addCats(); else removeCats();
   };
   const saved = localStorage.getItem('nw-theme');
   if (saved) apply(saved);

@@ -276,6 +276,108 @@
       box-shadow: 0 0 40px rgba(79,195,247,0.18);
     }
 
+    /* ── cats theme ──────────────────────────────────────────── */
+    [data-theme="cats"] {
+      --bg:        #0d0a1a;
+      --fg:        #f0e8d0;
+      --muted:     #8a7a60;
+      --link:      #ffb347;
+      --border:    rgba(255,179,71,0.2);
+      --code-bg:   rgba(20,10,35,0.85);
+      --bar-bg:    rgba(10,7,20,0.97);
+      --bar-fg:    #ffb347;
+      --bar-border:rgba(80,40,120,0.9);
+      --font:      system-ui, sans-serif;
+    }
+
+    /* moon + night sky + tiled stars on body background */
+    [data-theme="cats"] body {
+      background-color: #0d0a1a;
+      background-image:
+        radial-gradient(circle 80px at 75% 15%, rgba(255,252,220,1) 0%, rgba(255,245,180,0.9) 45%, transparent 70%),
+        radial-gradient(circle 220px at 75% 15%, rgba(255,240,150,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 65% 45% at 20% 65%, rgba(80,20,120,0.38) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 55% at 82% 82%, rgba(40,10,80,0.28) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 30% at 48% 28%, rgba(60,15,100,0.18) 0%, transparent 65%),
+        radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px) 30px  60px  / 180px 160px,
+        radial-gradient(circle, rgba(255,255,255,0.4)  1px, transparent 1px) 90px  20px  / 220px 200px,
+        radial-gradient(circle, rgba(255,255,255,0.5)  1px, transparent 1px) 150px 90px  / 160px 180px,
+        radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px) 60px  140px / 240px 220px,
+        radial-gradient(circle, rgba(255,255,255,0.45) 1px, transparent 1px) 120px 50px  / 200px 170px,
+        radial-gradient(circle, rgba(255,255,255,0.3)  1px, transparent 1px) 10px  100px / 190px 210px;
+      background-attachment: fixed;
+    }
+
+    @keyframes nw-catspin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .nw-spinning-cat {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      animation: nw-catspin linear infinite;
+      filter: drop-shadow(0 0 6px rgba(255,179,71,0.55));
+      transform-origin: center center;
+    }
+
+    [data-theme="cats"] #content {
+      position: relative;
+      z-index: 1;
+      background: rgba(13,10,26,0.76);
+      border: 1px solid rgba(255,179,71,0.1);
+      border-radius: 8px;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    [data-theme="cats"] #content h1,
+    [data-theme="cats"] #content h2,
+    [data-theme="cats"] #content h3 {
+      color: #ffd080;
+      text-shadow: 0 0 16px rgba(255,179,71,0.4);
+    }
+
+    [data-theme="cats"] #content a {
+      display: inline-block;
+      padding: 0.3em 1.1em;
+      border: 1.5px solid rgba(255,179,71,0.55);
+      border-radius: 20px;
+      color: #ffb347;
+      text-decoration: none;
+      font-size: 0.88em;
+      background: rgba(255,179,71,0.06);
+      box-shadow: 0 0 10px rgba(255,179,71,0.12);
+      transition: all 0.2s;
+    }
+
+    [data-theme="cats"] #content a:hover {
+      background: rgba(255,179,71,0.16);
+      border-color: #ffb347;
+      box-shadow: 0 0 20px rgba(255,179,71,0.42);
+    }
+
+    [data-theme="cats"] #nw-bar {
+      box-shadow: 0 1px 20px rgba(80,20,120,0.5);
+    }
+
+    [data-theme="cats"] .nw-logo {
+      color: #ffb347;
+      text-shadow: 0 0 10px rgba(255,179,71,0.5);
+    }
+
+    [data-theme="cats"] #nw-bar select {
+      background: rgba(10,7,20,0.95);
+      border-color: rgba(255,179,71,0.35);
+    }
+
+    [data-theme="cats"] dialog {
+      background: rgba(10,7,20,0.96);
+      border-color: rgba(255,179,71,0.35);
+      box-shadow: 0 0 40px rgba(255,179,71,0.18);
+    }
+
     .nw-paused *, .nw-paused *::before, .nw-paused *::after {
       animation-play-state: paused !important;
     }
@@ -418,6 +520,7 @@
       <option value="terminal">Terminal</option>
       <option value="warm">Warm</option>
       <option value="nasa">NASA</option>
+      <option value="cats">Cats</option>
     </select>
   </div>
 
