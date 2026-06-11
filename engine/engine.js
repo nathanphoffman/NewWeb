@@ -188,6 +188,21 @@ function renderPage(md) {
   document.getElementById('content').innerHTML = html;
 }
 
+// animation toggle
+(function () {
+  const btn = document.getElementById('nw-anim-toggle');
+  const apply = paused => {
+    document.documentElement.classList.toggle('nw-paused', paused);
+    btn.textContent = paused ? 'Resume Animations' : 'Stop Animations';
+  };
+  apply(localStorage.getItem('nw-paused') === 'true');
+  btn.addEventListener('click', () => {
+    const paused = !document.documentElement.classList.contains('nw-paused');
+    apply(paused);
+    localStorage.setItem('nw-paused', paused);
+  });
+})();
+
 // theme picker
 (function () {
   const sel = document.getElementById('nw-theme-select');
