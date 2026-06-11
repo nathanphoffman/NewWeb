@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -e
 cd "$(dirname "$0")"
-GOOS=js GOARCH=wasm go build -o order.wasm order.go
+tinygo build -target wasm -o order.wasm ./order/
 echo "✓ src/order.wasm built"
+tinygo build -target wasm -o visit.wasm ./visit/
+echo "✓ src/visit.wasm built"

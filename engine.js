@@ -1,4 +1,4 @@
-const NEWWEB_VERSION = "0.1.0";
+const GEMWEB_VERSION = "0.1.0";
 let authTokens = {};
 
 // single entry point
@@ -20,8 +20,9 @@ async function handleWasm(a) {
   a.dataset.pending = true;
   showSpinner();
 
-  const { file } = parseWasmUrl(a.getAttribute('href'));
-  await loadAndExecute(file);
+  const { file, params } = parseWasmUrl(a.getAttribute('href'));
+  const fields = parseFields(a.textContent);
+  await loadAndExecute(file, { ...fields, ...params });
 
   delete a.dataset.pending;
   hideSpinner();
@@ -47,25 +48,24 @@ async function navigateTo(url) {
   renderPage(md);
 }
 
-// wasm lifecycle — dev modules use TinyGo runtime, lazy-loaded on first use
-let GoTiny = null;
-async function loadTinyRuntime() {
-  if (GoTiny) return;
-  await new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = 'engine/wasm_exec_tiny.js';
-    s.onload = () => { GoTiny = Go; resolve(); };
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
-}
-
-async function loadAndExecute(file) {
-  await loadTinyRuntime();
+// wasm lifecycle
+async function loadAndExecute(file, fields) {
   const bytes = await fetch(file).then(r => r.arrayBuffer());
-  const go = new GoTiny();
-  const module = await WebAssembly.instantiate(bytes, go.importObject);
-  await go.run(module.instance);
+  
+  const imports = {
+    gemweb: {
+      fetch:    (url, data) => wasmFetch(url, data),
+      info:     (md)        => showToast(md, 'info'),
+      error:    (md)        => showToast(md, 'error'),
+      redirect: (url, reason) => handleRedirect(url, reason),
+      confirm:  (msg)       => showConfirm(msg),
+      more:     (md)        => showModal(md),
+    }
+  };
+
+  let module = await WebAssembly.instantiate(bytes, imports);
+  await module.instance.exports.run(JSON.stringify(fields));
+  module = null; // destroy
 }
 
 // network -- same origin enforced
@@ -87,40 +87,27 @@ async function wasmFetch(url, data) {
   }).then(r => r.text());
 }
 
-// redirect — immediate for md: and same-origin, countdown only for cross-domain
+// redirect with countdown
 function handleRedirect(url, reason) {
-  if (url.startsWith('md:')) {
-    navigateTo(url.slice(3));
-    return;
-  }
-
-  let crossDomain = false;
-  try {
-    crossDomain = new URL(url).hostname !== window.location.hostname;
-  } catch (_) { /* relative url — same origin */ }
-
-  if (!crossDomain) {
-    window.location = url;
-    return;
-  }
-
   let count = 3;
-  const dlg = showModal(
-    `### Leaving site\n${reason ? `_${reason}_\n\n` : ''}` +
-    `Navigating to \`${url}\` in <span id="nw-countdown">${count}</span>s…`,
-    'Cancel Redirect'
-  );
-  const countEl = () => dlg.querySelector('#nw-countdown');
+  const modal = showModal(`
+### Redirecting to ${url}
+${reason ? `Reason: ${reason}` : ''}
+
+${count}...
+  `);
   const interval = setInterval(() => {
     count--;
-    if (countEl()) countEl().textContent = count;
     if (count === 0) {
       clearInterval(interval);
-      dlg.remove();
       window.location = url;
     }
+    updateModal(modal, `${count}...`);
   }, 1000);
-  dlg.onCancel = () => { clearInterval(interval); suspendPage(url); };
+  modal.onCancel = () => {
+    clearInterval(interval);
+    suspendPage(url);
+  };
 }
 
 // suspended state after cancelled redirect
@@ -134,15 +121,15 @@ function suspendPage(url) {
 function showToast(md, type) {
   const el = document.createElement('div');
   el.className = `nw-toast nw-toast-${type}`;
-  el.innerHTML = window.newwebRender ? window.newwebRender(md) : md;
+  el.innerHTML = window.gemwebRender ? window.gemwebRender(md) : md;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3000);
 }
 
-function showModal(md, closeLabel = 'Close') {
+function showModal(md) {
   const dlg = document.createElement('dialog');
-  dlg.innerHTML = `<div class="nw-modal-body">${window.newwebRender ? window.newwebRender(md) : md}</div>
-    <button class="nw-modal-close" autofocus>${closeLabel}</button>`;
+  dlg.innerHTML = `<div class="nw-modal-body">${window.gemwebRender ? window.gemwebRender(md) : md}</div>
+    <button class="nw-modal-close" autofocus>Close</button>`;
   dlg.querySelector('.nw-modal-close').onclick = () => {
     if (dlg.onCancel) dlg.onCancel();
     dlg.remove();
@@ -184,7 +171,7 @@ function showSuspendedBar(url) {
 }
 
 function renderPage(md) {
-  const html = window.newwebRender(md);
+  const html = window.gemwebRender(md);
   document.getElementById('content').innerHTML = html;
 }
 
@@ -211,19 +198,10 @@ window.addEventListener('popstate', async e => {
 });
 
 // WASM bootstrap + initial page load
-import init, { render as wasmRender } from './pkg/engine.js';
 (async () => {
-  await init();
-  window.newwebRender = wasmRender;
-
-  // expose host API for dev Go WASM modules (accessed via syscall/js)
-  window.newweb = {
-    redirect: (url, reason) => handleRedirect(url, reason),
-    info:     (md)          => showToast(md, 'info'),
-    error:    (md)          => showToast(md, 'error'),
-    more:     (md)          => showModal(md),
-  };
-
+  const go = new Go();
+  const result = await WebAssembly.instantiateStreaming(fetch('engine.wasm'), go.importObject);
+  go.run(result.instance);
   const initial = location.hash ? location.hash.slice(1) : 'main.md';
   history.replaceState({ mdUrl: initial }, '', location.hash || '#main.md');
   const md = await fetchMd(initial);
