@@ -23,6 +23,6 @@ func render(this js.Value, args []js.Value) interface{} {
 }
 
 func main() {
-	js.Global().Set("gemwebRender", js.FuncOf(render))
+	js.Global().Set("newwebRender", js.FuncOf(render))
 	select {} // keep alive
 }

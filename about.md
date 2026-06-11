@@ -4,7 +4,7 @@ You navigated here from `main.md` — the `md:` link was intercepted by `engine.
 
 ## How it works
 
-1. Go WASM (`engine.wasm`) exposes `gemwebRender(md)` — a goldmark wrapper
+1. Go WASM (`engine.wasm`) exposes `newwebRender(md)` — a goldmark wrapper
 2. `engine.js` intercepts clicks on `md:` links and fetches + renders the target file
 3. `index.html` is the permanent shell; only `#content` changes
 

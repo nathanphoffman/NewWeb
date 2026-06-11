@@ -1,4 +1,4 @@
-const GEMWEB_VERSION = "0.1.0";
+const NEWWEB_VERSION = "0.1.0";
 let authTokens = {};
 
 // single entry point
@@ -105,14 +105,14 @@ function suspendPage(url) {
 function showToast(md, type) {
   const el = document.createElement('div');
   el.className = `nw-toast nw-toast-${type}`;
-  el.innerHTML = window.gemwebRender ? window.gemwebRender(md) : md;
+  el.innerHTML = window.newwebRender ? window.newwebRender(md) : md;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3000);
 }
 
 function showModal(md) {
   const dlg = document.createElement('dialog');
-  dlg.innerHTML = `<div class="nw-modal-body">${window.gemwebRender ? window.gemwebRender(md) : md}</div>
+  dlg.innerHTML = `<div class="nw-modal-body">${window.newwebRender ? window.newwebRender(md) : md}</div>
     <button class="nw-modal-close" autofocus>Close</button>`;
   dlg.querySelector('.nw-modal-close').onclick = () => {
     if (dlg.onCancel) dlg.onCancel();
@@ -155,7 +155,7 @@ function showSuspendedBar(url) {
 }
 
 function renderPage(md) {
-  const html = window.gemwebRender(md);
+  const html = window.newwebRender(md);
   document.getElementById('content').innerHTML = html;
 }
 
@@ -188,7 +188,7 @@ window.addEventListener('popstate', async e => {
   go.run(result.instance);
 
   // expose host API for dev Go WASM modules (accessed via syscall/js)
-  window.gemweb = {
+  window.newweb = {
     redirect: (url, reason) => handleRedirect(url, reason),
     info:     (md)          => showToast(md, 'info'),
     error:    (md)          => showToast(md, 'error'),

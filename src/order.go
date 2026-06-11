@@ -2,12 +2,8 @@
 
 package main
 
-import "syscall/js"
+import "newweb/src/newweb"
 
 func main() {
-
-	fileName := "md:order-placed.md"
-	reason := "Order placed successfully!"
-
-	js.Global().Get("gemweb").Call("redirect", fileName, reason)
+	newweb.Redirect("md:order-placed.md", "Order placed successfully!")
 }
