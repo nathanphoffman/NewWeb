@@ -20,9 +20,8 @@ async function handleWasm(a) {
   a.dataset.pending = true;
   showSpinner();
 
-  const { file, params } = parseWasmUrl(a.getAttribute('href'));
-  const fields = parseFields(a.textContent);
-  await loadAndExecute(file, { ...fields, ...params });
+  const { file } = parseWasmUrl(a.getAttribute('href'));
+  await loadAndExecute(file);
 
   delete a.dataset.pending;
   hideSpinner();
@@ -48,24 +47,12 @@ async function navigateTo(url) {
   renderPage(md);
 }
 
-// wasm lifecycle
-async function loadAndExecute(file, fields) {
+// wasm lifecycle — Go WASM pattern; main() is the entry point
+async function loadAndExecute(file) {
   const bytes = await fetch(file).then(r => r.arrayBuffer());
-  
-  const imports = {
-    gemweb: {
-      fetch:    (url, data) => wasmFetch(url, data),
-      info:     (md)        => showToast(md, 'info'),
-      error:    (md)        => showToast(md, 'error'),
-      redirect: (url, reason) => handleRedirect(url, reason),
-      confirm:  (msg)       => showConfirm(msg),
-      more:     (md)        => showModal(md),
-    }
-  };
-
-  let module = await WebAssembly.instantiate(bytes, imports);
-  await module.instance.exports.run(JSON.stringify(fields));
-  module = null; // destroy
+  const go = new Go();
+  const module = await WebAssembly.instantiate(bytes, go.importObject);
+  await go.run(module.instance); // resolves when main() returns
 }
 
 // network -- same origin enforced
@@ -90,24 +77,21 @@ async function wasmFetch(url, data) {
 // redirect with countdown
 function handleRedirect(url, reason) {
   let count = 3;
-  const modal = showModal(`
-### Redirecting to ${url}
-${reason ? `Reason: ${reason}` : ''}
-
-${count}...
-  `);
+  const dlg = showModal(
+    `### Redirecting\n${reason ? `_${reason}_\n\n` : ''}` +
+    `Navigating to \`${url}\` in <span id="nw-countdown">${count}</span>s…`
+  );
+  const countEl = () => dlg.querySelector('#nw-countdown');
   const interval = setInterval(() => {
     count--;
+    if (countEl()) countEl().textContent = count;
     if (count === 0) {
       clearInterval(interval);
-      window.location = url;
+      dlg.remove();
+      url.startsWith('md:') ? navigateTo(url.slice(3)) : (window.location = url);
     }
-    updateModal(modal, `${count}...`);
   }, 1000);
-  modal.onCancel = () => {
-    clearInterval(interval);
-    suspendPage(url);
-  };
+  dlg.onCancel = () => { clearInterval(interval); suspendPage(url); };
 }
 
 // suspended state after cancelled redirect
@@ -202,6 +186,15 @@ window.addEventListener('popstate', async e => {
   const go = new Go();
   const result = await WebAssembly.instantiateStreaming(fetch('engine/engine.wasm'), go.importObject);
   go.run(result.instance);
+
+  // expose host API for dev Go WASM modules (accessed via syscall/js)
+  window.gemweb = {
+    redirect: (url, reason) => handleRedirect(url, reason),
+    info:     (md)          => showToast(md, 'info'),
+    error:    (md)          => showToast(md, 'error'),
+    more:     (md)          => showModal(md),
+  };
+
   const initial = location.hash ? location.hash.slice(1) : 'main.md';
   history.replaceState({ mdUrl: initial }, '', location.hash || '#main.md');
   const md = await fetchMd(initial);

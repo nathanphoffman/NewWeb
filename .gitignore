@@ -1,2 +1,3 @@
 engine/engine.wasm
 engine/wasm_exec.js
+src/*.wasm
