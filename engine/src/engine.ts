@@ -1,20 +1,30 @@
 import init, { render as wasmRender } from '../build/pkg/engine.js';
 import { handleWasm } from './wasm.js';
-import { handleMd, handleMore, handleNav, handleRedirect, fetchMd, navigateTo } from './nav.js';
+import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, looksLikeBareUrl, warnBareUrl } from './nav.js';
 import { showToast, showModal, renderPage } from './ui.js';
 import './theme.js';
 
-// link interception — dispatch by protocol
+// link interception — dispatch by protocol or treat bare paths as markdown
 document.addEventListener('click', (e: MouseEvent) => {
   const a = (e.target as Element).closest('a') as HTMLAnchorElement | null;
   if (!a) return;
   const href = a.getAttribute('href');
-  if (!href) return;
+  if (!href || href.startsWith('#')) return;
 
-  if (href.startsWith('wasm:'))     { e.preventDefault(); handleWasm(a); }
-  if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); }
-  if (href.startsWith('md:'))       { e.preventDefault(); handleMd(a); }
-  if (href.startsWith('custom://')) { e.preventDefault(); handleNav(a); }
+  if (href.startsWith('wasm:'))     { e.preventDefault(); handleWasm(a); return; }
+  if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); return; }
+  if (href.startsWith('custom://')) { e.preventDefault(); handleNav(a); return; }
+
+  // external links with explicit scheme — let browser handle
+  if (href.startsWith('http://') || href.startsWith('https://')) return;
+
+  // bare path — warn on localhost if it looks like a URL missing https://
+  e.preventDefault();
+  if (window.location.hostname === 'localhost' && looksLikeBareUrl(href)) {
+    warnBareUrl(href);
+    return;
+  }
+  navigateTo(href);
 });
 
 // back/forward navigation
@@ -29,7 +39,13 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
   window.newwebRender = wasmRender;
 
   window.newweb = {
-    redirect: (url, reason) => handleRedirect(url, reason),
+    redirect: (url, reason) => {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        handleRedirect(url, reason);
+      } else {
+        navigateTo(url);
+      }
+    },
     info:     (md) => showToast(md, 'info'),
     error:    (md) => showToast(md, 'error'),
     more:     (md) => showModal(md),

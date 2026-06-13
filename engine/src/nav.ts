@@ -1,17 +1,20 @@
-import { renderPage, showModal, showSuspendedBar } from './ui.js';
+import { renderPage, showModal, showSuspendedBar, showToast } from './ui.js';
+
+const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
+
+export function looksLikeBareUrl(href: string): boolean {
+  return COMMON_TLDS.some(tld => href.includes(tld));
+}
 
 export function fetchMd(url: string): Promise<string> {
   return fetch(url).then(r => r.text());
 }
 
-export async function navigateTo(url: string): Promise<void> {
-  const md = await fetchMd(url);
-  history.pushState({ mdUrl: url }, '', '#' + url);
+export async function navigateTo(path: string): Promise<void> {
+  const mdPath = path.endsWith('.md') ? path : `${path}.md`;
+  const md = await fetchMd(mdPath);
+  history.pushState({ mdUrl: mdPath }, '', '#' + mdPath);
   renderPage(md);
-}
-
-export async function handleMd(a: HTMLAnchorElement): Promise<void> {
-  await navigateTo(a.getAttribute('href')!.replace('md:', ''));
 }
 
 export async function handleMore(a: HTMLAnchorElement): Promise<void> {
@@ -24,12 +27,11 @@ export async function handleNav(a: HTMLAnchorElement): Promise<void> {
   await navigateTo(a.getAttribute('href')!);
 }
 
-export function handleRedirect(url: string, reason?: string): void {
-  if (url.startsWith('md:')) {
-    navigateTo(url.slice(3));
-    return;
-  }
+export function warnBareUrl(href: string): void {
+  showToast(`Link "${href}" looks like a URL — did you mean https://${href}?`, 'error');
+}
 
+export function handleRedirect(url: string, reason?: string): void {
   let crossDomain = false;
   try {
     crossDomain = new URL(url).hostname !== window.location.hostname;

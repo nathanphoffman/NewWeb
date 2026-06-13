@@ -1,11 +1,11 @@
 # About NewWeb
 
-You navigated here from `main.md` — the `md:` link was intercepted by `engine.js` and the Go WASM engine rendered this file in place.
+You navigated here from `main.md` — the link was intercepted by the engine and the WASM renderer rendered this file in place.
 
 ## How it works
 
-1. Go WASM (`engine.wasm`) exposes `newwebRender(md)` — a goldmark wrapper
-2. `engine.js` intercepts clicks on `md:` links and fetches + renders the target file
+1. Rust WASM (`engine_bg.wasm`) exposes `newwebRender(md)` — a pulldown-cmark wrapper
+2. The engine intercepts clicks on bare links and fetches + renders the target `.md` file
 3. `index.html` is the permanent shell; only `#content` changes
 
-[Go back to main](md:main.md)
+[Go back to main](main)

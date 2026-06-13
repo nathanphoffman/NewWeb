@@ -18,7 +18,7 @@ build-go:
 
 # start local dev server
 serve:
-    python3 -m http.server 8080
+    node server.js
 
 # watch typescript for changes
 watch:
@@ -34,5 +34,5 @@ update-setup: build-engine
 serve-setup:
     node setup/server.js
 
-# build then serve
-dev: build serve
+# build everything then serve
+dev: build-rs build-go build-engine serve

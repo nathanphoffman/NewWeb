@@ -5,7 +5,7 @@ A markdown-first web framework powered by WASM.
 ## Quickstart
 
 ```bash
-npx degit nathanphoffman/NewWeb/setup my-site
+npx degit https://github.com/nathanphoffman/NewWeb/setup my-site
 cd my-site
 npm start
 ```
@@ -14,10 +14,11 @@ Open `http://localhost:8080`.
 
 ## Adding content
 
-Create `.md` files in the folder and link between them using the `md:` protocol:
+Create `.md` files in the folder and link between them using plain links — no prefix or extension needed:
 
 ```markdown
-[About](md:about.md)
+[About](about)
+[Nested page](blog/post)
 ```
 
 ## Static hosting

@@ -1,5 +1,5 @@
 # About
 
-This page was loaded via the `md:` protocol — no page reload.
+This page loaded via the engine — no page reload, no JavaScript imports.
 
-[Back to home](md:main.md)
+[Back to home](main)
