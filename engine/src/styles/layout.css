@@ -112,7 +112,7 @@ body {
 #content hr  { margin: 1.8em 0; border: none; border-top: 1px solid var(--border); }
 #content ul, #content ol { margin: 1em 0 1em 1.5em; }
 #content li  { margin: 0.3em 0; }
-#content a   { color: var(--link); }
+#content a, dialog a { color: var(--link); }
 #content blockquote {
   margin: 1.2em 0;
   border-left: 3px solid var(--border);

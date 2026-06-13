@@ -7,3 +7,5 @@ tinygo build -target wasm -o visit.wasm ./visit/
 echo "✓ src/visit.wasm built"
 tinygo build -target wasm -o menu.wasm ./menu/
 echo "✓ src/menu.wasm built"
+tinygo build -target wasm -o profile.wasm ./profile/
+echo "✓ src/profile.wasm built"

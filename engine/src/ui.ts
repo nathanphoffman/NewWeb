@@ -55,6 +55,7 @@ export function showToast(md: string, type: string): void {
 }
 
 export function showModal(md: string, closeLabel = 'Close'): Modal {
+  closeModals();
   const dlg = document.createElement('dialog') as Modal;
   dlg.innerHTML = `<div class="nw-modal-body">${window.newwebRender ? window.newwebRender(md) : md}</div>
     <button class="nw-modal-close" autofocus>${closeLabel}</button>`;

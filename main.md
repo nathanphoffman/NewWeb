@@ -21,3 +21,7 @@ Navigate to another page to see link interception in action:
 
 <!-- script_reasoning: Menu items are loaded in from a server as they may change from time to time -->
 [View Menu](wasm:src/menu.wasm)
+
+<!-- script_reasoning: Loads your profile into this session so other scripts can personalise your experience -->
+<!-- data: firstName, lastName, email, member -->
+[Load My Profile](wasm:src/profile.wasm)
