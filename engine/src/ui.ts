@@ -1,7 +1,25 @@
 import type { Modal } from './types.js';
 
+export function closeModals(): void {
+  document.querySelectorAll('dialog').forEach(d => d.remove());
+}
+
+function annotateLinks(container: Element): void {
+  container.querySelectorAll('a[href]').forEach(el => {
+    const a = el as HTMLAnchorElement;
+    const href = a.getAttribute('href')!;
+    let icon = '';
+    if (href.startsWith('wasm:'))                              icon = '⚙';
+    else if (href.startsWith('http://') || href.startsWith('https://')) icon = '🌐';
+    if (icon) a.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">${icon}</span>`);
+  });
+}
+
 export function renderPage(md: string): void {
-  document.getElementById('content')!.innerHTML = window.newwebRender!(md);
+  closeModals();
+  const content = document.getElementById('content')!;
+  content.innerHTML = window.newwebRender!(md);
+  annotateLinks(content);
 }
 
 export function showToast(md: string, type: string): void {

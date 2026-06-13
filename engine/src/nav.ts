@@ -1,4 +1,5 @@
 import { renderPage, showModal, showSuspendedBar, showToast } from './ui.js';
+import { suggestTheme } from './theme.js';
 
 const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
 
@@ -10,10 +11,24 @@ export function fetchMd(url: string): Promise<string> {
   return fetch(url).then(r => r.text());
 }
 
+function applyThemeSuggestion(md: string): void {
+  const match = md.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
+  if (match) suggestTheme(match[1].split(','));
+}
+
 export async function navigateTo(path: string): Promise<void> {
   const mdPath = path.endsWith('.md') ? path : `${path}.md`;
   const md = await fetchMd(mdPath);
+  applyThemeSuggestion(md);
   history.pushState({ mdUrl: mdPath }, '', '#' + mdPath);
+  renderPage(md);
+}
+
+export async function replacePage(path: string): Promise<void> {
+  const mdPath = path.endsWith('.md') ? path : `${path}.md`;
+  const md = await fetchMd(mdPath);
+  applyThemeSuggestion(md);
+  history.replaceState({ mdUrl: mdPath }, '', '#' + mdPath);
   renderPage(md);
 }
 

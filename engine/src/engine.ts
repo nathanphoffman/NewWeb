@@ -1,6 +1,6 @@
 import init, { render as wasmRender } from '../build/pkg/engine.js';
 import { handleWasm } from './wasm.js';
-import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, looksLikeBareUrl, warnBareUrl } from './nav.js';
+import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, looksLikeBareUrl, warnBareUrl } from './nav.js';
 import { showToast, showModal, renderPage } from './ui.js';
 import './theme.js';
 
@@ -46,14 +46,14 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
         navigateTo(url);
       }
     },
-    info:     (md) => showToast(md, 'info'),
-    error:    (md) => showToast(md, 'error'),
-    more:     (md) => showModal(md),
+    replace: (url) => replacePage(url),
+    info:    (md) => showToast(md, 'info'),
+    error:   (md) => showToast(md, 'error'),
+    more:    (md) => showModal(md),
   };
 
-  const initial = location.hash ? location.hash.slice(1) : 'main.md';
-  history.replaceState({ mdUrl: initial }, '', location.hash || '#main.md');
-  renderPage(await fetchMd(initial));
+  const initial = location.hash ? location.hash.slice(1) : 'main';
+  await replacePage(initial);
 })().catch(err => {
   document.getElementById('content')!.innerHTML = `<pre>Boot error: ${err}</pre>`;
 });

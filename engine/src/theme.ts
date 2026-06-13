@@ -25,6 +25,25 @@ function removeCats(): void {
   document.querySelectorAll('.nw-spinning-cat').forEach(el => el.remove());
 }
 
+const VALID_THEMES = ['default', 'dark', 'newspaper', 'terminal', 'warm', 'nasa', 'cats'];
+
+let pageSuggestions: string[] = [];
+
+function applySuggestions(): void {
+  const cb = document.getElementById('nw-theme-suggest') as HTMLInputElement;
+  if (!cb.checked) return;
+  for (const name of pageSuggestions) {
+    const q = name.trim().toLowerCase();
+    const match = VALID_THEMES.find(t => t.startsWith(q));
+    if (match) { applyTheme(match); return; }
+  }
+}
+
+export function suggestTheme(names: string[]): void {
+  pageSuggestions = names;
+  applySuggestions();
+}
+
 function applyTheme(theme: string): void {
   const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
   document.documentElement.setAttribute('data-theme', theme);
@@ -37,6 +56,17 @@ function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
   btn.textContent = paused ? 'Resume Animations' : 'Stop Animations';
 }
+
+// suggested theme checkbox
+const suggestCb = document.getElementById('nw-theme-suggest') as HTMLInputElement;
+suggestCb.checked = localStorage.getItem('nw-theme-suggest') !== 'false';
+suggestCb.addEventListener('change', () => {
+  localStorage.setItem('nw-theme-suggest', String(suggestCb.checked));
+  if (suggestCb.checked) {
+    localStorage.removeItem('nw-theme');
+    applySuggestions();
+  }
+});
 
 // animation toggle
 const savedPaused = localStorage.getItem('nw-paused') === 'true';
@@ -54,4 +84,6 @@ document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event
   const value = (e.target as HTMLSelectElement).value;
   applyTheme(value);
   localStorage.setItem('nw-theme', value);
+  suggestCb.checked = false;
+  localStorage.setItem('nw-theme-suggest', 'false');
 });

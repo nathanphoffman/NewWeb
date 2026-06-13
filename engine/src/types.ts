@@ -7,6 +7,7 @@ declare global {
     newwebRender?: (md: string) => string;
     newweb: {
       redirect: (url: string, reason?: string) => void;
+      replace: (url: string) => void;
       info: (md: string) => void;
       error: (md: string) => void;
       more: (md: string) => void;

@@ -1,4 +1,10 @@
 :root {
+  --font-mono: 'Courier New', monospace;
+  --width:     960px;
+  --font-size: 18px;
+}
+
+[data-theme="default"] {
   --bg:        #ffffff;
   --fg:        #111111;
   --muted:     #555555;
@@ -9,6 +15,4 @@
   --bar-fg:    #333333;
   --bar-border:#cccccc;
   --font:      system-ui, sans-serif;
-  --font-mono: 'Courier New', monospace;
-  --width:     720px;
 }
