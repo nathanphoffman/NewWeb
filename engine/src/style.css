@@ -1,0 +1,501 @@
+/* ── theme tokens ─────────────────────────────────────── */
+:root {
+  --bg:        #ffffff;
+  --fg:        #111111;
+  --muted:     #555555;
+  --link:      #0066cc;
+  --border:    #dddddd;
+  --code-bg:   #f4f4f4;
+  --bar-bg:    #f0f0f0;
+  --bar-fg:    #333333;
+  --bar-border:#cccccc;
+  --font:      system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
+  --width:     720px;
+}
+
+[data-theme="newspaper"] {
+  --bg:        #f5f0e8;
+  --fg:        #1a1209;
+  --muted:     #5a4a3a;
+  --link:      #8b0000;
+  --border:    #c8b89a;
+  --code-bg:   #ede5d8;
+  --bar-bg:    #e8e0d0;
+  --bar-fg:    #1a1209;
+  --bar-border:#b8a890;
+  --font:      Georgia, 'Times New Roman', serif;
+}
+
+[data-theme="dark"] {
+  --bg:        #1a1a1a;
+  --fg:        #e0e0e0;
+  --muted:     #999999;
+  --link:      #66aaff;
+  --border:    #333333;
+  --code-bg:   #242424;
+  --bar-bg:    #252525;
+  --bar-fg:    #cccccc;
+  --bar-border:#333333;
+}
+
+[data-theme="terminal"] {
+  --bg:        #0d0d0d;
+  --fg:        #00ff41;
+  --muted:     #00aa2a;
+  --link:      #00ff41;
+  --border:    #005515;
+  --code-bg:   #001a07;
+  --bar-bg:    #050505;
+  --bar-fg:    #00ff41;
+  --bar-border:#005515;
+  --font:      'Courier New', monospace;
+}
+
+[data-theme="warm"] {
+  --bg:        #fdf6ec;
+  --fg:        #3d2b1f;
+  --muted:     #7a5c44;
+  --link:      #b05c2a;
+  --border:    #e0cdb8;
+  --code-bg:   #f5ece0;
+  --bar-bg:    #f0e4d0;
+  --bar-fg:    #3d2b1f;
+  --bar-border:#d4b898;
+  --font:      Georgia, serif;
+}
+
+[data-theme="nasa"] {
+  --bg:        #060b1a;
+  --fg:        #c8e6ff;
+  --muted:     #5a8ab0;
+  --link:      #4fc3f7;
+  --border:    rgba(79,195,247,0.2);
+  --code-bg:   rgba(0,20,60,0.85);
+  --bar-bg:    rgba(4,10,30,0.97);
+  --bar-fg:    #4fc3f7;
+  --bar-border:rgba(11,61,145,0.9);
+  --font:      system-ui, sans-serif;
+}
+
+/* nebula on body background — frees ::before and ::after for warp layers */
+[data-theme="nasa"] body {
+  background-color: #060b1a;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 35%, rgba(11,61,145,0.5)  0%, transparent 70%),
+    radial-gradient(ellipse 55% 55% at 88% 60%, rgba(80,0,180,0.28)  0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 60% 8%,  rgba(252,61,33,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 35% 92%, rgba(0,80,180,0.22)  0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+/* warp keyframes — ease-in so stars accelerate like jumping to warp */
+@keyframes nw-warp {
+  0%   { transform: scale(0.55); opacity: 0;   filter: blur(0px); }
+  6%   {                         opacity: 1;                       }
+  80%  {                                        filter: blur(0px); }
+  92%  {                         opacity: 0.8;  filter: blur(0.8px); }
+  100% { transform: scale(2.5);  opacity: 0;   filter: blur(1.5px); }
+}
+
+/* star layer 1 */
+[data-theme="nasa"] body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 1px; height: 1px;
+  z-index: -1;
+  pointer-events: none;
+  transform-origin: 50% 45%;
+  animation: nw-warp 5s ease-in infinite;
+  box-shadow:
+    47px 91px 0 rgba(255,255,255,0.35),  183px 37px 0 rgba(255,255,255,0.45),
+    291px 155px 0 rgba(255,255,255,0.3),  412px 68px 0 rgba(255,255,255,0.4),
+    538px 201px 0 rgba(255,255,255,0.35), 673px 44px 0 rgba(255,255,255,0.5),
+    789px 178px 0 rgba(255,255,255,0.3),  923px 92px 0 rgba(255,255,255,0.4),
+    1047px 166px 0 rgba(255,255,255,0.35),1182px 41px 0 rgba(255,255,255,0.45),
+    1298px 127px 0 rgba(255,255,255,0.3), 1421px 83px 0 rgba(255,255,255,0.4),
+    1543px 205px 0 rgba(255,255,255,0.35),78px 312px 0 rgba(255,255,255,0.3),
+    203px 278px 0 rgba(255,255,255,0.4),  341px 398px 0 rgba(255,255,255,0.35),
+    467px 343px 0 rgba(255,255,255,0.45), 589px 417px 0 rgba(255,255,255,0.3),
+    712px 289px 0 rgba(255,255,255,0.4),  834px 371px 0 rgba(255,255,255,0.35),
+    961px 245px 0 rgba(255,255,255,0.5),  1083px 389px 0 rgba(255,255,255,0.3),
+    1207px 322px 0 rgba(255,255,255,0.4), 1331px 456px 0 rgba(255,255,255,0.35),
+    1453px 278px 0 rgba(255,255,255,0.45),92px 521px 0 rgba(255,255,255,0.3),
+    217px 583px 0 rgba(255,255,255,0.4),  356px 498px 0 rgba(255,255,255,0.35),
+    478px 612px 0 rgba(255,255,255,0.3),  601px 534px 0 rgba(255,255,255,0.45),
+    724px 489px 0 rgba(255,255,255,0.35), 847px 567px 0 rgba(255,255,255,0.4),
+    972px 623px 0 rgba(255,255,255,0.3),  1095px 511px 0 rgba(255,255,255,0.35),
+    1218px 589px 0 rgba(255,255,255,0.45),1342px 532px 0 rgba(255,255,255,0.3),
+    1465px 601px 0 rgba(255,255,255,0.4), 63px 712px 0 rgba(255,255,255,0.35),
+    187px 678px 0 rgba(255,255,255,0.3),  309px 745px 0 rgba(255,255,255,0.45),
+    432px 689px 0 rgba(255,255,255,0.35), 558px 731px 0 rgba(255,255,255,0.3),
+    681px 698px 0 rgba(255,255,255,0.4),  803px 756px 0 rgba(255,255,255,0.35),
+    928px 723px 0 rgba(255,255,255,0.45), 1051px 789px 0 rgba(255,255,255,0.3),
+    1174px 712px 0 rgba(255,255,255,0.4), 1297px 768px 0 rgba(255,255,255,0.35),
+    1420px 734px 0 rgba(255,255,255,0.3), 104px 834px 0 rgba(255,255,255,0.4),
+    228px 867px 0 rgba(255,255,255,0.35), 352px 823px 0 rgba(255,255,255,0.45),
+    476px 891px 0 rgba(255,255,255,0.3),  601px 858px 0 rgba(255,255,255,0.4),
+    725px 912px 0 rgba(255,255,255,0.35), 848px 843px 0 rgba(255,255,255,0.3),
+    972px 887px 0 rgba(255,255,255,0.45), 1096px 834px 0 rgba(255,255,255,0.35),
+    1219px 901px 0 rgba(255,255,255,0.3), 1342px 856px 0 rgba(255,255,255,0.4),
+    1465px 923px 0 rgba(255,255,255,0.35),
+    280px 220px 0 rgba(150,200,255,0.7),  850px 440px 0 rgba(150,200,255,0.8),
+    1150px 670px 0 rgba(150,200,255,0.6), 730px 580px 0 rgba(180,220,255,0.75),
+    1400px 180px 0 rgba(150,200,255,0.7), 510px 350px 0 rgba(180,220,255,0.6),
+    600px 300px 0 1px white,              600px 300px 4px 0 rgba(255,255,255,0.12),
+    1000px 150px 0 1px rgba(200,230,255,0.95), 1000px 150px 4px 0 rgba(150,200,255,0.2),
+    400px 700px 0 1px white,              400px 700px 5px 0 rgba(255,255,255,0.1),
+    1300px 450px 0 1px rgba(200,230,255,0.9), 1300px 450px 3px 0 rgba(150,200,255,0.15),
+    200px 550px 0 1px white,              200px 550px 4px 0 rgba(255,255,255,0.12),
+    1100px 380px 0 1px rgba(255,240,200,0.9), 1100px 380px 5px 0 rgba(255,220,150,0.15);
+}
+
+/* star layer 2 — same stars, offset by half the period for seamless loop */
+[data-theme="nasa"] body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 1px; height: 1px;
+  z-index: -1;
+  pointer-events: none;
+  transform-origin: 50% 45%;
+  animation: nw-warp 5s ease-in infinite -2.5s;
+  box-shadow:
+    47px 91px 0 rgba(255,255,255,0.35),  183px 37px 0 rgba(255,255,255,0.45),
+    291px 155px 0 rgba(255,255,255,0.3),  412px 68px 0 rgba(255,255,255,0.4),
+    538px 201px 0 rgba(255,255,255,0.35), 673px 44px 0 rgba(255,255,255,0.5),
+    789px 178px 0 rgba(255,255,255,0.3),  923px 92px 0 rgba(255,255,255,0.4),
+    1047px 166px 0 rgba(255,255,255,0.35),1182px 41px 0 rgba(255,255,255,0.45),
+    1298px 127px 0 rgba(255,255,255,0.3), 1421px 83px 0 rgba(255,255,255,0.4),
+    1543px 205px 0 rgba(255,255,255,0.35),78px 312px 0 rgba(255,255,255,0.3),
+    203px 278px 0 rgba(255,255,255,0.4),  341px 398px 0 rgba(255,255,255,0.35),
+    467px 343px 0 rgba(255,255,255,0.45), 589px 417px 0 rgba(255,255,255,0.3),
+    712px 289px 0 rgba(255,255,255,0.4),  834px 371px 0 rgba(255,255,255,0.35),
+    961px 245px 0 rgba(255,255,255,0.5),  1083px 389px 0 rgba(255,255,255,0.3),
+    1207px 322px 0 rgba(255,255,255,0.4), 1331px 456px 0 rgba(255,255,255,0.35),
+    1453px 278px 0 rgba(255,255,255,0.45),92px 521px 0 rgba(255,255,255,0.3),
+    217px 583px 0 rgba(255,255,255,0.4),  356px 498px 0 rgba(255,255,255,0.35),
+    478px 612px 0 rgba(255,255,255,0.3),  601px 534px 0 rgba(255,255,255,0.45),
+    724px 489px 0 rgba(255,255,255,0.35), 847px 567px 0 rgba(255,255,255,0.4),
+    972px 623px 0 rgba(255,255,255,0.3),  1095px 511px 0 rgba(255,255,255,0.35),
+    1218px 589px 0 rgba(255,255,255,0.45),1342px 532px 0 rgba(255,255,255,0.3),
+    1465px 601px 0 rgba(255,255,255,0.4), 63px 712px 0 rgba(255,255,255,0.35),
+    187px 678px 0 rgba(255,255,255,0.3),  309px 745px 0 rgba(255,255,255,0.45),
+    432px 689px 0 rgba(255,255,255,0.35), 558px 731px 0 rgba(255,255,255,0.3),
+    681px 698px 0 rgba(255,255,255,0.4),  803px 756px 0 rgba(255,255,255,0.35),
+    928px 723px 0 rgba(255,255,255,0.45), 1051px 789px 0 rgba(255,255,255,0.3),
+    1174px 712px 0 rgba(255,255,255,0.4), 1297px 768px 0 rgba(255,255,255,0.35),
+    1420px 734px 0 rgba(255,255,255,0.3), 104px 834px 0 rgba(255,255,255,0.4),
+    228px 867px 0 rgba(255,255,255,0.35), 352px 823px 0 rgba(255,255,255,0.45),
+    476px 891px 0 rgba(255,255,255,0.3),  601px 858px 0 rgba(255,255,255,0.4),
+    725px 912px 0 rgba(255,255,255,0.35), 848px 843px 0 rgba(255,255,255,0.3),
+    972px 887px 0 rgba(255,255,255,0.45), 1096px 834px 0 rgba(255,255,255,0.35),
+    1219px 901px 0 rgba(255,255,255,0.3), 1342px 856px 0 rgba(255,255,255,0.4),
+    1465px 923px 0 rgba(255,255,255,0.35),
+    280px 220px 0 rgba(150,200,255,0.7),  850px 440px 0 rgba(150,200,255,0.8),
+    1150px 670px 0 rgba(150,200,255,0.6), 730px 580px 0 rgba(180,220,255,0.75),
+    1400px 180px 0 rgba(150,200,255,0.7), 510px 350px 0 rgba(180,220,255,0.6),
+    600px 300px 0 1px white,              600px 300px 4px 0 rgba(255,255,255,0.12),
+    1000px 150px 0 1px rgba(200,230,255,0.95), 1000px 150px 4px 0 rgba(150,200,255,0.2),
+    400px 700px 0 1px white,              400px 700px 5px 0 rgba(255,255,255,0.1),
+    1300px 450px 0 1px rgba(200,230,255,0.9), 1300px 450px 3px 0 rgba(150,200,255,0.15),
+    200px 550px 0 1px white,              200px 550px 4px 0 rgba(255,255,255,0.12),
+    1100px 380px 0 1px rgba(255,240,200,0.9), 1100px 380px 5px 0 rgba(255,220,150,0.15);
+}
+
+/* content panel — readable over starfield */
+[data-theme="nasa"] #content {
+  background: rgba(6,11,26,0.72);
+  border: 1px solid rgba(79,195,247,0.12);
+  border-radius: 4px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+[data-theme="nasa"] #content h1,
+[data-theme="nasa"] #content h2,
+[data-theme="nasa"] #content h3 {
+  color: #7dd4f8;
+  text-shadow: 0 0 18px rgba(79,195,247,0.35);
+  letter-spacing: 0.03em;
+}
+
+[data-theme="nasa"] #content a {
+  display: inline-block;
+  padding: 0.28em 0.85em;
+  border: 1px solid rgba(79,195,247,0.55);
+  border-radius: 2px;
+  color: #4fc3f7;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(79,195,247,0.04);
+  box-shadow: 0 0 8px rgba(79,195,247,0.12), inset 0 0 6px rgba(79,195,247,0.04);
+  transition: background 0.18s, box-shadow 0.18s, text-shadow 0.18s, border-color 0.18s;
+}
+
+[data-theme="nasa"] #content a:hover {
+  background: rgba(79,195,247,0.13);
+  border-color: #4fc3f7;
+  box-shadow: 0 0 18px rgba(79,195,247,0.38), inset 0 0 10px rgba(79,195,247,0.08);
+  text-shadow: 0 0 8px rgba(79,195,247,0.7);
+}
+
+[data-theme="nasa"] #nw-bar {
+  box-shadow: 0 1px 24px rgba(11,61,145,0.5);
+  letter-spacing: 0.03em;
+}
+
+[data-theme="nasa"] .nw-logo {
+  color: #fc3d21;
+  text-shadow: 0 0 12px rgba(252,61,33,0.55);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+[data-theme="nasa"] #nw-bar select {
+  background: rgba(4,10,30,0.95);
+  border-color: rgba(79,195,247,0.35);
+}
+
+[data-theme="nasa"] dialog {
+  background: rgba(4,10,30,0.96);
+  border-color: rgba(79,195,247,0.35);
+  box-shadow: 0 0 40px rgba(79,195,247,0.18);
+}
+
+/* ── cats theme ──────────────────────────────────────────── */
+[data-theme="cats"] {
+  --bg:        #0d0a1a;
+  --fg:        #f0e8d0;
+  --muted:     #8a7a60;
+  --link:      #ffb347;
+  --border:    rgba(255,179,71,0.2);
+  --code-bg:   rgba(20,10,35,0.85);
+  --bar-bg:    rgba(10,7,20,0.97);
+  --bar-fg:    #ffb347;
+  --bar-border:rgba(80,40,120,0.9);
+  --font:      system-ui, sans-serif;
+}
+
+/* moon + night sky + tiled stars on body background */
+[data-theme="cats"] body {
+  background-color: #0d0a1a;
+  background-image:
+    radial-gradient(circle 80px at 75% 15%, rgba(255,252,220,1) 0%, rgba(255,245,180,0.9) 45%, transparent 70%),
+    radial-gradient(circle 220px at 75% 15%, rgba(255,240,150,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 45% at 20% 65%, rgba(80,20,120,0.38) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 55% at 82% 82%, rgba(40,10,80,0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 30% at 48% 28%, rgba(60,15,100,0.18) 0%, transparent 65%),
+    radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px) 30px  60px  / 180px 160px,
+    radial-gradient(circle, rgba(255,255,255,0.4)  1px, transparent 1px) 90px  20px  / 220px 200px,
+    radial-gradient(circle, rgba(255,255,255,0.5)  1px, transparent 1px) 150px 90px  / 160px 180px,
+    radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px) 60px  140px / 240px 220px,
+    radial-gradient(circle, rgba(255,255,255,0.45) 1px, transparent 1px) 120px 50px  / 200px 170px,
+    radial-gradient(circle, rgba(255,255,255,0.3)  1px, transparent 1px) 10px  100px / 190px 210px;
+  background-attachment: fixed;
+}
+
+@keyframes nw-catspin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.nw-spinning-cat {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  animation: nw-catspin linear infinite;
+  filter: drop-shadow(0 0 6px rgba(255,179,71,0.55));
+  transform-origin: center center;
+}
+
+[data-theme="cats"] #content {
+  position: relative;
+  z-index: 1;
+  background: rgba(13,10,26,0.76);
+  border: 1px solid rgba(255,179,71,0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+[data-theme="cats"] #content h1,
+[data-theme="cats"] #content h2,
+[data-theme="cats"] #content h3 {
+  color: #ffd080;
+  text-shadow: 0 0 16px rgba(255,179,71,0.4);
+}
+
+[data-theme="cats"] #content a {
+  display: inline-block;
+  padding: 0.3em 1.1em;
+  border: 1.5px solid rgba(255,179,71,0.55);
+  border-radius: 20px;
+  color: #ffb347;
+  text-decoration: none;
+  font-size: 0.88em;
+  background: rgba(255,179,71,0.06);
+  box-shadow: 0 0 10px rgba(255,179,71,0.12);
+  transition: all 0.2s;
+}
+
+[data-theme="cats"] #content a:hover {
+  background: rgba(255,179,71,0.16);
+  border-color: #ffb347;
+  box-shadow: 0 0 20px rgba(255,179,71,0.42);
+}
+
+[data-theme="cats"] #nw-bar {
+  box-shadow: 0 1px 20px rgba(80,20,120,0.5);
+}
+
+[data-theme="cats"] .nw-logo {
+  color: #ffb347;
+  text-shadow: 0 0 10px rgba(255,179,71,0.5);
+}
+
+[data-theme="cats"] #nw-bar select {
+  background: rgba(10,7,20,0.95);
+  border-color: rgba(255,179,71,0.35);
+}
+
+[data-theme="cats"] dialog {
+  background: rgba(10,7,20,0.96);
+  border-color: rgba(255,179,71,0.35);
+  box-shadow: 0 0 40px rgba(255,179,71,0.18);
+}
+
+.nw-paused *, .nw-paused *::before, .nw-paused *::after {
+  animation-play-state: paused !important;
+}
+
+/* ── reset ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  line-height: 1.6;
+}
+
+/* ── top bar ──────────────────────────────────────────── */
+#nw-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--bar-border);
+  color: var(--bar-fg);
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+#nw-bar .nw-logo {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-right: auto;
+  opacity: 0.7;
+}
+
+#nw-anim-toggle {
+  padding: 0.2em 0.7em;
+  border: 1px solid var(--bar-border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--bar-fg);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+#nw-bar select {
+  padding: 0.2em 0.5em;
+  border: 1px solid var(--bar-border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* ── page content ─────────────────────────────────────── */
+#content {
+  max-width: var(--width);
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+#content h1, #content h2, #content h3 { margin: 1.2em 0 0.4em; }
+#content p   { margin: 0.6em 0; }
+#content ul, #content ol { margin: 0.6em 0 0.6em 1.5em; }
+#content a   { color: var(--link); }
+#content blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1em;
+  color: var(--muted);
+}
+#content code {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+#content pre {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  padding: 0.8em;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+#content pre code { background: none; padding: 0; }
+
+/* ── spinner ──────────────────────────────────────────── */
+#nw-spinner {
+  position: fixed; top: 0.5rem; right: 1rem;
+  width: 18px; height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--link);
+  border-radius: 50%;
+  animation: nw-spin 0.6s linear infinite;
+  display: none;
+}
+@keyframes nw-spin { to { transform: rotate(360deg); } }
+
+/* ── toasts ───────────────────────────────────────────── */
+.nw-toast {
+  position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
+  padding: 0.5em 1.2em; border-radius: 4px; font-size: 0.88em;
+  font-family: system-ui, sans-serif; z-index: 200;
+  border: 1px solid var(--border);
+}
+.nw-toast-info  { background: var(--code-bg); color: var(--fg); }
+.nw-toast-error { background: #fdd; color: #600; }
+
+/* ── modal ────────────────────────────────────────────── */
+dialog {
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 1.5rem; max-width: 540px; width: 90%;
+}
+dialog::backdrop { background: rgba(0,0,0,0.45); }
+.nw-modal-close { margin-top: 1rem; padding: 0.3em 1em; cursor: pointer; }
+
+/* ── suspended bar ────────────────────────────────────── */
+#nw-suspended {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff3cd; color: #333;
+  padding: 0.5em 1rem; border-top: 1px solid #e0c060;
+  display: flex; gap: 0.5rem; align-items: center;
+  font-family: system-ui, sans-serif; font-size: 0.88em;
+}
+#nw-suspended button { padding: 0.2em 0.8em; cursor: pointer; }

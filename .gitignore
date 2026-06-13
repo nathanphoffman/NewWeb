@@ -1,4 +1,5 @@
-engine/pkg/
-engine/wasm_exec_tiny.js
+engine/build/
+engine/lib/
+engine/node_modules/
 src/*.wasm
 engine-rs/target/

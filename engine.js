@@ -7,7 +7,7 @@ document.addEventListener('click', e => {
   if (!a) return;
   const href = a.getAttribute('href');
   if (!href) return;
-
+v
   if (href.startsWith('wasm:'))     { e.preventDefault(); handleWasm(a); }
   if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); }
   if (href.startsWith('md:'))       { e.preventDefault(); handleMd(a); }
