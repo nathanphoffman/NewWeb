@@ -1,13 +1,13 @@
-# NewWeb Setup
+# NewWeb
 
-Get a newweb site running locally in seconds.
+A markdown-first web framework powered by WASM.
 
 ## Quickstart
 
 ```bash
-npx degit yourname/newweb/setup my-site
+npx degit nathanphoffman/NewWeb/setup my-site
 cd my-site
-node server.js
+npm start
 ```
 
 Open `http://localhost:8080`.
