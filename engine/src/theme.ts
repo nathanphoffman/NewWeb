@@ -30,13 +30,17 @@ const VALID_THEMES = ['default', 'dark', 'newspaper', 'terminal', 'warm', 'nasa'
 let pageSuggestions: string[] = [];
 
 function applySuggestions(): void {
-  const cb = document.getElementById('nw-theme-suggest') as HTMLInputElement;
-  if (!cb.checked) return;
+  if (!isSuggestOn()) return;
   for (const name of pageSuggestions) {
     const q = name.trim().toLowerCase();
     const match = VALID_THEMES.find(t => t.startsWith(q));
     if (match) { applyTheme(match); return; }
   }
+}
+
+function isSuggestOn(): boolean {
+  return (document.getElementById('nw-theme-suggest') as HTMLButtonElement)
+    .getAttribute('aria-pressed') === 'true';
 }
 
 export function suggestTheme(names: string[]): void {
@@ -57,15 +61,31 @@ function applyAnimPaused(paused: boolean): void {
   btn.textContent = paused ? 'Resume Animations' : 'Stop Animations';
 }
 
-// suggested theme checkbox
-const suggestCb = document.getElementById('nw-theme-suggest') as HTMLInputElement;
-suggestCb.checked = localStorage.getItem('nw-theme-suggest') !== 'false';
-suggestCb.addEventListener('change', () => {
-  localStorage.setItem('nw-theme-suggest', String(suggestCb.checked));
-  if (suggestCb.checked) {
+// suggested theme toggle button
+const suggestBtn = document.getElementById('nw-theme-suggest') as HTMLButtonElement;
+function setSuggestState(on: boolean): void {
+  suggestBtn.setAttribute('aria-pressed', String(on));
+  suggestBtn.textContent = on ? 'Using Suggested Theme' : 'Using Your Theme';
+}
+
+const suggestOn = localStorage.getItem('nw-theme-suggest') !== 'false';
+setSuggestState(suggestOn);
+suggestBtn.addEventListener('click', () => {
+  const on = suggestBtn.getAttribute('aria-pressed') !== 'true';
+  setSuggestState(on);
+  localStorage.setItem('nw-theme-suggest', String(on));
+  if (on) {
     localStorage.removeItem('nw-theme');
     applySuggestions();
   }
+});
+
+// hamburger toggle
+const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
+const barMenu   = document.getElementById('nw-bar-menu') as HTMLDivElement;
+hamburger.addEventListener('click', () => {
+  const open = barMenu.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', String(open));
 });
 
 // animation toggle
@@ -84,6 +104,6 @@ document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event
   const value = (e.target as HTMLSelectElement).value;
   applyTheme(value);
   localStorage.setItem('nw-theme', value);
-  suggestCb.checked = false;
+  setSuggestState(false);
   localStorage.setItem('nw-theme-suggest', 'false');
 });
