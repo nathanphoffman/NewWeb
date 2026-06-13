@@ -4,9 +4,9 @@ default: build
 build:
     cd engine && bash build.sh
 
-# typescript only (fast rebuild during development)
+# typescript + html/css rebuild (fast, no rust)
 build-engine:
-    cd engine && npm run build && cp src/style.css ../style.css && cp src/index.html ../index.html
+    cd engine && npm run build
 
 # rust wasm only
 build-rs:

@@ -1,0 +1,14 @@
+:root {
+  --bg:        #ffffff;
+  --fg:        #111111;
+  --muted:     #555555;
+  --link:      #0066cc;
+  --border:    #dddddd;
+  --code-bg:   #f4f4f4;
+  --bar-bg:    #f0f0f0;
+  --bar-fg:    #333333;
+  --bar-border:#cccccc;
+  --font:      system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
+  --width:     720px;
+}

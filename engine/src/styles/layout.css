@@ -1,0 +1,129 @@
+/* ── animation pause ──────────────────────────────────── */
+.nw-paused *, .nw-paused *::before, .nw-paused *::after {
+  animation-play-state: paused !important;
+}
+
+/* ── reset ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  line-height: 1.6;
+}
+
+/* ── top bar ──────────────────────────────────────────── */
+#nw-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--bar-border);
+  color: var(--bar-fg);
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+#nw-bar .nw-logo {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-right: auto;
+  opacity: 0.7;
+}
+
+#nw-anim-toggle {
+  padding: 0.2em 0.7em;
+  border: 1px solid var(--bar-border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--bar-fg);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+#nw-bar select {
+  padding: 0.2em 0.5em;
+  border: 1px solid var(--bar-border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* ── page content ─────────────────────────────────────── */
+#content {
+  max-width: var(--width);
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+#content h1, #content h2, #content h3 { margin: 1.2em 0 0.4em; }
+#content p   { margin: 0.6em 0; }
+#content ul, #content ol { margin: 0.6em 0 0.6em 1.5em; }
+#content a   { color: var(--link); }
+#content blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1em;
+  color: var(--muted);
+}
+#content code {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+#content pre {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  padding: 0.8em;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+#content pre code { background: none; padding: 0; }
+
+/* ── spinner ──────────────────────────────────────────── */
+#nw-spinner {
+  position: fixed; top: 0.5rem; right: 1rem;
+  width: 18px; height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--link);
+  border-radius: 50%;
+  animation: nw-spin 0.6s linear infinite;
+  display: none;
+}
+@keyframes nw-spin { to { transform: rotate(360deg); } }
+
+/* ── toasts ───────────────────────────────────────────── */
+.nw-toast {
+  position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
+  padding: 0.5em 1.2em; border-radius: 4px; font-size: 0.88em;
+  font-family: system-ui, sans-serif; z-index: 200;
+  border: 1px solid var(--border);
+}
+.nw-toast-info  { background: var(--code-bg); color: var(--fg); }
+.nw-toast-error { background: #fdd; color: #600; }
+
+/* ── modal ────────────────────────────────────────────── */
+dialog {
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 1.5rem; max-width: 540px; width: 90%;
+}
+dialog::backdrop { background: rgba(0,0,0,0.45); }
+.nw-modal-close { margin-top: 1rem; padding: 0.3em 1em; cursor: pointer; }
+
+/* ── suspended bar ────────────────────────────────────── */
+#nw-suspended {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff3cd; color: #333;
+  padding: 0.5em 1rem; border-top: 1px solid #e0c060;
+  display: flex; gap: 0.5rem; align-items: center;
+  font-family: system-ui, sans-serif; font-size: 0.88em;
+}
+#nw-suspended button { padding: 0.2em 0.8em; cursor: pointer; }

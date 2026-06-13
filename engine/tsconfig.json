@@ -8,5 +8,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/engine.ts"]
+  "include": ["src/**/*.ts"]
 }

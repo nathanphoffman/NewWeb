@@ -1,0 +1,12 @@
+[data-theme="warm"] {
+  --bg:        #fdf6ec;
+  --fg:        #3d2b1f;
+  --muted:     #7a5c44;
+  --link:      #b05c2a;
+  --border:    #e0cdb8;
+  --code-bg:   #f5ece0;
+  --bar-bg:    #f0e4d0;
+  --bar-fg:    #3d2b1f;
+  --bar-border:#d4b898;
+  --font:      Georgia, serif;
+}

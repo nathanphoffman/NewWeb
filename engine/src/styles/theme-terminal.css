@@ -1,0 +1,12 @@
+[data-theme="terminal"] {
+  --bg:        #0d0d0d;
+  --fg:        #00ff41;
+  --muted:     #00aa2a;
+  --link:      #00ff41;
+  --border:    #005515;
+  --code-bg:   #001a07;
+  --bar-bg:    #050505;
+  --bar-fg:    #00ff41;
+  --bar-border:#005515;
+  --font:      'Courier New', monospace;
+}

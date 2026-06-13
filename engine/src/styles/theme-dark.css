@@ -1,0 +1,11 @@
+[data-theme="dark"] {
+  --bg:        #1a1a1a;
+  --fg:        #e0e0e0;
+  --muted:     #999999;
+  --link:      #66aaff;
+  --border:    #333333;
+  --code-bg:   #242424;
+  --bar-bg:    #252525;
+  --bar-fg:    #cccccc;
+  --bar-border:#333333;
+}

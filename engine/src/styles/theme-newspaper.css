@@ -1,0 +1,12 @@
+[data-theme="newspaper"] {
+  --bg:        #f5f0e8;
+  --fg:        #1a1209;
+  --muted:     #5a4a3a;
+  --link:      #8b0000;
+  --border:    #c8b89a;
+  --code-bg:   #ede5d8;
+  --bar-bg:    #e8e0d0;
+  --bar-fg:    #1a1209;
+  --bar-border:#b8a890;
+  --font:      Georgia, 'Times New Roman', serif;
+}
