@@ -1,23 +1,22 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+// The entire point of this script is to build 1 large index.html
+//  this allows users to merely include a single html and wasm file to
+//  get up and running with markdown rendering
+
 const dir = dirname(fileURLToPath(import.meta.url));
 const root = join(dir, '..');
+const stylesDir = join(root, 'src/styles');
 
-const CSS_FILES = [
-  'src/styles/theme-default.css',
-  'src/styles/theme-newspaper.css',
-  'src/styles/theme-dark.css',
-  'src/styles/theme-terminal.css',
-  'src/styles/theme-warm.css',
-  'src/styles/theme-nasa.css',
-  'src/styles/theme-cats.css',
-  'src/styles/layout.css',
-];
-
-const css = CSS_FILES
-  .map(f => readFileSync(join(root, f), 'utf8'))
+const css = readdirSync(stylesDir)
+  .filter(f => f.endsWith('.css'))
+  // guarantees order of inclusion is the same across OS platforms
+  // in theory sort here matters little, but two builds could output different 
+  // html builds that are identical causing delta flip-flops if deployed
+  .sort()
+  .map(f => readFileSync(join(stylesDir, f), 'utf8'))
   .join('\n');
 
 const js = readFileSync(join(root, 'build/engine.bundle.js'), 'utf8');
