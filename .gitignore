@@ -1,6 +1,6 @@
 engine/build/
 engine/lib/
 engine/node_modules/
-index.html
+/index.html
 src/*.wasm
 engine-rs/target/

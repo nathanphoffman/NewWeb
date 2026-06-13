@@ -24,5 +24,15 @@ serve:
 watch:
     cd engine && npm run watch
 
+# copy latest build artifacts into setup/
+update-setup: build-engine
+    cp index.html setup/index.html
+    mkdir -p setup/engine/build/pkg
+    cp engine/build/pkg/engine_bg.wasm setup/engine/build/pkg/engine_bg.wasm
+
+# run the setup demo server
+serve-setup:
+    node setup/server.js
+
 # build then serve
 dev: build serve
