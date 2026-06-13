@@ -20,8 +20,11 @@ const css = CSS_FILES
   .map(f => readFileSync(join(root, f), 'utf8'))
   .join('\n');
 
-const template = readFileSync(join(root, 'src/index.html'), 'utf8');
-const html = template.replace('<!-- STYLES -->', `<style>\n${css}</style>`);
+const js = readFileSync(join(root, 'build/engine.bundle.js'), 'utf8');
+
+let html = readFileSync(join(root, 'src/index.html'), 'utf8');
+html = html.replace('<!-- STYLES -->', `<style>\n${css}</style>`);
+html = html.replace('<!-- SCRIPT -->', `<script type="module">\n${js}</script>`);
 
 writeFileSync(join(root, '../index.html'), html);
 console.log('✓ index.html written');
