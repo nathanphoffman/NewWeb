@@ -4,6 +4,30 @@ import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage
 import { showToast, showModal, renderPage } from './ui.js';
 import './theme.js';
 
+const store = new Map<string, string>();
+let allowedKeys = new Set<string>();
+
+function buildInfoMd(desc: string, keys: string[]): string {
+  const reasonSection = desc.trim()
+    ? `### Why this script?\n${desc}`
+    : `### ⚠ No description provided\nThe author of this page did not explain why this script needs to run.`;
+  const dataSection = keys.length
+    ? `\n\n### Data requested\nThis script will access: ${keys.map(k => `\`${k}\``).join(', ')}\n\nThese values will be read from your session.`
+    : '';
+  return reasonSection + dataSection;
+}
+
+// gear info button — show script description and data declaration
+document.addEventListener('click', (e: MouseEvent) => {
+  const btn = (e.target as Element).closest('.nw-wasm-info') as HTMLElement | null;
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const desc = btn.dataset.desc ?? '';
+  const keys = btn.dataset.keys ? btn.dataset.keys.split(',').filter(Boolean) : [];
+  showModal(buildInfoMd(desc, keys));
+});
+
 // link interception — dispatch by protocol or treat bare paths as markdown
 document.addEventListener('click', (e: MouseEvent) => {
   const a = (e.target as Element).closest('a') as HTMLAnchorElement | null;
@@ -11,7 +35,12 @@ document.addEventListener('click', (e: MouseEvent) => {
   const href = a.getAttribute('href');
   if (!href || href.startsWith('#')) return;
 
-  if (href.startsWith('wasm:'))     { e.preventDefault(); handleWasm(a); return; }
+  if (href.startsWith('wasm:')) {
+    e.preventDefault();
+    allowedKeys = new Set((a.dataset.keys ?? '').split(',').filter(Boolean));
+    handleWasm(a).finally(() => { allowedKeys = new Set(); });
+    return;
+  }
   if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); return; }
   if (href.startsWith('custom://')) { e.preventDefault(); handleNav(a); return; }
 
@@ -51,6 +80,8 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
     error:   (md) => showToast(md, 'error'),
     more:    (md) => showModal(md),
     load:    (url, data) => navigateWithData(url, data),
+    store:   (key, value) => { store.set(key, value); },
+    get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
   };
 
   const initial = location.hash ? location.hash.slice(1) : 'main';

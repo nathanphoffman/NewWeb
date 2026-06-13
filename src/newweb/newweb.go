@@ -25,3 +25,11 @@ func More(md string) {
 func Load(url string, data map[string]interface{}) {
 	api.Call("load", url, js.ValueOf(data))
 }
+
+func Store(key, value string) {
+	api.Call("store", key, value)
+}
+
+func Get(key string) string {
+	return api.Call("get", key).String()
+}

@@ -19,4 +19,5 @@ Navigate to another page to see link interception in action:
 
 [Visit example.com](wasm:src/visit.wasm)
 
+<!-- data_reason: Menu items are loaded in from a server as they may change from time to time -->
 [View Menu](wasm:src/menu.wasm)

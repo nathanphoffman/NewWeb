@@ -4,14 +4,38 @@ export function closeModals(): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
 }
 
+function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string[] } {
+  let node: Node | null = a.parentElement;
+  let desc = '';
+  const keys: string[] = [];
+  while (node) {
+    node = node.previousSibling;
+    if (!node) break;
+    if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim() === '') continue;
+    if (node.nodeType !== Node.COMMENT_NODE) break;
+    const text = (node as Comment).data.trim();
+    const reasonMatch = text.match(/^data_reason\s*:\s*([\s\S]*)/i);
+    const dataMatch = text.match(/^data\s*:\s*([\s\S]*)/i);
+    if (reasonMatch) desc = reasonMatch[1].trim();
+    if (dataMatch) keys.push(...dataMatch[1].split(',').map(s => s.trim()).filter(Boolean));
+  }
+  return { desc, keys };
+}
+
 function annotateLinks(container: Element): void {
   container.querySelectorAll('a[href]').forEach(el => {
     const a = el as HTMLAnchorElement;
     const href = a.getAttribute('href')!;
-    let icon = '';
-    if (href.startsWith('wasm:'))                              icon = '⚙';
-    else if (href.startsWith('http://') || href.startsWith('https://')) icon = '🌐';
-    if (icon) a.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">${icon}</span>`);
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      a.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">🌐</span>`);
+    } else if (href.startsWith('wasm:')) {
+      const { desc, keys } = parseWasmDirectives(a);
+      a.dataset.desc = desc;
+      a.dataset.keys = keys.join(',');
+      a.insertAdjacentHTML('afterend',
+        `<button class="nw-wasm-info" data-href="${href}" data-desc="${desc}" data-keys="${keys.join(',')}" aria-label="Script info">⚙</button>`
+      );
+    }
   });
 }
 
