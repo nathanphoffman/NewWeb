@@ -1,0 +1,7 @@
+## ${name}
+
+**Price:** ${price}
+
+${description}
+
+---

@@ -18,3 +18,5 @@ Navigate to another page to see link interception in action:
 [Place Order](wasm:src/order.wasm)
 
 [Visit example.com](wasm:src/visit.wasm)
+
+[View Menu](wasm:src/menu.wasm)

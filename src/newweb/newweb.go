@@ -21,3 +21,7 @@ func Error(md string) {
 func More(md string) {
 	api.Call("more", md)
 }
+
+func Load(url string, data map[string]interface{}) {
+	api.Call("load", url, js.ValueOf(data))
+}

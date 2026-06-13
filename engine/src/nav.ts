@@ -1,5 +1,6 @@
 import { renderPage, showModal, showSuspendedBar, showToast } from './ui.js';
 import { suggestTheme } from './theme.js';
+import { processTemplate } from './template.js';
 
 const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
 
@@ -16,6 +17,11 @@ function applyThemeSuggestion(md: string): void {
   if (match) suggestTheme(match[1].split(','));
 }
 
+function extractRefreshWasm(md: string): string | null {
+  const match = md.match(/<!--\s*refresh\s*:\s*(\S+)\s*-->/i);
+  return match ? match[1] : null;
+}
+
 export async function navigateTo(path: string): Promise<void> {
   const mdPath = path.endsWith('.md') ? path : `${path}.md`;
   const md = await fetchMd(mdPath);
@@ -24,12 +30,31 @@ export async function navigateTo(path: string): Promise<void> {
   renderPage(md);
 }
 
+export async function navigateWithData(path: string, data: Record<string, unknown>): Promise<void> {
+  const mdPath = path.endsWith('.md') ? path : `${path}.md`;
+  const raw = await fetchMd(mdPath);
+  applyThemeSuggestion(raw);
+  const md = await processTemplate(raw, data);
+  history.pushState({ mdUrl: mdPath }, '', '#' + mdPath);
+  renderPage(md);
+}
+
+export async function renderNoData(mdPath: string): Promise<void> {
+  const raw = await fetchMd(mdPath);
+  applyThemeSuggestion(raw);
+  const refreshWasm = extractRefreshWasm(raw);
+  if (refreshWasm) {
+    const notice = `> _This page requires data to display._ [Load now](wasm:${refreshWasm})\n\n`;
+    renderPage(await processTemplate(notice + raw, {}));
+  } else {
+    renderPage(raw);
+  }
+}
+
 export async function replacePage(path: string): Promise<void> {
   const mdPath = path.endsWith('.md') ? path : `${path}.md`;
-  const md = await fetchMd(mdPath);
-  applyThemeSuggestion(md);
   history.replaceState({ mdUrl: mdPath }, '', '#' + mdPath);
-  renderPage(md);
+  await renderNoData(mdPath);
 }
 
 export async function handleMore(a: HTMLAnchorElement): Promise<void> {

@@ -1,6 +1,6 @@
 import init, { render as wasmRender } from '../build/pkg/engine.js';
 import { handleWasm } from './wasm.js';
-import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, looksLikeBareUrl, warnBareUrl } from './nav.js';
+import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, navigateWithData, renderNoData, looksLikeBareUrl, warnBareUrl } from './nav.js';
 import { showToast, showModal, renderPage } from './ui.js';
 import './theme.js';
 
@@ -30,7 +30,7 @@ document.addEventListener('click', (e: MouseEvent) => {
 // back/forward navigation
 window.addEventListener('popstate', async (e: PopStateEvent) => {
   const url = (e.state as { mdUrl?: string } | null)?.mdUrl ?? 'main.md';
-  renderPage(await fetchMd(url));
+  await renderNoData(url);
 });
 
 // bootstrap: init WASM renderer, expose host API, load initial page
@@ -50,6 +50,7 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
     info:    (md) => showToast(md, 'info'),
     error:   (md) => showToast(md, 'error'),
     more:    (md) => showModal(md),
+    load:    (url, data) => navigateWithData(url, data),
   };
 
   const initial = location.hash ? location.hash.slice(1) : 'main';

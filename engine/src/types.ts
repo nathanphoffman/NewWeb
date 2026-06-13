@@ -11,6 +11,7 @@ declare global {
       info: (md: string) => void;
       error: (md: string) => void;
       more: (md: string) => void;
+      load: (url: string, data: Record<string, unknown>) => void;
     };
   }
 }
