@@ -6,7 +6,7 @@ function interpolate(text: string, ctx: Record<string, unknown>): string {
 }
 
 async function processForeach(md: string, data: Record<string, unknown>): Promise<string> {
-  const pattern = /<<\s*foreach\s+(\S+)\s+use\s+(\S+)\s*>>/g;
+  const pattern = /<!--\s*foreach:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
   const matches = [...md.matchAll(pattern)];
   if (matches.length === 0) return md;
 
@@ -32,7 +32,7 @@ async function processForeach(md: string, data: Record<string, unknown>): Promis
 }
 
 async function processIf(md: string, data: Record<string, unknown>): Promise<string> {
-  const pattern = /<<\s*if\s+(\S+)\s+use\s+(\S+)\s*>>/g;
+  const pattern = /<!--\s*if:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
   const matches = [...md.matchAll(pattern)];
   if (matches.length === 0) return md;
 

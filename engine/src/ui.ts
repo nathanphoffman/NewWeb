@@ -14,7 +14,7 @@ function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string
     if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim() === '') continue;
     if (node.nodeType !== Node.COMMENT_NODE) break;
     const text = (node as Comment).data.trim();
-    const reasonMatch = text.match(/^data_reason\s*:\s*([\s\S]*)/i);
+    const reasonMatch = text.match(/^script_reasoning\s*:\s*([\s\S]*)/i);
     const dataMatch = text.match(/^data\s*:\s*([\s\S]*)/i);
     if (reasonMatch) desc = reasonMatch[1].trim();
     if (dataMatch) keys.push(...dataMatch[1].split(',').map(s => s.trim()).filter(Boolean));

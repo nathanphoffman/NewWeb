@@ -180,6 +180,11 @@ body {
 
 /* ── modal ────────────────────────────────────────────── */
 dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
   background: var(--bg); color: var(--fg);
   border: 1px solid var(--border); border-radius: 6px;
   padding: 1.5rem; max-width: 540px; width: 90%;
