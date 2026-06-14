@@ -34,5 +34,16 @@ update-setup: build-engine
 serve-setup:
     node setup/server.js
 
+# build electron engine bundle and ensure shared/ symlinks exist
+build-electron:
+    cd engine && npm run build:electron
+    mkdir -p shared
+    ln -sfn ../engine/build/pkg shared/pkg
+    ln -sfn ../engine/src/styles shared/styles
+
+# build electron engine then start the app
+electron: build-electron
+    cd electron && npm start
+
 # build everything then serve
 dev: build-rs build-go build-engine serve

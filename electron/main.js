@@ -1,72 +1,76 @@
-const { app, BrowserWindow, shell } = require('electron');
-const http = require('http');
-const fs = require('fs');
+const { app, BrowserWindow, shell, protocol, net, ipcMain, Menu } = require('electron');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const PORT = 8080;
 
-const MIME = {
-  '.html': 'text/html',
-  '.js':   'application/javascript',
-  '.wasm': 'application/wasm',
-  '.md':   'text/plain',
-  '.css':  'text/css',
-  '.svg':  'image/svg+xml',
-  '.png':  'image/png',
-  '.jpg':  'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.gif':  'image/gif',
-  '.webp': 'image/webp',
-};
+// Must be called before app.whenReady()
+protocol.registerSchemesAsPrivileged([{
+  scheme: 'newweb',
+  privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true },
+}]);
 
-const server = http.createServer((req, res) => {
-  const filePath = path.join(ROOT, req.url === '/' ? 'index.html' : req.url);
-  fs.readFile(filePath, (err, data) => {
-    if (err) { res.writeHead(404); res.end('not found'); return; }
-    res.writeHead(200, {
-      'Content-Type': MIME[path.extname(filePath)] || 'application/octet-stream',
-      'Cache-Control': 'no-store',
-      'Content-Length': data.length,
-    });
-    res.end(data);
+app.whenReady().then(() => {
+  protocol.handle('newweb', (request) => {
+    const url = new URL(request.url);
+    if (url.hostname === 'localhost') {
+      const p = url.pathname || '/';
+      const filePath = path.join(ROOT, p === '/' ? 'shell.html' : p);
+      return net.fetch('file://' + filePath);
+    }
+    return new Response(`Remote NewWeb sites not yet supported: ${url.hostname}`, { status: 501 });
   });
-});
 
-function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
     height: 800,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  win.loadURL(`http://localhost:${PORT}`);
+  win.loadFile(path.join(ROOT, 'shell.html'));
 
-  // Open external http/https links in the system browser
+  win.webContents.on('did-navigate', (_, url) => {
+    // don't reflect the shell's own file:// load in the address bar
+    if (!url.startsWith('file://')) win.webContents.send('url-changed', url);
+  });
+
+  ipcMain.on('navigate-to', (_, url) => {
+    const parsed = new URL(url);
+    // ports are meaningless in newweb:// — strip them
+    // pathname is '' for bare hostnames in non-special protocols in Node.js, treat as '/'
+    const pathname = parsed.pathname || '/';
+    const base = `newweb://${parsed.hostname}${pathname}${parsed.search}`;
+    // bare root with no hash → load main.md via hash
+    const target = (pathname === '/' && !parsed.hash)
+      ? base + '#main'
+      : base + parsed.hash;
+    win.loadURL(target);
+  });
+
   win.webContents.on('will-navigate', (event, url) => {
-    if (/^https?:\/\//.test(url) && !url.startsWith(`http://localhost:${PORT}`)) {
+    if (/^https?:\/\//.test(url)) {
       event.preventDefault();
       shell.openExternal(url);
     }
   });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (/^https?:\/\//.test(url) && !url.startsWith(`http://localhost:${PORT}`)) {
-      shell.openExternal(url);
-    }
+    if (/^https?:\/\//.test(url)) shell.openExternal(url);
     return { action: 'deny' };
   });
-}
 
-server.listen(PORT, () => {
-  console.log(`newweb → http://localhost:${PORT}`);
-  app.whenReady().then(createWindow);
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+    {
+      label: 'Navigation',
+      submenu: [
+        { label: 'Back',   accelerator: 'Alt+Left',  click: () => win.webContents.goBack() },
+        { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: () => win.webContents.reload() },
+      ],
+    },
+  ]));
 });
 
-app.on('window-all-closed', () => {
-  server.close();
-  app.quit();
-});
+app.on('window-all-closed', () => app.quit());

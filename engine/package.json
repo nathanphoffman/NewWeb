@@ -6,8 +6,10 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build:js": "esbuild src/engine.ts --bundle --format=esm --outfile=build/engine.bundle.js",
+    "build:electron-js": "esbuild src/engine-electron.ts --bundle --format=esm --outfile=build/engine-electron.bundle.js",
     "build:html": "node scripts/build-html.js",
     "build": "npm run typecheck && npm run build:js && npm run build:html",
+    "build:electron": "npm run typecheck && npm run build:electron-js",
     "watch": "esbuild src/engine.ts --bundle --format=esm --outfile=build/engine.bundle.js --watch"
   },
   "devDependencies": {
