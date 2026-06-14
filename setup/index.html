@@ -5,6 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NewWeb</title>
   <style>
+/* ── image frames ─────────────────────────────────────── */
+.nw-image-frame {
+  display: inline-block;
+  margin: 1em 0;
+  padding: 0.5em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: var(--code-bg);
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.nw-image-frame__img {
+  display: block;
+  max-width: 320px;
+  max-height: 320px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.nw-image-frame__caption {
+  display: block;
+  margin-top: 0.4em;
+  font-size: 0.82em;
+  color: var(--muted);
+  font-family: inherit;
+  text-align: center;
+}
+
+/* ── image load button (oversized fallback) ───────────── */
+.nw-img-load-btn {
+  display: inline-block;
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  background: var(--code-bg);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.nw-img-load-btn:hover {
+  color: var(--fg);
+  border-color: var(--link);
+}
+
+/* ── lightbox ─────────────────────────────────────────── */
+.nw-lightbox {
+  position: relative;
+  max-width: 85vw;
+  max-height: 94vh;
+  width: fit-content;
+  padding: 0.75rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.nw-lightbox img {
+  display: block;
+  max-width: calc(85vw - 1.5rem);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.nw-lightbox__close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+.nw-lightbox__close:hover {
+  color: var(--fg);
+  background: var(--code-bg);
+}
+
+.nw-lightbox__caption {
+  display: block;
+  margin-top: 0.5em;
+  font-size: 1.1em;
+  color: var(--muted);
+  text-align: center;
+}
+
 /* ── animation pause ──────────────────────────────────── */
 .nw-paused *, .nw-paused *::before, .nw-paused *::after {
   animation-play-state: paused !important;
@@ -17,64 +115,25 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font);
+  font-size: var(--font-size);
   line-height: 1.6;
-}
-
-/* ── top bar ──────────────────────────────────────────── */
-#nw-bar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 1rem;
-  background: var(--bar-bg);
-  border-bottom: 1px solid var(--bar-border);
-  color: var(--bar-fg);
-  font-family: system-ui, sans-serif;
-  font-size: 0.85rem;
-}
-
-#nw-bar .nw-logo {
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-right: auto;
-  opacity: 0.7;
-}
-
-#nw-anim-toggle {
-  padding: 0.2em 0.7em;
-  border: 1px solid var(--bar-border);
-  border-radius: 4px;
-  background: var(--bg);
-  color: var(--bar-fg);
-  font-size: 0.82rem;
-  cursor: pointer;
-}
-
-#nw-bar select {
-  padding: 0.2em 0.5em;
-  border: 1px solid var(--bar-border);
-  border-radius: 4px;
-  background: var(--bg);
-  color: var(--fg);
-  font-size: 0.82rem;
-  cursor: pointer;
 }
 
 /* ── page content ─────────────────────────────────────── */
 #content {
   max-width: var(--width);
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem;
 }
 
 #content h1, #content h2, #content h3 { margin: 1.2em 0 0.4em; }
 #content p   { margin: 0.6em 0; }
-#content ul, #content ol { margin: 0.6em 0 0.6em 1.5em; }
-#content a   { color: var(--link); }
+#content hr  { margin: 1.8em 0; border: none; border-top: 1px solid var(--border); }
+#content ul, #content ol { margin: 1em 0 1em 1.5em; }
+#content li  { margin: 0.3em 0; }
+#content a, dialog a { color: var(--link); }
 #content blockquote {
+  margin: 1.2em 0;
   border-left: 3px solid var(--border);
   padding-left: 1em;
   color: var(--muted);
@@ -93,6 +152,28 @@ body {
   overflow-x: auto;
 }
 #content pre code { background: none; padding: 0; }
+
+/* ── link icons ───────────────────────────────────────── */
+.nw-link-icon {
+  font-size: 1em;
+  opacity: 0.5;
+  margin-left: 0.2em;
+  user-select: none;
+}
+
+.nw-wasm-info {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 0.2em;
+  font-size: 1em;
+  opacity: 0.5;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  user-select: none;
+  vertical-align: baseline;
+}
 
 /* ── spinner ──────────────────────────────────────────── */
 #nw-spinner {
@@ -116,15 +197,6 @@ body {
 .nw-toast-info  { background: var(--code-bg); color: var(--fg); }
 .nw-toast-error { background: #fdd; color: #600; }
 
-/* ── modal ────────────────────────────────────────────── */
-dialog {
-  background: var(--bg); color: var(--fg);
-  border: 1px solid var(--border); border-radius: 6px;
-  padding: 1.5rem; max-width: 540px; width: 90%;
-}
-dialog::backdrop { background: rgba(0,0,0,0.45); }
-.nw-modal-close { margin-top: 1rem; padding: 0.3em 1em; cursor: pointer; }
-
 /* ── suspended bar ────────────────────────────────────── */
 #nw-suspended {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -134,6 +206,358 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   font-family: system-ui, sans-serif; font-size: 0.88em;
 }
 #nw-suspended button { padding: 0.2em 0.8em; cursor: pointer; }
+
+/* ── modal ────────────────────────────────────────────── */
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 1.5rem; max-width: 540px; width: 90%;
+}
+dialog::backdrop { background: rgba(0,0,0,0.45); }
+.nw-modal-close { margin-top: 1rem; padding: 0.3em 1em; cursor: pointer; }
+
+/* ── top bar ──────────────────────────────────────────── */
+#nw-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--bar-border);
+  color: var(--bar-fg);
+  font-family: system-ui, sans-serif;
+  font-size: 1.1rem;
+}
+
+#nw-bar .nw-logo {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-right: auto;
+  opacity: 0.7;
+  font-size: 1.2rem;
+}
+
+#nw-hamburger {
+  display: none;
+  background: none;
+  border: 1px solid var(--bar-border);
+  border-radius: 6px;
+  color: var(--bar-fg);
+  font-size: 1.4rem;
+  padding: 0.2em 0.6em;
+  cursor: pointer;
+}
+
+#nw-bar-menu {
+  display: contents;
+}
+
+@media (max-width: 768px) {
+  #nw-bar {
+    flex-wrap: wrap;
+    padding: 1rem 1.2rem;
+  }
+
+  #nw-hamburger {
+    display: block;
+  }
+
+  #nw-bar-menu {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0 0.5rem;
+    border-top: 1px solid var(--bar-border);
+  }
+
+  #nw-bar-menu.open {
+    display: flex;
+  }
+}
+
+#nw-bar button {
+  padding: 0.4em 1em;
+  border: 1px solid var(--bar-border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--bar-fg);
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+#nw-bar select {
+  padding: 0.4em 0.7em;
+  border: 1px solid var(--bar-border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* ── settings modal ───────────────────────────────────── */
+.nw-settings-modal {
+  max-width: 480px;
+  width: 90%;
+}
+
+.nw-settings-modal h2 {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.nw-settings-section {
+  margin-bottom: 1.2rem;
+}
+
+.nw-settings-section h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.nw-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.nw-settings-row input[type="number"] {
+  width: 80px;
+  padding: 0.3em 0.5em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.nw-settings-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+.nw-settings-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.nw-settings-save {
+  padding: 0.4em 1.2em;
+  background: var(--link);
+  color: var(--bg);
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.nw-settings-cancel {
+  padding: 0.4em 1.2em;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+[data-theme="aurora"] {
+  --bg:        #070d1a;
+  --fg:        #dff6e8;
+  --muted:     #4a8a68;
+  --link:      #34d399;
+  --border:    rgba(52,211,153,0.15);
+  --code-bg:   rgba(0,25,15,0.85);
+  --bar-bg:    rgba(4,8,20,0.97);
+  --bar-fg:    #34d399;
+  --bar-border:rgba(52,211,153,0.2);
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+/* shifting aurora curtains */
+@keyframes nw-aurora-drift {
+  0%   { background-position: 0% 50%;   opacity: 0.55; }
+  50%  { background-position: 100% 50%; opacity: 0.75; }
+  100% { background-position: 0% 50%;   opacity: 0.55; }
+}
+
+[data-theme="aurora"] body {
+  background-color: #070d1a;
+}
+
+[data-theme="aurora"] body::before {
+  content: '';
+  position: fixed;
+  top: -60%;
+  left: -25%;
+  width: 150%;
+  height: 110%;
+  background: linear-gradient(
+    135deg,
+    rgba(16,185,129,0.22) 0%,
+    rgba(6,182,212,0.18) 20%,
+    rgba(139,92,246,0.22) 45%,
+    rgba(16,185,129,0.16) 70%,
+    rgba(59,130,246,0.12) 100%
+  );
+  background-size: 200% 200%;
+  animation: nw-aurora-drift 14s ease-in-out infinite;
+  filter: blur(70px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+[data-theme="aurora"] body::after {
+  content: '';
+  position: fixed;
+  top: -40%;
+  left: 5%;
+  width: 140%;
+  height: 90%;
+  background: linear-gradient(
+    160deg,
+    rgba(139,92,246,0.14) 0%,
+    rgba(52,211,153,0.18) 35%,
+    rgba(6,182,212,0.12) 65%,
+    rgba(139,92,246,0.1) 100%
+  );
+  background-size: 200% 200%;
+  animation: nw-aurora-drift 19s ease-in-out infinite reverse;
+  filter: blur(55px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+[data-theme="aurora"] #content {
+  position: relative;
+  z-index: 1;
+  background: rgba(7,13,26,0.72);
+  border: 1px solid rgba(52,211,153,0.1);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme="aurora"] #content h1,
+[data-theme="aurora"] #content h2,
+[data-theme="aurora"] #content h3 {
+  color: #6ee7b7;
+  text-shadow: 0 0 24px rgba(52,211,153,0.45), 0 0 60px rgba(139,92,246,0.2);
+  letter-spacing: 0.01em;
+}
+
+[data-theme="aurora"] #content a {
+  color: #34d399;
+  text-decoration: none;
+  text-shadow: 0 0 10px rgba(52,211,153,0.45);
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+[data-theme="aurora"] #content a:hover {
+  color: #a7f3d0;
+  text-shadow: 0 0 18px rgba(52,211,153,0.75), 0 0 40px rgba(139,92,246,0.3);
+}
+
+[data-theme="aurora"] #content blockquote {
+  border-left-color: rgba(139,92,246,0.6);
+  color: #4a8a68;
+}
+
+[data-theme="aurora"] #nw-bar {
+  box-shadow: 0 1px 30px rgba(52,211,153,0.12);
+}
+
+[data-theme="aurora"] .nw-logo {
+  color: #34d399;
+  text-shadow: 0 0 14px rgba(52,211,153,0.6);
+}
+
+[data-theme="aurora"] #nw-bar select {
+  background: rgba(4,8,20,0.95);
+  border-color: rgba(52,211,153,0.3);
+}
+
+[data-theme="aurora"] dialog {
+  background: rgba(4,8,20,0.96);
+  border-color: rgba(52,211,153,0.3);
+  box-shadow: 0 0 40px rgba(52,211,153,0.12), 0 0 80px rgba(139,92,246,0.08);
+}
+
+[data-theme="aurora"] .nw-image-frame {
+  border-color: rgba(52,211,153,0.25);
+  box-shadow: 0 0 20px rgba(52,211,153,0.1), 0 0 50px rgba(139,92,246,0.06);
+}
+
+[data-theme="carbon"] {
+  --bg:        #0f1117;
+  --fg:        #e2e8f0;
+  --muted:     #64748b;
+  --link:      #60a5fa;
+  --border:    #1e2532;
+  --code-bg:   #080b10;
+  --bar-bg:    #0a0d13;
+  --bar-fg:    #94a3b8;
+  --bar-border:#1e2532;
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="carbon"] #nw-bar {
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+}
+
+[data-theme="carbon"] #content h1,
+[data-theme="carbon"] #content h2,
+[data-theme="carbon"] #content h3 {
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="carbon"] #content a {
+  text-decoration: none;
+  border-bottom: 1px solid rgba(96,165,250,0.25);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+[data-theme="carbon"] #content a:hover {
+  color: #93c5fd;
+  border-bottom-color: #60a5fa;
+}
+
+[data-theme="carbon"] #content blockquote {
+  border-left-color: #2563eb;
+  color: #94a3b8;
+}
+
+[data-theme="carbon"] .nw-image-frame {
+  box-shadow: 0 0 0 1px rgba(96,165,250,0.08), 0 4px 16px rgba(0,0,0,0.5);
+}
 
 [data-theme="cats"] {
   --bg:        #0d0a1a;
@@ -236,6 +660,140 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   box-shadow: 0 0 40px rgba(255,179,71,0.18);
 }
 
+[data-theme="cats"] .nw-image-frame {
+  border: 1.5px solid rgba(255,179,71,0.55);
+  border-radius: 16px;
+  background: rgba(20,10,35,0.85);
+  box-shadow: 0 0 14px rgba(255,179,71,0.16);
+}
+
+[data-theme="cats"] .nw-image-frame__caption {
+  color: #8a7a60;
+}
+
+[data-theme="cyber"] {
+  --bg:        #08000f;
+  --fg:        #f0e6ff;
+  --muted:     #7c3aed;
+  --link:      #00f5d4;
+  --border:    rgba(247,37,133,0.2);
+  --code-bg:   rgba(18,0,36,0.9);
+  --bar-bg:    rgba(4,0,12,0.97);
+  --bar-fg:    #f72585;
+  --bar-border:rgba(114,9,183,0.55);
+  --font:      'Courier New', monospace;
+}
+
+/* purple grid */
+[data-theme="cyber"] body {
+  background-color: #08000f;
+  background-image:
+    linear-gradient(rgba(114,9,183,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(114,9,183,0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* pulsing neon glow at top */
+@keyframes nw-cyber-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1;   }
+}
+
+[data-theme="cyber"] body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 220px;
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(247,37,133,0.18) 0%, transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+  animation: nw-cyber-pulse 3.5s ease-in-out infinite;
+}
+
+[data-theme="cyber"] body::after {
+  content: '';
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 180px;
+  background: radial-gradient(ellipse 50% 100% at 50% 100%, rgba(0,245,212,0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-theme="cyber"] #content {
+  position: relative;
+  z-index: 1;
+  background: rgba(8,0,15,0.82);
+  border: 1px solid rgba(247,37,133,0.18);
+  border-radius: 2px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+[data-theme="cyber"] #content h1,
+[data-theme="cyber"] #content h2,
+[data-theme="cyber"] #content h3 {
+  color: #f72585;
+  text-shadow: 0 0 12px rgba(247,37,133,0.85), 0 0 40px rgba(247,37,133,0.3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+[data-theme="cyber"] #content a {
+  color: #00f5d4;
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(0,245,212,0.55);
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+[data-theme="cyber"] #content a:hover {
+  color: #80ffed;
+  text-shadow: 0 0 18px rgba(0,245,212,0.9), 0 0 40px rgba(0,245,212,0.3);
+}
+
+[data-theme="cyber"] #content blockquote {
+  border-left-color: rgba(247,37,133,0.5);
+  color: #7c3aed;
+}
+
+[data-theme="cyber"] #nw-bar {
+  box-shadow: 0 0 24px rgba(247,37,133,0.25);
+  letter-spacing: 0.03em;
+}
+
+[data-theme="cyber"] .nw-logo {
+  color: #f72585;
+  text-shadow: 0 0 12px rgba(247,37,133,0.9), 0 0 30px rgba(247,37,133,0.4);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+[data-theme="cyber"] #nw-bar select {
+  background: rgba(4,0,12,0.95);
+  border-color: rgba(247,37,133,0.3);
+  color: #f72585;
+}
+
+[data-theme="cyber"] dialog {
+  background: rgba(4,0,12,0.96);
+  border-color: rgba(247,37,133,0.3);
+  border-radius: 2px;
+  box-shadow: 0 0 40px rgba(247,37,133,0.18), 0 0 80px rgba(114,9,183,0.12);
+}
+
+[data-theme="cyber"] .nw-image-frame {
+  border-color: rgba(247,37,133,0.35);
+  border-radius: 2px;
+  box-shadow: 0 0 16px rgba(247,37,133,0.18), 0 0 40px rgba(114,9,183,0.1);
+}
+
+[data-theme="cyber"] .nw-image-frame__caption {
+  color: #7c3aed;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.75em;
+}
+
 [data-theme="dark"] {
   --bg:        #1a1a1a;
   --fg:        #e0e0e0;
@@ -248,7 +806,17 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   --bar-border:#333333;
 }
 
+[data-theme="dark"] .nw-image-frame {
+  box-shadow: 0 0 10px rgba(102,170,255,0.12);
+}
+
 :root {
+  --font-mono: 'Courier New', monospace;
+  --width:     1024px;
+  --font-size: 18px;
+}
+
+[data-theme="default"] {
   --bg:        #ffffff;
   --fg:        #111111;
   --muted:     #555555;
@@ -259,8 +827,6 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   --bar-fg:    #333333;
   --bar-border:#cccccc;
   --font:      system-ui, sans-serif;
-  --font-mono: 'Courier New', monospace;
-  --width:     720px;
 }
 
 [data-theme="nasa"] {
@@ -447,8 +1013,8 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
 }
 
 [data-theme="nasa"] .nw-logo {
-  color: #fc3d21;
-  text-shadow: 0 0 12px rgba(252,61,33,0.55);
+  color: #4fc3f7;
+  text-shadow: 0 0 12px rgba(79,195,247,0.55);
   font-family: 'Courier New', monospace;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -466,6 +1032,21 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   box-shadow: 0 0 40px rgba(79,195,247,0.18);
 }
 
+[data-theme="nasa"] .nw-image-frame {
+  background: rgba(0,20,60,0.85);
+  border-color: rgba(79,195,247,0.45);
+  box-shadow: 0 0 16px rgba(79,195,247,0.22), inset 0 0 8px rgba(79,195,247,0.06);
+  border-radius: 2px;
+}
+
+[data-theme="nasa"] .nw-image-frame__caption {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  color: #5a8ab0;
+  text-transform: uppercase;
+}
+
 [data-theme="newspaper"] {
   --bg:        #f5f0e8;
   --fg:        #1a1209;
@@ -477,6 +1058,61 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   --bar-fg:    #1a1209;
   --bar-border:#b8a890;
   --font:      Georgia, 'Times New Roman', serif;
+}
+
+[data-theme="newspaper"] .nw-image-frame {
+  border: 3px double var(--border);
+  box-shadow: none;
+}
+
+[data-theme="newspaper"] .nw-image-frame__caption {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 0.78em;
+}
+
+[data-theme="stone"] {
+  --bg:        #fafaf9;
+  --fg:        #1c1917;
+  --muted:     #78716c;
+  --link:      #0f766e;
+  --border:    #e7e5e4;
+  --code-bg:   #f5f5f4;
+  --bar-bg:    #ffffff;
+  --bar-fg:    #1c1917;
+  --bar-border:#e7e5e4;
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="stone"] #nw-bar {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+[data-theme="stone"] #content h1,
+[data-theme="stone"] #content h2,
+[data-theme="stone"] #content h3 {
+  color: #0c0a09;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="stone"] #content a {
+  text-decoration: none;
+  border-bottom: 1px solid rgba(15,118,110,0.3);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+[data-theme="stone"] #content a:hover {
+  color: #0d9488;
+  border-bottom-color: #0f766e;
+}
+
+[data-theme="stone"] #content blockquote {
+  border-left-color: #0f766e;
+  color: #78716c;
+}
+
+[data-theme="stone"] .nw-image-frame {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
 
 [data-theme="terminal"] {
@@ -492,6 +1128,10 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   --font:      'Courier New', monospace;
 }
 
+[data-theme="terminal"] .nw-image-frame {
+  box-shadow: 0 0 8px rgba(0,255,65,0.15);
+}
+
 [data-theme="warm"] {
   --bg:        #fdf6ec;
   --fg:        #3d2b1f;
@@ -504,22 +1144,41 @@ dialog::backdrop { background: rgba(0,0,0,0.45); }
   --bar-border:#d4b898;
   --font:      Georgia, serif;
 }
+
+[data-theme="warm"] .nw-image-frame {
+  border: 2px solid #c8a87a;
+  box-shadow: 0 2px 6px rgba(100,60,20,0.12);
+}
+
+[data-theme="warm"] .nw-image-frame__caption {
+  font-family: Georgia, serif;
+  font-style: italic;
+}
 </style>
 </head>
 <body>
   <div id="nw-bar">
-    <span class="nw-logo">newweb</span>
-    <button id="nw-anim-toggle">Stop Animations</button>
-    <label for="nw-theme-select" style="opacity:0.6">Theme</label>
-    <select id="nw-theme-select">
-      <option value="default">Default</option>
-      <option value="newspaper">Newspaper</option>
-      <option value="dark">Dark</option>
-      <option value="terminal">Terminal</option>
-      <option value="warm">Warm</option>
-      <option value="nasa">NASA</option>
-      <option value="cats">Cats</option>
-    </select>
+    <span class="nw-logo">Powered by NewWeb</span>
+    <button id="nw-hamburger" aria-label="Menu" aria-expanded="false">&#9776;</button>
+    <div id="nw-bar-menu">
+      <button id="nw-view-data">View Data</button>
+      <button id="nw-anim-toggle">Stop Animations</button>
+      <button id="nw-settings">Settings</button>
+      <label for="nw-theme-select" style="opacity:0.6">Theme</label>
+      <select id="nw-theme-select">
+        <option value="default">Default</option>
+        <option value="carbon">Carbon</option>
+        <option value="stone">Stone</option>
+        <option value="newspaper">Newspaper</option>
+        <option value="dark">Dark</option>
+        <option value="terminal">Terminal</option>
+        <option value="warm">Warm</option>
+        <option value="nasa">NASA</option>
+        <option value="aurora">Aurora</option>
+        <option value="cyber">Cyber</option>
+        <option value="cats">Cats</option>
+      </select>
+    </div>
   </div>
 
   <div id="content"><p>Loading…</p></div>
@@ -689,9 +1348,189 @@ async function __wbg_init(module_or_path) {
   return __wbg_finalize_init(instance, module);
 }
 
+// src/settings.ts
+var MAX_IMAGE_KB_KEY = "nw-settings-max-image-kb";
+var DEFAULT_MAX_IMAGE_KB = 200;
+function getMaxImageKb() {
+  const val = parseInt(localStorage.getItem(MAX_IMAGE_KB_KEY) ?? "", 10);
+  return isNaN(val) || val <= 0 ? DEFAULT_MAX_IMAGE_KB : val;
+}
+function setMaxImageKb(kb) {
+  localStorage.setItem(MAX_IMAGE_KB_KEY, String(kb));
+}
+function showSettingsModal() {
+  document.querySelectorAll("dialog").forEach((d) => d.remove());
+  const dlg = document.createElement("dialog");
+  dlg.className = "nw-settings-modal";
+  const h2 = document.createElement("h2");
+  h2.textContent = "Settings";
+  dlg.appendChild(h2);
+  const section = document.createElement("section");
+  section.className = "nw-settings-section";
+  const h3 = document.createElement("h3");
+  h3.textContent = "Images";
+  section.appendChild(h3);
+  const row = document.createElement("label");
+  row.className = "nw-settings-row";
+  const rowLabel = document.createElement("span");
+  rowLabel.textContent = "Max auto-load size (KB)";
+  const input = document.createElement("input");
+  input.type = "number";
+  input.id = "nw-setting-max-img-kb";
+  input.min = "1";
+  input.max = "10240";
+  input.value = String(getMaxImageKb());
+  row.appendChild(rowLabel);
+  row.appendChild(input);
+  section.appendChild(row);
+  const hint = document.createElement("p");
+  hint.className = "nw-settings-hint";
+  hint.textContent = "Images larger than this require a manual click to load.";
+  section.appendChild(hint);
+  dlg.appendChild(section);
+  const actions = document.createElement("div");
+  actions.className = "nw-settings-actions";
+  const save = document.createElement("button");
+  save.className = "nw-settings-save";
+  save.textContent = "Save";
+  save.addEventListener("click", () => {
+    const val = parseInt(input.value, 10);
+    if (!isNaN(val) && val > 0) setMaxImageKb(val);
+    dlg.remove();
+  });
+  const cancel = document.createElement("button");
+  cancel.className = "nw-settings-cancel";
+  cancel.textContent = "Cancel";
+  cancel.addEventListener("click", () => dlg.remove());
+  actions.appendChild(save);
+  actions.appendChild(cancel);
+  dlg.appendChild(actions);
+  document.body.appendChild(dlg);
+  dlg.showModal();
+}
+document.getElementById("nw-settings").addEventListener("click", showSettingsModal);
+
 // src/ui.ts
+function closeModals() {
+  document.querySelectorAll("dialog").forEach((d) => d.remove());
+}
+function parseWasmDirectives(a) {
+  let node = a.parentElement;
+  let desc = "";
+  const keys = [];
+  while (node) {
+    node = node.previousSibling;
+    if (!node) break;
+    if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim() === "") continue;
+    if (node.nodeType !== Node.COMMENT_NODE) break;
+    const text = node.data.trim();
+    const reasonMatch = text.match(/^script_reasoning\s*:\s*([\s\S]*)/i);
+    const dataMatch = text.match(/^data\s*:\s*([\s\S]*)/i);
+    if (reasonMatch) desc = reasonMatch[1].trim();
+    if (dataMatch) keys.push(...dataMatch[1].split(",").map((s) => s.trim()).filter(Boolean));
+  }
+  return { desc, keys };
+}
+async function checkSize(src) {
+  if (src.startsWith("data:")) return true;
+  try {
+    const res = await fetch(src, { method: "HEAD" });
+    const cl = res.headers.get("content-length");
+    if (cl === null) return true;
+    return parseInt(cl, 10) <= getMaxImageKb() * 1024;
+  } catch {
+    return true;
+  }
+}
+function showLightbox(src, alt) {
+  const dlg = document.createElement("dialog");
+  dlg.className = "nw-lightbox";
+  const close = document.createElement("button");
+  close.className = "nw-lightbox__close";
+  close.textContent = "\xD7";
+  close.setAttribute("aria-label", "Close");
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = alt;
+  dlg.appendChild(close);
+  dlg.appendChild(img);
+  if (alt) {
+    const cap = document.createElement("figcaption");
+    cap.className = "nw-lightbox__caption";
+    cap.textContent = alt;
+    dlg.appendChild(cap);
+  }
+  dlg.addEventListener("click", () => dlg.remove());
+  document.body.appendChild(dlg);
+  dlg.showModal();
+}
+function buildFrame(src, alt) {
+  const fig = document.createElement("figure");
+  fig.className = "nw-image-frame";
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = alt;
+  img.className = "nw-image-frame__img";
+  fig.appendChild(img);
+  if (alt) {
+    const cap = document.createElement("figcaption");
+    cap.className = "nw-image-frame__caption";
+    cap.textContent = alt;
+    fig.appendChild(cap);
+  }
+  fig.addEventListener("click", () => showLightbox(src, alt));
+  return fig;
+}
+function buildFallback(src, alt) {
+  const btn = document.createElement("button");
+  const text = "Image size is beyond set limit, click to load it anyway.";
+  btn.className = "nw-img-load-btn";
+  btn.textContent = alt ? `${alt} \u2014 ${text}` : text;
+  btn.addEventListener("click", () => btn.replaceWith(buildFrame(src, alt)));
+  return btn;
+}
+async function processImages(container) {
+  const placeholders = Array.from(
+    container.querySelectorAll("span.nw-img-placeholder")
+  );
+  await Promise.all(placeholders.map(async (span) => {
+    const src = span.dataset.src ?? "";
+    const alt = span.dataset.alt ?? "";
+    const allowed = await checkSize(src);
+    span.replaceWith(allowed ? buildFrame(src, alt) : buildFallback(src, alt));
+  }));
+}
+function annotateLinks(container) {
+  container.querySelectorAll("a[href]").forEach((el) => {
+    const a = el;
+    const href = a.getAttribute("href");
+    if (href.startsWith("http://") || href.startsWith("https://")) {
+      a.insertAdjacentHTML("beforeend", `<span class="nw-link-icon" aria-hidden="true">\u{1F310}</span>`);
+    } else if (href.startsWith("wasm:")) {
+      const { desc, keys } = parseWasmDirectives(a);
+      a.dataset.desc = desc;
+      a.dataset.keys = keys.join(",");
+      a.insertAdjacentHTML(
+        "afterend",
+        `<button class="nw-wasm-info" data-href="${href}" data-desc="${desc}" data-keys="${keys.join(",")}" aria-label="Script info">\u2699</button>`
+      );
+    }
+  });
+}
 function renderPage(md) {
-  document.getElementById("content").innerHTML = window.newwebRender(md);
+  closeModals();
+  const content = document.getElementById("content");
+  const html = window.newwebRender(md).replace(
+    /<img\b([^>]*)>/gi,
+    (_, attrs) => {
+      const src = (attrs.match(/src="([^"]*)"/) ?? [])[1] ?? "";
+      const alt = (attrs.match(/alt="([^"]*)"/) ?? [])[1] ?? "";
+      return `<span class="nw-img-placeholder" data-src="${src}" data-alt="${alt}"></span>`;
+    }
+  );
+  content.innerHTML = html;
+  annotateLinks(content);
+  void processImages(content);
 }
 function showToast(md, type) {
   const el = document.createElement("div");
@@ -701,6 +1540,7 @@ function showToast(md, type) {
   setTimeout(() => el.remove(), 3e3);
 }
 function showModal(md, closeLabel = "Close") {
+  closeModals();
   const dlg = document.createElement("dialog");
   dlg.innerHTML = `<div class="nw-modal-body">${window.newwebRender ? window.newwebRender(md) : md}</div>
     <button class="nw-modal-close" autofocus>${closeLabel}</button>`;
@@ -780,17 +1620,185 @@ function parseWasmUrl(href) {
   return { file, params };
 }
 
+// src/theme.ts
+var CAT_DEFS = [
+  { x: "6%", y: "22%", size: 64, dur: 4, delay: 0 },
+  { x: "83%", y: "14%", size: 48, dur: 6.2, delay: -2.1 },
+  { x: "13%", y: "70%", size: 56, dur: 5.1, delay: -1.3 },
+  { x: "77%", y: "66%", size: 52, dur: 7.8, delay: -3.5 },
+  { x: "46%", y: "80%", size: 44, dur: 3.4, delay: -0.7 },
+  { x: "90%", y: "44%", size: 60, dur: 8.3, delay: -4.1 },
+  { x: "2%", y: "48%", size: 46, dur: 4.7, delay: -1.8 },
+  { x: "60%", y: "30%", size: 50, dur: 5.9, delay: -2.9 }
+];
+function addCats() {
+  removeCats();
+  CAT_DEFS.forEach((d) => {
+    const img = document.createElement("img");
+    img.src = "engine/img/cat.svg";
+    img.className = "nw-spinning-cat";
+    img.style.cssText = `left:${d.x};top:${d.y};width:${d.size}px;height:${d.size}px;animation-duration:${d.dur}s;animation-delay:${d.delay}s`;
+    document.body.appendChild(img);
+  });
+}
+function removeCats() {
+  document.querySelectorAll(".nw-spinning-cat").forEach((el) => el.remove());
+}
+var VALID_THEMES = ["default", "carbon", "stone", "dark", "newspaper", "terminal", "warm", "nasa", "aurora", "cyber", "cats"];
+var pageSuggestions = [];
+function getSuggestedTheme() {
+  for (const name of pageSuggestions) {
+    const q = name.trim().toLowerCase();
+    const match = VALID_THEMES.find((t) => t.startsWith(q));
+    if (match) return match;
+  }
+  return null;
+}
+function annotateSuggestion(suggested) {
+  const sel = document.getElementById("nw-theme-select");
+  Array.from(sel.options).forEach((opt) => {
+    const base = opt.text.replace(" (site default)", "");
+    opt.text = opt.value === suggested ? `${base} (site default)` : base;
+  });
+}
+function suggestTheme(names) {
+  pageSuggestions = names;
+  const suggested = getSuggestedTheme();
+  annotateSuggestion(suggested);
+  if (suggested && !localStorage.getItem("nw-theme")) {
+    applyTheme(suggested);
+  }
+}
+function applyTheme(theme) {
+  const sel = document.getElementById("nw-theme-select");
+  document.documentElement.setAttribute("data-theme", theme);
+  sel.value = theme;
+  if (theme === "cats") addCats();
+  else removeCats();
+}
+function applyAnimPaused(paused) {
+  const btn = document.getElementById("nw-anim-toggle");
+  document.documentElement.classList.toggle("nw-paused", paused);
+  btn.textContent = paused ? "Resume Animations" : "Stop Animations";
+}
+var hamburger = document.getElementById("nw-hamburger");
+var barMenu = document.getElementById("nw-bar-menu");
+hamburger.addEventListener("click", () => {
+  const open = barMenu.classList.toggle("open");
+  hamburger.setAttribute("aria-expanded", String(open));
+});
+var savedPaused = localStorage.getItem("nw-paused") === "true";
+applyAnimPaused(savedPaused);
+document.getElementById("nw-anim-toggle").addEventListener("click", () => {
+  const paused = !document.documentElement.classList.contains("nw-paused");
+  applyAnimPaused(paused);
+  localStorage.setItem("nw-paused", String(paused));
+});
+var savedTheme = localStorage.getItem("nw-theme");
+if (savedTheme) applyTheme(savedTheme);
+document.getElementById("nw-theme-select").addEventListener("change", (e) => {
+  const value = e.target.value;
+  applyTheme(value);
+  localStorage.setItem("nw-theme", value);
+});
+
+// src/template.ts
+function interpolate(text, ctx) {
+  return text.replace(/\$\{([^}]+)\}/g, (_, key) => {
+    const val = ctx[key.trim()];
+    return val != null ? String(val) : "";
+  });
+}
+async function processForeach(md, data) {
+  const pattern = /<!--\s*foreach:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
+  const matches = [...md.matchAll(pattern)];
+  if (matches.length === 0) return md;
+  const urls = [...new Set(
+    matches.filter((m) => Array.isArray(data[m[1]]) && data[m[1]].length > 0).map((m) => m[2])
+  )];
+  const partialMap = /* @__PURE__ */ new Map();
+  await Promise.all(urls.map(async (url) => {
+    partialMap.set(url, await fetch(url).then((r) => r.text()));
+  }));
+  return md.replace(pattern, (_, arrayKey, url) => {
+    const arr = data[arrayKey];
+    if (!Array.isArray(arr)) return "";
+    const partial = partialMap.get(url);
+    return arr.map((item) => {
+      const ctx = typeof item === "object" && item !== null ? item : {};
+      return interpolate(partial, ctx);
+    }).join("\n");
+  });
+}
+async function processIf(md, data) {
+  const pattern = /<!--\s*if:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
+  const matches = [...md.matchAll(pattern)];
+  if (matches.length === 0) return md;
+  const urls = [...new Set(matches.filter((m) => data[m[1]]).map((m) => m[2]))];
+  const partialMap = /* @__PURE__ */ new Map();
+  await Promise.all(urls.map(async (url) => {
+    partialMap.set(url, await fetch(url).then((r) => r.text()));
+  }));
+  return md.replace(pattern, (_, boolKey, url) => {
+    if (!data[boolKey]) return "";
+    return interpolate(partialMap.get(url), data);
+  });
+}
+async function processTemplate(md, data) {
+  let result = interpolate(md, data);
+  result = await processForeach(result, data);
+  result = await processIf(result, data);
+  return result;
+}
+
 // src/nav.ts
+var COMMON_TLDS = [".com", ".org", ".net", ".io", ".dev", ".app", ".co", ".edu", ".gov", ".uk", ".ca", ".au"];
+function looksLikeBareUrl(href) {
+  return COMMON_TLDS.some((tld) => href.includes(tld));
+}
 function fetchMd(url) {
   return fetch(url).then((r) => r.text());
 }
-async function navigateTo(url) {
-  const md = await fetchMd(url);
-  history.pushState({ mdUrl: url }, "", "#" + url);
+function applyThemeSuggestion(md) {
+  const match = md.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
+  if (match) suggestTheme(match[1].split(","));
+}
+function extractRefreshWasm(md) {
+  const match = md.match(/<!--\s*refresh\s*:\s*(\S+)\s*-->/i);
+  return match ? match[1] : null;
+}
+async function navigateTo(path) {
+  const mdPath = path.endsWith(".md") ? path : `${path}.md`;
+  const md = await fetchMd(mdPath);
+  applyThemeSuggestion(md);
+  history.pushState({ mdUrl: mdPath }, "", "#" + mdPath);
   renderPage(md);
 }
-async function handleMd(a) {
-  await navigateTo(a.getAttribute("href").replace("md:", ""));
+async function navigateWithData(path, data) {
+  const mdPath = path.endsWith(".md") ? path : `${path}.md`;
+  const raw = await fetchMd(mdPath);
+  applyThemeSuggestion(raw);
+  const md = await processTemplate(raw, data);
+  history.pushState({ mdUrl: mdPath }, "", "#" + mdPath);
+  renderPage(md);
+}
+async function renderNoData(mdPath) {
+  const raw = await fetchMd(mdPath);
+  applyThemeSuggestion(raw);
+  const refreshWasm = extractRefreshWasm(raw);
+  if (refreshWasm) {
+    const notice = `> _This page requires data to display._ [Load now](wasm:${refreshWasm})
+
+`;
+    renderPage(await processTemplate(notice + raw, {}));
+  } else {
+    renderPage(raw);
+  }
+}
+async function replacePage(path) {
+  const mdPath = path.endsWith(".md") ? path : `${path}.md`;
+  history.replaceState({ mdUrl: mdPath }, "", "#" + mdPath);
+  await renderNoData(mdPath);
 }
 async function handleMore(a) {
   const url = a.getAttribute("href").replace("more:", "");
@@ -800,11 +1808,10 @@ async function handleMore(a) {
 async function handleNav(a) {
   await navigateTo(a.getAttribute("href"));
 }
+function warnBareUrl(href) {
+  showToast(`Link "${href}" looks like a URL \u2014 did you mean https://${href}?`, "error");
+}
 function handleRedirect(url, reason) {
-  if (url.startsWith("md:")) {
-    navigateTo(url.slice(3));
-    return;
-  }
   let crossDomain = false;
   try {
     crossDomain = new URL(url).hostname !== window.location.hostname;
@@ -842,96 +1849,119 @@ function suspendPage(url) {
   showSuspendedBar(url);
 }
 
-// src/theme.ts
-var CAT_DEFS = [
-  { x: "6%", y: "22%", size: 64, dur: 4, delay: 0 },
-  { x: "83%", y: "14%", size: 48, dur: 6.2, delay: -2.1 },
-  { x: "13%", y: "70%", size: 56, dur: 5.1, delay: -1.3 },
-  { x: "77%", y: "66%", size: 52, dur: 7.8, delay: -3.5 },
-  { x: "46%", y: "80%", size: 44, dur: 3.4, delay: -0.7 },
-  { x: "90%", y: "44%", size: 60, dur: 8.3, delay: -4.1 },
-  { x: "2%", y: "48%", size: 46, dur: 4.7, delay: -1.8 },
-  { x: "60%", y: "30%", size: 50, dur: 5.9, delay: -2.9 }
-];
-function addCats() {
-  removeCats();
-  CAT_DEFS.forEach((d) => {
-    const img = document.createElement("img");
-    img.src = "engine/img/cat.svg";
-    img.className = "nw-spinning-cat";
-    img.style.cssText = `left:${d.x};top:${d.y};width:${d.size}px;height:${d.size}px;animation-duration:${d.dur}s;animation-delay:${d.delay}s`;
-    document.body.appendChild(img);
-  });
-}
-function removeCats() {
-  document.querySelectorAll(".nw-spinning-cat").forEach((el) => el.remove());
-}
-function applyTheme(theme) {
-  const sel = document.getElementById("nw-theme-select");
-  document.documentElement.setAttribute("data-theme", theme);
-  sel.value = theme;
-  if (theme === "cats") addCats();
-  else removeCats();
-}
-function applyAnimPaused(paused) {
-  const btn = document.getElementById("nw-anim-toggle");
-  document.documentElement.classList.toggle("nw-paused", paused);
-  btn.textContent = paused ? "Resume Animations" : "Stop Animations";
-}
-var savedPaused = localStorage.getItem("nw-paused") === "true";
-applyAnimPaused(savedPaused);
-document.getElementById("nw-anim-toggle").addEventListener("click", () => {
-  const paused = !document.documentElement.classList.contains("nw-paused");
-  applyAnimPaused(paused);
-  localStorage.setItem("nw-paused", String(paused));
-});
-var savedTheme = localStorage.getItem("nw-theme");
-if (savedTheme) applyTheme(savedTheme);
-document.getElementById("nw-theme-select").addEventListener("change", (e) => {
-  const value = e.target.value;
-  applyTheme(value);
-  localStorage.setItem("nw-theme", value);
-});
-
 // src/engine.ts
+var store = /* @__PURE__ */ new Map();
+var allowedKeys = /* @__PURE__ */ new Set();
+function dataModalMd() {
+  const entries = [...store.entries()];
+  const dataBlock = entries.length ? "```\n" + JSON.stringify(Object.fromEntries(entries), null, 2) + "\n```" : "_No data stored yet._";
+  return `### Your Session Data
+
+This data exists only for your current browser session \u2014 it is cleared when you leave or refresh the page. Sites use session data for logins, personalization, and data access.
+
+---
+
+${dataBlock}
+
+[Clear all data](nw:cleardata)`;
+}
+function showDataModal() {
+  showModal(dataModalMd());
+}
+function buildInfoMd(desc, keys) {
+  const reasonSection = desc.trim() ? `### Why this script?
+${desc}` : `### \u26A0 No description provided
+The author of this page did not explain why this script needs to run.`;
+  const dataSection = keys.length ? `
+
+### Data requested
+This script will access: ${keys.map((k) => `\`${k}\``).join(", ")}
+
+These values will be read from your session.` : "";
+  return reasonSection + dataSection + `
+
+[View your session data](nw:viewdata)`;
+}
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".nw-wasm-info");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const desc = btn.dataset.desc ?? "";
+  const keys = btn.dataset.keys ? btn.dataset.keys.split(",").filter(Boolean) : [];
+  showModal(buildInfoMd(desc, keys));
+});
 document.addEventListener("click", (e) => {
   const a = e.target.closest("a");
   if (!a) return;
   const href = a.getAttribute("href");
-  if (!href) return;
+  if (!href || href.startsWith("#")) return;
+  if (href === "nw:viewdata") {
+    e.preventDefault();
+    showDataModal();
+    return;
+  }
+  if (href === "nw:cleardata") {
+    e.preventDefault();
+    store.clear();
+    const body = document.querySelector("dialog .nw-modal-body");
+    if (body) body.innerHTML = window.newwebRender(dataModalMd());
+    return;
+  }
   if (href.startsWith("wasm:")) {
     e.preventDefault();
-    handleWasm(a);
+    allowedKeys = new Set((a.dataset.keys ?? "").split(",").filter(Boolean));
+    handleWasm(a).finally(() => {
+      allowedKeys = /* @__PURE__ */ new Set();
+    });
+    return;
   }
   if (href.startsWith("more:")) {
     e.preventDefault();
     handleMore(a);
-  }
-  if (href.startsWith("md:")) {
-    e.preventDefault();
-    handleMd(a);
+    return;
   }
   if (href.startsWith("custom://")) {
     e.preventDefault();
     handleNav(a);
+    return;
   }
+  if (href.startsWith("http://") || href.startsWith("https://")) return;
+  e.preventDefault();
+  if (window.location.hostname === "localhost" && looksLikeBareUrl(href)) {
+    warnBareUrl(href);
+    return;
+  }
+  navigateTo(href);
 });
 window.addEventListener("popstate", async (e) => {
   const url = e.state?.mdUrl ?? "main.md";
-  renderPage(await fetchMd(url));
+  await renderNoData(url);
 });
 (async () => {
   await __wbg_init(new URL("engine/build/pkg/engine_bg.wasm", location.href));
   window.newwebRender = render;
   window.newweb = {
-    redirect: (url, reason) => handleRedirect(url, reason),
+    redirect: (url, reason) => {
+      if (url.startsWith("http://") || url.startsWith("https://")) {
+        handleRedirect(url, reason);
+      } else {
+        navigateTo(url);
+      }
+    },
+    replace: (url) => replacePage(url),
     info: (md) => showToast(md, "info"),
     error: (md) => showToast(md, "error"),
-    more: (md) => showModal(md)
+    more: (md) => showModal(md),
+    load: (url, data) => navigateWithData(url, data),
+    store: (key, value) => {
+      store.set(key, value);
+    },
+    get: (key) => allowedKeys.has(key) ? store.get(key) ?? "" : ""
   };
-  const initial = location.hash ? location.hash.slice(1) : "main.md";
-  history.replaceState({ mdUrl: initial }, "", location.hash || "#main.md");
-  renderPage(await fetchMd(initial));
+  document.getElementById("nw-view-data").addEventListener("click", showDataModal);
+  const initial = location.hash ? location.hash.slice(1) : "main";
+  await replacePage(initial);
 })().catch((err) => {
   document.getElementById("content").innerHTML = `<pre>Boot error: ${err}</pre>`;
 });
