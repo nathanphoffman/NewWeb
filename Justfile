@@ -45,5 +45,9 @@ build-electron:
 electron: build-electron
     cd electron && npm start
 
+# start minimal test site on port 3000
+simple-site:
+    node simple-site/server.js
+
 # build everything then serve
 dev: build-rs build-go build-engine serve

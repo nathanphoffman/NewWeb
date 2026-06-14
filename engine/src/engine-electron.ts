@@ -85,7 +85,7 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
 
 // bootstrap: init WASM from shared/, expose host API, load initial page
 (async () => {
-  await init(new URL('shared/pkg/engine_bg.wasm', document.baseURI));
+  await init(new URL('shared/pkg/engine_bg.wasm', location.href));
   window.newwebRender = wasmRender;
 
   window.newweb = {

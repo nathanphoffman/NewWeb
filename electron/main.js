@@ -9,14 +9,39 @@ protocol.registerSchemesAsPrivileged([{
   privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true },
 }]);
 
+// Chromium strips ports from custom scheme origins (newweb://localhost:3000 → newweb://localhost),
+// so we encode the target port in the subdomain instead: localhost:3000 → 3000.localhost.
+// This keeps the port visible to the protocol handler via url.hostname.
+function getProxyPort(hostname) {
+  const m = hostname.match(/^(\d+)\.localhost$/);
+  return m ? m[1] : null;
+}
+
+// Paths that belong to the browser itself — always served from disk
+function isBrowserAsset(pathname) {
+  return pathname === '/' ||
+    pathname === '/shell.html' ||
+    pathname.startsWith('/shared/') ||
+    pathname.startsWith('/engine/');
+}
+
 app.whenReady().then(() => {
   protocol.handle('newweb', (request) => {
     const url = new URL(request.url);
-    if (url.hostname === 'localhost') {
-      const p = url.pathname || '/';
-      const filePath = path.join(ROOT, p === '/' ? 'shell.html' : p);
-      return net.fetch('file://' + filePath);
+    const pathname = url.pathname || '/';
+    const proxyPort = getProxyPort(url.hostname);
+
+    if (url.hostname === 'localhost' || proxyPort) {
+      if (isBrowserAsset(pathname)) {
+        const filePath = path.join(ROOT, pathname === '/' ? 'shell.html' : pathname);
+        return net.fetch('file://' + filePath);
+      }
+      if (proxyPort) {
+        return net.fetch(`http://localhost:${proxyPort}${pathname}`);
+      }
+      return net.fetch('file://' + path.join(ROOT, pathname));
     }
+
     return new Response(`Remote NewWeb sites not yet supported: ${url.hostname}`, { status: 501 });
   });
 
@@ -30,23 +55,27 @@ app.whenReady().then(() => {
     },
   });
 
-  win.loadFile(path.join(ROOT, 'shell.html'));
+  win.loadURL('newweb://localhost/');
 
   win.webContents.on('did-navigate', (_, url) => {
-    // don't reflect the shell's own file:// load in the address bar
-    if (!url.startsWith('file://')) win.webContents.send('url-changed', url);
+    if (url.startsWith('file://')) return;
+    const parsed = new URL(url);
+    const proxyPort = getProxyPort(parsed.hostname);
+    // don't show the bare startup shell in the address bar
+    if (parsed.hostname === 'localhost' && !proxyPort && !parsed.hash) return;
+    // display port-encoded hostnames as localhost:PORT
+    const displayHost = proxyPort ? `localhost:${proxyPort}` : parsed.hostname;
+    const displayHash = parsed.hash.replace(/^#(main|main\.md)$/, '');
+    win.webContents.send('url-changed', `${displayHost}${parsed.pathname !== '/' ? parsed.pathname : ''}${displayHash}`);
   });
 
   ipcMain.on('navigate-to', (_, url) => {
     const parsed = new URL(url);
-    // ports are meaningless in newweb:// — strip them
-    // pathname is '' for bare hostnames in non-special protocols in Node.js, treat as '/'
+    // encode port as subdomain: localhost:3000 → 3000.localhost
+    const hostname = parsed.port ? `${parsed.port}.localhost` : parsed.hostname;
     const pathname = parsed.pathname || '/';
-    const base = `newweb://${parsed.hostname}${pathname}${parsed.search}`;
-    // bare root with no hash → load main.md via hash
-    const target = (pathname === '/' && !parsed.hash)
-      ? base + '#main'
-      : base + parsed.hash;
+    const base = `newweb://${hostname}${pathname}${parsed.search}`;
+    const target = (pathname === '/' && !parsed.hash) ? base + '#main' : base + parsed.hash;
     win.loadURL(target);
   });
 
@@ -66,7 +95,7 @@ app.whenReady().then(() => {
     {
       label: 'Navigation',
       submenu: [
-        { label: 'Back',   accelerator: 'Alt+Left',  click: () => win.webContents.goBack() },
+        { label: 'Back',   accelerator: 'Alt+Left',    click: () => win.webContents.goBack() },
         { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: () => win.webContents.reload() },
       ],
     },
