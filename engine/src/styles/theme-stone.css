@@ -1,0 +1,43 @@
+[data-theme="stone"] {
+  --bg:        #fafaf9;
+  --fg:        #1c1917;
+  --muted:     #78716c;
+  --link:      #0f766e;
+  --border:    #e7e5e4;
+  --code-bg:   #f5f5f4;
+  --bar-bg:    #ffffff;
+  --bar-fg:    #1c1917;
+  --bar-border:#e7e5e4;
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="stone"] #nw-bar {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+[data-theme="stone"] #content h1,
+[data-theme="stone"] #content h2,
+[data-theme="stone"] #content h3 {
+  color: #0c0a09;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="stone"] #content a {
+  text-decoration: none;
+  border-bottom: 1px solid rgba(15,118,110,0.3);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+[data-theme="stone"] #content a:hover {
+  color: #0d9488;
+  border-bottom-color: #0f766e;
+}
+
+[data-theme="stone"] #content blockquote {
+  border-left-color: #0f766e;
+  color: #78716c;
+}
+
+[data-theme="stone"] .nw-image-frame {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}

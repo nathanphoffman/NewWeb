@@ -25,7 +25,7 @@ function removeCats(): void {
   document.querySelectorAll('.nw-spinning-cat').forEach(el => el.remove());
 }
 
-const VALID_THEMES = ['default', 'dark', 'newspaper', 'terminal', 'warm', 'nasa', 'cats'];
+const VALID_THEMES = ['default', 'carbon', 'stone', 'dark', 'newspaper', 'terminal', 'warm', 'nasa', 'aurora', 'cyber', 'cats'];
 
 let pageSuggestions: string[] = [];
 
