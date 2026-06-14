@@ -25,6 +25,19 @@ function isBrowserAsset(pathname) {
     pathname.startsWith('/engine/');
 }
 
+// Private/LAN hosts can't have real SSL certs — allow HTTP for them
+function isPrivateHost(hostname) {
+  if (hostname.endsWith('.local')) return true;
+  const ipv4 = hostname.match(/^(\d+)\.(\d+)/);
+  if (ipv4) {
+    const [a, b] = [Number(ipv4[1]), Number(ipv4[2])];
+    return a === 10 || a === 127 ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168);
+  }
+  return false;
+}
+
 app.whenReady().then(() => {
   protocol.handle('newweb', (request) => {
     const url = new URL(request.url);
@@ -42,7 +55,13 @@ app.whenReady().then(() => {
       return net.fetch('file://' + path.join(ROOT, pathname));
     }
 
-    return new Response(`Remote NewWeb sites not yet supported: ${url.hostname}`, { status: 501 });
+    // external NewWeb site — browser assets still from disk, content fetched remotely
+    if (isBrowserAsset(pathname)) {
+      const filePath = path.join(ROOT, pathname === '/' ? 'shell.html' : pathname);
+      return net.fetch('file://' + filePath);
+    }
+    const scheme = isPrivateHost(url.hostname) ? 'http' : 'https';
+    return net.fetch(`${scheme}://${url.hostname}${pathname}${url.search}`);
   });
 
   const win = new BrowserWindow({
