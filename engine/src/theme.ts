@@ -29,23 +29,30 @@ const VALID_THEMES = ['default', 'dark', 'newspaper', 'terminal', 'warm', 'nasa'
 
 let pageSuggestions: string[] = [];
 
-function applySuggestions(): void {
-  if (!isSuggestOn()) return;
+function getSuggestedTheme(): string | null {
   for (const name of pageSuggestions) {
     const q = name.trim().toLowerCase();
     const match = VALID_THEMES.find(t => t.startsWith(q));
-    if (match) { applyTheme(match); return; }
+    if (match) return match;
   }
+  return null;
 }
 
-function isSuggestOn(): boolean {
-  return (document.getElementById('nw-theme-suggest') as HTMLButtonElement)
-    .getAttribute('aria-pressed') === 'true';
+function annotateSuggestion(suggested: string | null): void {
+  const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
+  Array.from(sel.options).forEach(opt => {
+    const base = opt.text.replace(' (site default)', '');
+    opt.text = opt.value === suggested ? `${base} (site default)` : base;
+  });
 }
 
 export function suggestTheme(names: string[]): void {
   pageSuggestions = names;
-  applySuggestions();
+  const suggested = getSuggestedTheme();
+  annotateSuggestion(suggested);
+  if (suggested && !localStorage.getItem('nw-theme')) {
+    applyTheme(suggested);
+  }
 }
 
 function applyTheme(theme: string): void {
@@ -60,25 +67,6 @@ function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
   btn.textContent = paused ? 'Resume Animations' : 'Stop Animations';
 }
-
-// suggested theme toggle button
-const suggestBtn = document.getElementById('nw-theme-suggest') as HTMLButtonElement;
-function setSuggestState(on: boolean): void {
-  suggestBtn.setAttribute('aria-pressed', String(on));
-  suggestBtn.textContent = on ? 'Using Suggested Theme' : 'Using Your Theme';
-}
-
-const suggestOn = localStorage.getItem('nw-theme-suggest') !== 'false';
-setSuggestState(suggestOn);
-suggestBtn.addEventListener('click', () => {
-  const on = suggestBtn.getAttribute('aria-pressed') !== 'true';
-  setSuggestState(on);
-  localStorage.setItem('nw-theme-suggest', String(on));
-  if (on) {
-    localStorage.removeItem('nw-theme');
-    applySuggestions();
-  }
-});
 
 // hamburger toggle
 const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
@@ -104,6 +92,4 @@ document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event
   const value = (e.target as HTMLSelectElement).value;
   applyTheme(value);
   localStorage.setItem('nw-theme', value);
-  setSuggestState(false);
-  localStorage.setItem('nw-theme-suggest', 'false');
 });

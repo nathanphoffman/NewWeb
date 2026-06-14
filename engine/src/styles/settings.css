@@ -1,0 +1,81 @@
+/* ── settings modal ───────────────────────────────────── */
+.nw-settings-modal {
+  max-width: 480px;
+  width: 90%;
+}
+
+.nw-settings-modal h2 {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.nw-settings-section {
+  margin-bottom: 1.2rem;
+}
+
+.nw-settings-section h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.nw-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.nw-settings-row input[type="number"] {
+  width: 80px;
+  padding: 0.3em 0.5em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.nw-settings-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+.nw-settings-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.nw-settings-save {
+  padding: 0.4em 1.2em;
+  background: var(--link);
+  color: var(--bg);
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.nw-settings-cancel {
+  padding: 0.4em 1.2em;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}

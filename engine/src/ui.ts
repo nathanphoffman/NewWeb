@@ -1,4 +1,5 @@
 import type { Modal } from './types.js';
+import { getMaxImageKb } from './settings.js';
 
 export function closeModals(): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
@@ -22,15 +23,13 @@ function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string
   return { desc, keys };
 }
 
-const IMAGE_SIZE_LIMIT = 200 * 1024; // 200 KB
-
 async function checkSize(src: string): Promise<boolean> {
   if (src.startsWith('data:')) return true;
   try {
     const res = await fetch(src, { method: 'HEAD' });
     const cl = res.headers.get('content-length');
     if (cl === null) return true;
-    return parseInt(cl, 10) <= IMAGE_SIZE_LIMIT;
+    return parseInt(cl, 10) <= getMaxImageKb() * 1024;
   } catch {
     return true;
   }
@@ -79,8 +78,11 @@ function buildFrame(src: string, alt: string): HTMLElement {
 
 function buildFallback(src: string, alt: string): HTMLElement {
   const btn = document.createElement('button');
+  const text = "Image size is beyond set limit, click to load it anyway.";
+
+
   btn.className = 'nw-img-load-btn';
-  btn.textContent = alt ? `${alt} — click to load image` : 'click to load image';
+  btn.textContent = alt ? `${alt} — ${text}` : text;
   btn.addEventListener('click', () => btn.replaceWith(buildFrame(src, alt)));
   return btn;
 }

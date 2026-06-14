@@ -52,16 +52,17 @@
 /* ── lightbox ─────────────────────────────────────────── */
 .nw-lightbox {
   position: relative;
-  max-width: 95vw;
+  max-width: 85vw;
   max-height: 94vh;
   width: fit-content;
   padding: 0.75rem;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .nw-lightbox img {
   display: block;
-  max-width: 93vw;
+  max-width: calc(85vw - 1.5rem);
   max-height: 82vh;
   width: auto;
   height: auto;

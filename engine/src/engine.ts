@@ -3,6 +3,7 @@ import { handleWasm } from './wasm.js';
 import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, navigateWithData, renderNoData, looksLikeBareUrl, warnBareUrl } from './nav.js';
 import { showToast, showModal, renderPage, closeModals } from './ui.js';
 import './theme.js';
+import './settings.js';
 
 const store = new Map<string, string>();
 let allowedKeys = new Set<string>();
