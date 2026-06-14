@@ -1,0 +1,12 @@
+{
+  "name": "newweb-electron",
+  "version": "1.0.0",
+  "description": "NewWeb desktop app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^31.0.0"
+  }
+}

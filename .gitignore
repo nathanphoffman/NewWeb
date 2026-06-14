@@ -1,6 +1,7 @@
 engine/build/
 engine/lib/
 engine/node_modules/
+electron/node_modules/
 /index.html
 src/*.wasm
 engine-rs/target/
