@@ -1,23 +1,146 @@
 [data-theme="newspaper"] {
-  --bg:        #f5f0e8;
-  --fg:        #1a1209;
-  --muted:     #5a4a3a;
-  --link:      #8b0000;
+  --bg:        #f4efe6;
+  --fg:        #0e0b08;
+  --muted:     #6b5a48;
+  --link:      #8b1a1a;
   --border:    #c8b89a;
-  --code-bg:   #ede5d8;
-  --bar-bg:    #e8e0d0;
-  --bar-fg:    #1a1209;
-  --bar-border:#b8a890;
-  --font:      Georgia, 'Times New Roman', serif;
+  --code-bg:   #ece5d5;
+  --bar-bg:    #0e0b08;
+  --bar-fg:    #f4efe6;
+  --bar-border:#2a2218;
+  --font:      Georgia, "Book Antiqua", Palatino, serif;
+  --width:     820px;
 }
 
+/* ── masthead bar ──────────────────────────────────────── */
+[data-theme="newspaper"] #nw-bar {
+  border-bottom: 3px double #f4efe6;
+}
+
+[data-theme="newspaper"] .nw-logo {
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+[data-theme="newspaper"] #nw-bar select,
+[data-theme="newspaper"] #nw-bar button {
+  background: #1e1810;
+  color: #f4efe6;
+  border-color: #4a3c2c;
+}
+
+/* ── headings ──────────────────────────────────────────── */
+[data-theme="newspaper"] #content h1,
+[data-theme="newspaper"] #content h2,
+[data-theme="newspaper"] #content h3 {
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color: #0e0b08;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="newspaper"] #content h1 {
+  font-size: 2.8em;
+  font-weight: 900;
+  line-height: 1.05;
+  border-bottom: 3px solid #0e0b08;
+  padding-bottom: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+[data-theme="newspaper"] #content h2 {
+  font-size: 1.35em;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+[data-theme="newspaper"] #content h3 {
+  font-size: 1.1em;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ── body text ─────────────────────────────────────────── */
+[data-theme="newspaper"] #content p {
+  line-height: 1.85;
+  margin: 0.75em 0;
+}
+
+/* ── links ─────────────────────────────────────────────── */
+[data-theme="newspaper"] #content a,
+[data-theme="newspaper"] dialog a {
+  color: #0e0b08;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #8b1a1a;
+  text-decoration-thickness: 1.5px;
+}
+
+[data-theme="newspaper"] #content a:hover {
+  color: #8b1a1a;
+}
+
+/* ── pull-quote blockquotes ────────────────────────────── */
+[data-theme="newspaper"] #content blockquote {
+  border-left: none;
+  text-align: center;
+  padding: 1em 3em;
+  margin: 2em 0;
+  color: #0e0b08;
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 1.35em;
+  font-style: italic;
+  line-height: 1.45;
+  position: relative;
+}
+
+[data-theme="newspaper"] #content blockquote::before,
+[data-theme="newspaper"] #content blockquote::after {
+  font-family: "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 5em;
+  line-height: 0;
+  position: absolute;
+  color: var(--border);
+}
+
+[data-theme="newspaper"] #content blockquote::before {
+  content: '\201C';
+  left: 0.05em;
+  top: 0.55em;
+}
+
+[data-theme="newspaper"] #content blockquote::after {
+  content: '\201D';
+  right: 0.05em;
+  bottom: -0.1em;
+}
+
+/* ── horizontal rules ──────────────────────────────────── */
+[data-theme="newspaper"] #content hr {
+  border: none;
+  border-top: 3px double #0e0b08;
+  margin: 2.2em 0;
+}
+
+/* ── images ────────────────────────────────────────────── */
 [data-theme="newspaper"] .nw-image-frame {
-  border: 3px double var(--border);
-  box-shadow: none;
+  border: 2px solid #0e0b08;
+  box-shadow: 3px 3px 0 #c8b89a;
 }
 
 [data-theme="newspaper"] .nw-image-frame__caption {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: Georgia, serif;
   font-style: italic;
   font-size: 0.78em;
+  color: var(--muted);
+}
+
+/* ── code ──────────────────────────────────────────────── */
+[data-theme="newspaper"] #content code,
+[data-theme="newspaper"] #content pre {
+  font-size: 0.88em;
+  border: 1px solid var(--border);
 }

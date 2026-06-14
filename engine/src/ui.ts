@@ -1,5 +1,6 @@
 import type { Modal } from './types.js';
 import { getMaxImageKb } from './settings.js';
+import { highlightBlock } from './highlight.js';
 
 export function closeModals(): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
@@ -129,6 +130,7 @@ export function renderPage(md: string): void {
   );
   content.innerHTML = html;
   annotateLinks(content);
+  highlightBlock(content);
   void processImages(content);
 }
 
@@ -150,6 +152,7 @@ export function showModal(md: string, closeLabel = 'Close'): Modal {
     dlg.remove();
   });
   document.body.appendChild(dlg);
+  highlightBlock(dlg);
   dlg.showModal();
   return dlg;
 }

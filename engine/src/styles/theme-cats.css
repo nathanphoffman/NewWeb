@@ -38,19 +38,19 @@
   position: fixed;
   pointer-events: none;
   z-index: 0;
+  opacity: 0.6;
   animation: nw-catspin linear infinite;
   filter: drop-shadow(0 0 6px rgba(255,179,71,0.55));
   transform-origin: center center;
+  transform-box: fill-box;
 }
 
 [data-theme="cats"] #content {
   position: relative;
   z-index: 1;
-  background: rgba(13,10,26,0.76);
+  background: rgba(13,10,26,0.88);
   border: 1px solid rgba(255,179,71,0.1);
   border-radius: 8px;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
 }
 
 [data-theme="cats"] #content h1,

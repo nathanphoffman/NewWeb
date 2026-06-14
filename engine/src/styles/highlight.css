@@ -1,0 +1,45 @@
+/* ── syntax highlight token variables (light default) ──── */
+:root {
+  --hl-comment:  #717171;
+  --hl-string:   #217830;
+  --hl-number:   #b32020;
+  --hl-keyword:  #0055cc;
+  --hl-type:     #1a8090;
+  --hl-builtin:  #7a3090;
+  --hl-operator: #555555;
+}
+
+/* dark themes */
+[data-theme="carbon"],
+[data-theme="cats"],
+[data-theme="aurora"],
+[data-theme="cyber"] {
+  --hl-comment:  #7c8690;
+  --hl-string:   #98c379;
+  --hl-number:   #e06c75;
+  --hl-keyword:  #61afef;
+  --hl-type:     #56b6c2;
+  --hl-builtin:  #c678dd;
+  --hl-operator: #abb2bf;
+}
+
+[data-theme="terminal"] {
+  --hl-comment:  #4a7a4a;
+  --hl-string:   #7fff7f;
+  --hl-number:   #ffff00;
+  --hl-keyword:  #00e5ff;
+  --hl-type:     #00ffaa;
+  --hl-builtin:  #ff79c6;
+  --hl-operator: #88ff88;
+}
+
+/* ── token rules ───────────────────────────────────────── */
+.token.comment                { color: var(--hl-comment); font-style: italic; }
+.token.string                 { color: var(--hl-string); }
+.token.number,
+.token.boolean                { color: var(--hl-number); }
+.token.keyword                { color: var(--hl-keyword); font-weight: bold; }
+.token.builtin-type           { color: var(--hl-type); }
+.token.builtin                { color: var(--hl-builtin); }
+.token.operator               { color: var(--hl-operator); }
+.token.punctuation            { color: var(--hl-operator); opacity: 0.7; }
