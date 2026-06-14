@@ -200,3 +200,18 @@
   border-color: rgba(79,195,247,0.35);
   box-shadow: 0 0 40px rgba(79,195,247,0.18);
 }
+
+[data-theme="nasa"] .nw-image-frame {
+  background: rgba(0,20,60,0.85);
+  border-color: rgba(79,195,247,0.45);
+  box-shadow: 0 0 16px rgba(79,195,247,0.22), inset 0 0 8px rgba(79,195,247,0.06);
+  border-radius: 2px;
+}
+
+[data-theme="nasa"] .nw-image-frame__caption {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  color: #5a8ab0;
+  text-transform: uppercase;
+}

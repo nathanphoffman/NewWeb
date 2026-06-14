@@ -10,3 +10,13 @@
   --bar-border:#d4b898;
   --font:      Georgia, serif;
 }
+
+[data-theme="warm"] .nw-image-frame {
+  border: 2px solid #c8a87a;
+  box-shadow: 0 2px 6px rgba(100,60,20,0.12);
+}
+
+[data-theme="warm"] .nw-image-frame__caption {
+  font-family: Georgia, serif;
+  font-style: italic;
+}

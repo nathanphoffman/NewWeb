@@ -98,3 +98,14 @@
   border-color: rgba(255,179,71,0.35);
   box-shadow: 0 0 40px rgba(255,179,71,0.18);
 }
+
+[data-theme="cats"] .nw-image-frame {
+  border: 1.5px solid rgba(255,179,71,0.55);
+  border-radius: 16px;
+  background: rgba(20,10,35,0.85);
+  box-shadow: 0 0 14px rgba(255,179,71,0.16);
+}
+
+[data-theme="cats"] .nw-image-frame__caption {
+  color: #8a7a60;
+}

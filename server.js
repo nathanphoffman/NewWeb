@@ -14,6 +14,10 @@ const MIME = {
   '.css':  'text/css',
   '.svg':  'image/svg+xml',
   '.png':  'image/png',
+  '.jpg':  'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif':  'image/gif',
+  '.webp': 'image/webp',
 };
 
 createServer((req, res) => {
@@ -23,6 +27,7 @@ createServer((req, res) => {
     res.writeHead(200, {
       'Content-Type': MIME[extname(filePath)] || 'application/octet-stream',
       'Cache-Control': 'no-store',
+      'Content-Length': data.length,
     });
     res.end(data);
   });

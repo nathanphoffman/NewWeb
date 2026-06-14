@@ -9,3 +9,7 @@
   --bar-fg:    #cccccc;
   --bar-border:#333333;
 }
+
+[data-theme="dark"] .nw-image-frame {
+  box-shadow: 0 0 10px rgba(102,170,255,0.12);
+}

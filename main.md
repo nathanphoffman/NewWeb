@@ -25,3 +25,5 @@ Navigate to another page to see link interception in action:
 <!-- script_reasoning: Loads your profile into this session so other scripts can personalise your experience -->
 <!-- data: firstName, lastName, email, member -->
 [Load My Profile](wasm:src/profile.wasm)
+
+![my cat](684448.jpg)
