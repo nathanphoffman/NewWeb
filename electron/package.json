@@ -1,12 +1,41 @@
 {
   "name": "newweb-electron",
   "version": "1.0.0",
-  "description": "NewWeb desktop app",
+  "description": "NewWeb desktop browser",
+  "author": "Nate Hoffman",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
-  "dependencies": {
-    "electron": "^31.0.0"
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "me.nathanhoffman.newweb",
+    "productName": "NewWeb",
+    "afterPack": "./after-pack.js",
+    "files": [
+      "main.js",
+      "preload.js"
+    ],
+    "extraResources": [
+      { "from": "../shell.html",                              "to": "shell.html" },
+      { "from": "../welcome.md",                             "to": "welcome.md" },
+      { "from": "../engine/build/engine-electron.bundle.js", "to": "engine/build/engine-electron.bundle.js" },
+      { "from": "../engine/build/pkg/engine_bg.wasm",        "to": "shared/pkg/engine_bg.wasm" },
+      { "from": "../engine/src/styles",                      "to": "shared/styles" }
+    ],
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Network"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    }
   }
 }

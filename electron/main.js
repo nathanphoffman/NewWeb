@@ -1,7 +1,9 @@
 const { app, BrowserWindow, shell, protocol, net, ipcMain, Menu } = require('electron');
 const path = require('path');
 
-const ROOT = path.join(__dirname, '..');
+// dev: __dirname is electron/, root is one level up
+// packaged: extraResources land in resources/, pointed to by process.resourcesPath
+const ROOT = app.isPackaged ? process.resourcesPath : path.join(__dirname, '..');
 
 // Must be called before app.whenReady()
 protocol.registerSchemesAsPrivileged([{
@@ -38,6 +40,23 @@ function isPrivateHost(hostname) {
   return false;
 }
 
+// Fetch remote content and reject HTML responses — only markdown sites are supported
+async function fetchContent(fetchUrl, displayHost) {
+  let res;
+  try {
+    res = await net.fetch(fetchUrl);
+  } catch (err) {
+    const md = `# Cannot Connect\n\nCould not reach **${displayHost}**.\n\n\`\`\`\n${err.message}\n\`\`\``;
+    return new Response(md, { headers: { 'Content-Type': 'text/plain' } });
+  }
+  const ct = res.headers.get('content-type') || '';
+  if (ct.includes('text/html')) {
+    const md = `# Not a NewWeb Site\n\n**${displayHost}** returned an HTML page instead of a markdown file.\n\nOnly sites that serve \`.md\` files can be viewed in the NewWeb browser.`;
+    return new Response(md, { headers: { 'Content-Type': 'text/plain' } });
+  }
+  return res;
+}
+
 app.whenReady().then(() => {
   protocol.handle('newweb', (request) => {
     const url = new URL(request.url);
@@ -50,7 +69,7 @@ app.whenReady().then(() => {
         return net.fetch('file://' + filePath);
       }
       if (proxyPort) {
-        return net.fetch(`http://localhost:${proxyPort}${pathname}`);
+        return fetchContent(`http://localhost:${proxyPort}${pathname}`, `localhost:${proxyPort}`);
       }
       return net.fetch('file://' + path.join(ROOT, pathname));
     }
@@ -61,7 +80,7 @@ app.whenReady().then(() => {
       return net.fetch('file://' + filePath);
     }
     const scheme = isPrivateHost(url.hostname) ? 'http' : 'https';
-    return net.fetch(`${scheme}://${url.hostname}${pathname}${url.search}`);
+    return fetchContent(`${scheme}://${url.hostname}${pathname}${url.search}`, url.hostname);
   });
 
   const win = new BrowserWindow({
@@ -74,17 +93,18 @@ app.whenReady().then(() => {
     },
   });
 
-  win.loadURL('newweb://localhost/');
+  win.loadURL('newweb://localhost/#welcome');
 
   win.webContents.on('did-navigate', (_, url) => {
     if (url.startsWith('file://')) return;
     const parsed = new URL(url);
     const proxyPort = getProxyPort(parsed.hostname);
-    // don't show the bare startup shell in the address bar
-    if (parsed.hostname === 'localhost' && !proxyPort && !parsed.hash) return;
+    // suppress the startup welcome page from the address bar
+    if (parsed.hostname === 'localhost' && !proxyPort &&
+        (!parsed.hash || /^#welcome(\.md)?$/.test(parsed.hash))) return;
     // display port-encoded hostnames as localhost:PORT
     const displayHost = proxyPort ? `localhost:${proxyPort}` : parsed.hostname;
-    const displayHash = parsed.hash.replace(/^#(main|main\.md)$/, '');
+    const displayHash = parsed.hash.replace(/^#(main|main\.md|welcome|welcome\.md)$/, '');
     win.webContents.send('url-changed', `${displayHost}${parsed.pathname !== '/' ? parsed.pathname : ''}${displayHash}`);
   });
 

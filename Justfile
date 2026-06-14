@@ -45,6 +45,10 @@ build-electron:
 electron: build-electron
     cd electron && npm start
 
+# build and package into distributable (AppImage + deb on Linux)
+package-electron: build-electron
+    cd electron && npm run dist
+
 # start minimal test site on port 3000
 simple-site:
     node simple-site/server.js
