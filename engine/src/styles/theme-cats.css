@@ -43,6 +43,7 @@
   filter: drop-shadow(0 0 6px rgba(255,179,71,0.55));
   transform-origin: center center;
   transform-box: fill-box;
+  will-change: filter, transform;
 }
 
 [data-theme="cats"] #content {

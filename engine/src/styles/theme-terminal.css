@@ -11,6 +11,11 @@
   --font:      'Courier New', monospace;
 }
 
+[data-theme="terminal"] #content {
+  position: relative;
+  z-index: 1;
+}
+
 [data-theme="terminal"] .nw-image-frame {
   box-shadow: 0 0 8px rgba(0,255,65,0.15);
 }

@@ -5,14 +5,19 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build:js": "esbuild src/engine.ts --bundle --format=esm --outfile=build/engine.bundle.js",
-    "build:electron-js": "esbuild src/engine-electron.ts --bundle --format=esm --outfile=build/engine-electron.bundle.js",
+    "build:js": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js",
+    "build:electron-js": "esbuild src/engine-electron.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine-electron.bundle.js",
     "build:html": "node scripts/build-html.js",
     "build": "npm run typecheck && npm run build:js && npm run build:html",
     "build:electron": "npm run typecheck && npm run build:electron-js",
-    "watch": "esbuild src/engine.ts --bundle --format=esm --outfile=build/engine.bundle.js --watch"
+    "watch": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js --watch"
   },
   "devDependencies": {
+    "@fontsource/lora": "^5.2.8",
+    "@fontsource/nunito": "^5.2.7",
+    "@fontsource/orbitron": "^5.2.8",
+    "@fontsource/pacifico": "^5.2.7",
+    "@fontsource/playfair-display": "^5.2.8",
     "@types/prismjs": "^1.26.6",
     "esbuild": "^0.25.0",
     "prismjs": "^1.30.0",

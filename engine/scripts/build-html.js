@@ -10,10 +10,18 @@ const dir = dirname(fileURLToPath(import.meta.url));
 const root = join(dir, '..');
 const stylesDir = join(root, 'src/styles');
 
-const css = readdirSync(stylesDir)
+// esbuild extracts CSS imports (e.g. @fontsource font-face rules) to a
+// separate bundle file — include it first so @font-face is declared before
+// any theme rules that reference those font families
+import { existsSync } from 'fs';
+const bundledCss = existsSync(join(root, 'build/engine.bundle.css'))
+  ? readFileSync(join(root, 'build/engine.bundle.css'), 'utf8')
+  : '';
+
+const css = bundledCss + '\n' + readdirSync(stylesDir)
   .filter(f => f.endsWith('.css'))
   // guarantees order of inclusion is the same across OS platforms
-  // in theory sort here matters little, but two builds could output different 
+  // in theory sort here matters little, but two builds could output different
   // html builds that are identical causing delta flip-flops if deployed
   .sort()
   .map(f => readFileSync(join(stylesDir, f), 'utf8'))

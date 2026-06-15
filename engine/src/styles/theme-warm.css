@@ -1,22 +1,80 @@
 [data-theme="warm"] {
-  --bg:        #fdf6ec;
-  --fg:        #3d2b1f;
-  --muted:     #7a5c44;
-  --link:      #b05c2a;
-  --border:    #e0cdb8;
-  --code-bg:   #f5ece0;
-  --bar-bg:    #f0e4d0;
-  --bar-fg:    #3d2b1f;
-  --bar-border:#d4b898;
-  --font:      Georgia, serif;
+  --bg:        #f9f5ea;
+  --fg:        #1a3d4a;
+  --muted:     #5a8a96;
+  --link:      #d95f3b;
+  --border:    #bddde4;
+  --code-bg:   #e8f4f6;
+  --bar-bg:    #1a3d4a;
+  --bar-fg:    #f9f5ea;
+  --bar-border:#0f2a35;
+  --font:      'Nunito', system-ui, sans-serif;
 }
 
+/* subtle sand-to-ocean gradient on the body */
+[data-theme="warm"] body {
+  background: linear-gradient(160deg, #f9f5ea 0%, #edf6f8 100%);
+  min-height: 100vh;
+}
+
+/* ── headings in Pacifico ──────────────────────────────── */
+[data-theme="warm"] #content h1,
+[data-theme="warm"] #content h2,
+[data-theme="warm"] #content h3 {
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+[data-theme="warm"] #content h1 { color: #d95f3b; }
+[data-theme="warm"] #content h2 { color: #1a6b80; }
+[data-theme="warm"] #content h3 { color: #5a8a96; }
+
+/* ── links ─────────────────────────────────────────────── */
+[data-theme="warm"] #content a,
+[data-theme="warm"] dialog a {
+  color: #d95f3b;
+  font-weight: 600;
+}
+
+[data-theme="warm"] #content a:hover { color: #b84820; }
+
+/* ── blockquotes ───────────────────────────────────────── */
+[data-theme="warm"] #content blockquote {
+  border-left: 3px solid #5ab4c8;
+  color: #1a6b80;
+  background: rgba(93,180,200,0.07);
+  border-radius: 0 6px 6px 0;
+  padding: 0.6em 1em;
+}
+
+/* ── hr ────────────────────────────────────────────────── */
+[data-theme="warm"] #content hr {
+  border-top-color: #bddde4;
+}
+
+/* ── images ────────────────────────────────────────────── */
 [data-theme="warm"] .nw-image-frame {
-  border: 2px solid #c8a87a;
-  box-shadow: 0 2px 6px rgba(100,60,20,0.12);
+  border: 2px solid #5ab4c8;
+  box-shadow: 0 4px 14px rgba(26,109,128,0.12);
+  border-radius: 8px;
 }
 
 [data-theme="warm"] .nw-image-frame__caption {
-  font-family: Georgia, serif;
   font-style: italic;
+  color: var(--muted);
+}
+
+/* ── bar ───────────────────────────────────────────────── */
+[data-theme="warm"] .nw-logo {
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="warm"] #nw-bar select,
+[data-theme="warm"] #nw-bar button {
+  background: #0f2a35;
+  color: #f9f5ea;
+  border-color: #1a5060;
 }
