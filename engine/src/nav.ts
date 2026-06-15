@@ -1,4 +1,4 @@
-import { renderPage, showModal, showSuspendedBar, showToast } from './ui.js';
+import { renderPage, showModal, showSuspendedBar, showToast, scrollToAnchor } from './ui.js';
 import { suggestTheme } from './theme.js';
 import { processTemplate } from './template.js';
 
@@ -22,21 +22,32 @@ function extractRefreshWasm(md: string): string | null {
   return match ? match[1] : null;
 }
 
+function splitAnchor(path: string): [string, string | null] {
+  const idx = path.indexOf('#');
+  return idx === -1 ? [path, null] : [path.slice(0, idx), path.slice(idx + 1)];
+}
+
 export async function navigateTo(path: string): Promise<void> {
-  const mdPath = path.endsWith('.md') ? path : `${path}.md`;
+  const [basePath, anchor] = splitAnchor(path);
+  const mdPath = basePath.endsWith('.md') ? basePath : `${basePath}.md`;
   const md = await fetchMd(mdPath);
   applyThemeSuggestion(md);
-  history.pushState({ mdUrl: mdPath }, '', '#' + mdPath);
+  const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
+  history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', '#' + hashUrl);
   renderPage(md);
+  if (anchor) scrollToAnchor(anchor);
 }
 
 export async function navigateWithData(path: string, data: Record<string, unknown>): Promise<void> {
-  const mdPath = path.endsWith('.md') ? path : `${path}.md`;
+  const [basePath, anchor] = splitAnchor(path);
+  const mdPath = basePath.endsWith('.md') ? basePath : `${basePath}.md`;
   const raw = await fetchMd(mdPath);
   applyThemeSuggestion(raw);
   const md = await processTemplate(raw, data);
-  history.pushState({ mdUrl: mdPath }, '', '#' + mdPath);
+  const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
+  history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', '#' + hashUrl);
   renderPage(md);
+  if (anchor) scrollToAnchor(anchor);
 }
 
 export async function renderNoData(mdPath: string): Promise<void> {
@@ -51,9 +62,10 @@ export async function renderNoData(mdPath: string): Promise<void> {
   }
 }
 
-export async function replacePage(path: string): Promise<void> {
+export async function replacePage(path: string, anchor: string | null = null): Promise<void> {
   const mdPath = path.endsWith('.md') ? path : `${path}.md`;
-  history.replaceState({ mdUrl: mdPath }, '', '#' + mdPath);
+  const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
+  history.replaceState({ mdUrl: mdPath, anchor }, '', '#' + hashUrl);
   await renderNoData(mdPath);
 }
 
@@ -107,16 +119,3 @@ export function suspendPage(url: string): void {
   showSuspendedBar(url);
 }
 
-export function parseFields(text: string): Record<string, { type: string; value: null }> {
-  const parts = text.split(',').map(s => s.trim());
-  parts.pop();
-  return parts.reduce((acc: Record<string, { type: string; value: null }>, f) => {
-    const name = f.replace(/[*_+]/g, '').trim();
-    const type = f.endsWith('*') ? 'password'
-               : f.endsWith('_') ? 'select-one'
-               : f.endsWith('+') ? 'select-many'
-               : 'text';
-    acc[name] = { type, value: null };
-    return acc;
-  }, {});
-}

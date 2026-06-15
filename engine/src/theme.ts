@@ -135,10 +135,8 @@ function applyTheme(theme: string): void {
   if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
 }
 
-function applyAnimPaused(paused: boolean): void {
-  const btn = document.getElementById('nw-anim-toggle') as HTMLButtonElement;
+export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
-  btn.textContent = paused ? 'Resume Animations' : 'Stop Animations';
 }
 
 // hamburger toggle
@@ -149,14 +147,9 @@ hamburger.addEventListener('click', () => {
   hamburger.setAttribute('aria-expanded', String(open));
 });
 
-// animation toggle
+// restore saved paused state on load
 const savedPaused = localStorage.getItem('nw-paused') === 'true';
 applyAnimPaused(savedPaused);
-document.getElementById('nw-anim-toggle')!.addEventListener('click', () => {
-  const paused = !document.documentElement.classList.contains('nw-paused');
-  applyAnimPaused(paused);
-  localStorage.setItem('nw-paused', String(paused));
-});
 
 // theme picker
 const savedTheme = localStorage.getItem('nw-theme');

@@ -1,4 +1,5 @@
-import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, rmSync } from 'fs';
+import { transformSync } from 'esbuild';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -10,15 +11,17 @@ const dir = dirname(fileURLToPath(import.meta.url));
 const root = join(dir, '..');
 const stylesDir = join(root, 'src/styles');
 
-// esbuild extracts CSS imports (e.g. @fontsource font-face rules) to a
-// separate bundle file — include it first so @font-face is declared before
-// any theme rules that reference those font families
+// esbuild may extract CSS imports to a separate bundle file — include it
+// first so @font-face rules are declared before theme rules that reference them.
+// Delete it after reading so stale font data can't accumulate across builds.
 import { existsSync } from 'fs';
-const bundledCss = existsSync(join(root, 'build/engine.bundle.css'))
-  ? readFileSync(join(root, 'build/engine.bundle.css'), 'utf8')
+const bundledCssPath = join(root, 'build/engine.bundle.css');
+const bundledCss = existsSync(bundledCssPath)
+  ? readFileSync(bundledCssPath, 'utf8')
   : '';
+if (existsSync(bundledCssPath)) rmSync(bundledCssPath);
 
-const css = bundledCss + '\n' + readdirSync(stylesDir)
+const rawCss = bundledCss + '\n' + readdirSync(stylesDir)
   .filter(f => f.endsWith('.css'))
   // guarantees order of inclusion is the same across OS platforms
   // in theory sort here matters little, but two builds could output different
@@ -27,6 +30,7 @@ const css = bundledCss + '\n' + readdirSync(stylesDir)
   .map(f => readFileSync(join(stylesDir, f), 'utf8'))
   .join('\n');
 
+const css = transformSync(rawCss, { loader: 'css', minify: true }).code;
 const js = readFileSync(join(root, 'build/engine.bundle.js'), 'utf8');
 
 let html = readFileSync(join(root, 'src/index.html'), 'utf8');

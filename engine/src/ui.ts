@@ -1,15 +1,47 @@
-import type { Modal } from './types.js';
+import type { FieldDef, Modal } from './types.js';
 import { getMaxImageKb } from './settings.js';
 import { highlightBlock } from './highlight.js';
+
+const KNOWN_TYPES = new Set(['text', 'email', 'password', 'number', 'tel', 'date', 'textarea']);
+
+function camelToLabel(s: string): string {
+  return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
+}
+
+function parseFields(text: string): FieldDef[] {
+  return text.split(',').map(s => s.trim()).filter(Boolean).map(def => {
+    const colonIdx = def.indexOf(':');
+    if (colonIdx === -1) {
+      return { key: `form.${def}`, label: camelToLabel(def), type: 'text', maxlength: null, options: null };
+    }
+    const name = def.slice(0, colonIdx).trim();
+    const rest = def.slice(colonIdx + 1).trim();
+    const key = `form.${name}`;
+    const label = camelToLabel(name);
+    if (rest.includes('|')) {
+      return { key, label, type: 'select', maxlength: null, options: rest.split('|').map(o => o.trim()) };
+    }
+    const sepIdx = rest.indexOf(':');
+    const typePart = sepIdx === -1 ? rest : rest.slice(0, sepIdx);
+    const limitStr = sepIdx === -1 ? '' : rest.slice(sepIdx + 1);
+    if (KNOWN_TYPES.has(typePart)) {
+      const parsed = limitStr ? parseInt(limitStr, 10) : null;
+      const maxlength = parsed !== null && !isNaN(parsed) ? parsed : null;
+      return { key, label, type: typePart, maxlength, options: null };
+    }
+    return { key, label, type: 'text', maxlength: null, options: null };
+  });
+}
 
 export function closeModals(): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
 }
 
-function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string[] } {
+function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string[]; fieldSections: FieldDef[][] } {
   let node: Node | null = a.parentElement;
   let desc = '';
   const keys: string[] = [];
+  const fieldSections: FieldDef[][] = [];
   while (node) {
     node = node.previousSibling;
     if (!node) break;
@@ -17,11 +49,13 @@ function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string
     if (node.nodeType !== Node.COMMENT_NODE) break;
     const text = (node as Comment).data.trim();
     const reasonMatch = text.match(/^script_reasoning\s*:\s*([\s\S]*)/i);
-    const dataMatch = text.match(/^data\s*:\s*([\s\S]*)/i);
+    const dataMatch   = text.match(/^data\s*:\s*([\s\S]*)/i);
+    const fieldsMatch = text.match(/^fields\s*:\s*([\s\S]*)/i);
     if (reasonMatch) desc = reasonMatch[1].trim();
-    if (dataMatch) keys.push(...dataMatch[1].split(',').map(s => s.trim()).filter(Boolean));
+    if (dataMatch)   keys.push(...dataMatch[1].split(',').map(s => s.trim()).filter(Boolean));
+    if (fieldsMatch) fieldSections.unshift(parseFields(fieldsMatch[1].trim()));
   }
-  return { desc, keys };
+  return { desc, keys, fieldSections };
 }
 
 async function checkSize(src: string): Promise<boolean> {
@@ -107,9 +141,10 @@ function annotateLinks(container: Element): void {
     if (href.startsWith('http://') || href.startsWith('https://')) {
       a.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">🌐</span>`);
     } else if (href.startsWith('wasm:')) {
-      const { desc, keys } = parseWasmDirectives(a);
+      const { desc, keys, fieldSections } = parseWasmDirectives(a);
       a.dataset.desc = desc;
       a.dataset.keys = keys.join(',');
+      if (fieldSections.length) a.dataset.fields = JSON.stringify(fieldSections);
       a.insertAdjacentHTML('afterend',
         `<button class="nw-wasm-info" data-href="${href}" data-desc="${desc}" data-keys="${keys.join(',')}" aria-label="Script info">⚙</button>`
       );
@@ -117,8 +152,30 @@ function annotateLinks(container: Element): void {
   });
 }
 
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function addHeadingIds(container: Element): void {
+  const seen = new Map<string, number>();
+  container.querySelectorAll<HTMLElement>('h1,h2,h3,h4,h5,h6').forEach(h => {
+    if (h.id) return;
+    const base = slugify(h.textContent ?? '');
+    if (!base) return;
+    const n = seen.get(base) ?? 0;
+    seen.set(base, n + 1);
+    h.id = n === 0 ? base : `${base}-${n}`;
+  });
+}
+
+export function scrollToAnchor(id: string): void {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 export function renderPage(md: string): void {
   closeModals();
+  window.scrollTo(0, 0);
   const content = document.getElementById('content')!;
   const html = window.newwebRender!(md).replace(
     /<img\b([^>]*)>/gi,
@@ -129,6 +186,7 @@ export function renderPage(md: string): void {
     }
   );
   content.innerHTML = html;
+  addHeadingIds(content);
   annotateLinks(content);
   highlightBlock(content);
   void processImages(content);
@@ -157,6 +215,117 @@ export function showModal(md: string, closeLabel = 'Close'): Modal {
   return dlg;
 }
 
+export function showFormModal(
+  linkText: string,
+  fieldSections: FieldDef[][],
+  onSubmit: (values: Record<string, string>) => void
+): void {
+  closeModals();
+  const dlg = document.createElement('dialog');
+  dlg.className = 'nw-form-modal';
+
+  const title = document.createElement('h3');
+  title.className = 'nw-form-title';
+  title.textContent = `Input Required for '${linkText}'`;
+  dlg.appendChild(title);
+
+  const form = document.createElement('form');
+  form.noValidate = false;
+
+  for (const section of fieldSections) {
+    const sec = document.createElement('div');
+    sec.className = 'nw-form-section';
+    for (const field of section) {
+      const wrap = document.createElement('div');
+      wrap.className = 'nw-form-field';
+
+      const lbl = document.createElement('label');
+      lbl.htmlFor = field.key;
+      lbl.textContent = field.label;
+      wrap.appendChild(lbl);
+
+      if (field.type === 'select') {
+        const sel = document.createElement('select');
+        sel.id = field.key;
+        sel.name = field.key;
+        sel.required = true;
+        const blank = document.createElement('option');
+        blank.value = '';
+        blank.textContent = `Choose ${field.label}…`;
+        blank.disabled = true;
+        blank.selected = true;
+        sel.appendChild(blank);
+        for (const opt of field.options!) {
+          const o = document.createElement('option');
+          o.value = opt;
+          o.textContent = opt;
+          sel.appendChild(o);
+        }
+        wrap.appendChild(sel);
+      } else if (field.type === 'textarea') {
+        const ta = document.createElement('textarea');
+        ta.id = field.key;
+        ta.name = field.key;
+        ta.required = true;
+        if (field.maxlength) ta.maxLength = field.maxlength;
+        wrap.appendChild(ta);
+      } else {
+        const inp = document.createElement('input');
+        inp.id = field.key;
+        inp.name = field.key;
+        inp.required = true;
+        if (field.type === 'number' && field.maxlength) {
+          inp.type = 'number';
+          inp.min = '0';
+          inp.step = '1';
+          inp.max = String(Math.pow(10, field.maxlength) - 1);
+        } else {
+          inp.type = field.type;
+          if (field.maxlength) inp.maxLength = field.maxlength;
+        }
+        wrap.appendChild(inp);
+      }
+
+      sec.appendChild(wrap);
+    }
+    form.appendChild(sec);
+  }
+
+  const actions = document.createElement('div');
+  actions.className = 'nw-form-actions';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.type = 'button';
+  cancelBtn.className = 'nw-modal-close';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', () => dlg.remove());
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.className = 'nw-form-submit';
+  submitBtn.textContent = linkText;
+
+  actions.appendChild(cancelBtn);
+  actions.appendChild(submitBtn);
+  form.appendChild(actions);
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const values: Record<string, string> = {};
+    for (const field of fieldSections.flat()) {
+      const el = form.elements.namedItem(field.key) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+      if (el) values[field.key] = el.value;
+    }
+    dlg.remove();
+    onSubmit(values);
+  });
+
+  dlg.appendChild(form);
+  document.body.appendChild(dlg);
+  dlg.showModal();
+  (form.elements[0] as HTMLElement | undefined)?.focus();
+}
+
 export function updateModal(m: Modal, md: string): void {
   const body = m.querySelector('.nw-modal-body');
   if (body) body.textContent = md;
@@ -167,9 +336,10 @@ export function showSpinner(): void {
   if (!s) {
     s = document.createElement('div');
     s.id = 'nw-spinner';
+    s.innerHTML = '<div id="nw-spinner-ring"></div><div id="nw-spinner-text">Running script…</div>';
     document.body.appendChild(s);
   }
-  s.style.display = 'block';
+  s.style.display = 'flex';
 }
 
 export function hideSpinner(): void {

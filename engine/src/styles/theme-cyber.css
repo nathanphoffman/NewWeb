@@ -8,7 +8,7 @@
   --bar-bg:    rgba(4,0,12,0.97);
   --bar-fg:    #f72585;
   --bar-border:rgba(114,9,183,0.55);
-  --font:      'Orbitron', 'Courier New', monospace;
+  --font:      'Courier New', monospace;
 }
 
 /* purple grid */
@@ -58,7 +58,7 @@
 [data-theme="cyber"] #content h1,
 [data-theme="cyber"] #content h2,
 [data-theme="cyber"] #content h3 {
-  font-family: 'Orbitron', monospace;
+  font-family: 'Courier New', monospace;
   color: #f72585;
   text-shadow: 0 0 12px rgba(247,37,133,0.85), 0 0 40px rgba(247,37,133,0.3);
   letter-spacing: 0.06em;
@@ -88,7 +88,7 @@
 }
 
 [data-theme="cyber"] .nw-logo {
-  font-family: 'Orbitron', monospace;
+  font-family: 'Courier New', monospace;
   color: #f72585;
   text-shadow: 0 0 12px rgba(247,37,133,0.9), 0 0 30px rgba(247,37,133,0.4);
   letter-spacing: 0.12em;

@@ -11,3 +11,63 @@ dialog {
 }
 dialog::backdrop { background: rgba(0,0,0,0.45); }
 .nw-modal-close { margin-top: 1rem; padding: 0.3em 1em; cursor: pointer; }
+
+/* ── form modal ────────────────────────────────────────── */
+.nw-form-title { margin: 0 0 1.25rem; font-size: 1.05rem; }
+
+.nw-form-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.nw-form-section:last-of-type { border-bottom: none; margin-bottom: 0; }
+
+.nw-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1 1 160px;
+}
+.nw-form-field label { font-size: 0.8rem; opacity: 0.75; }
+.nw-form-field input,
+.nw-form-field select,
+.nw-form-field textarea {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.35em 0.5em;
+  font: inherit;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.nw-form-field textarea { min-height: 4rem; resize: vertical; }
+.nw-form-field input:focus,
+.nw-form-field select:focus,
+.nw-form-field textarea:focus { outline: 2px solid var(--accent, var(--fg)); outline-offset: 1px; }
+
+.nw-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+.nw-form-actions .nw-modal-close,
+.nw-form-submit {
+  padding: 0.35em 1.1em;
+  cursor: pointer;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.95rem;
+  margin-top: 0;
+}
+.nw-form-submit {
+  background: var(--fg);
+  color: var(--bg);
+  border: none;
+}
+.nw-form-submit:hover { opacity: 0.85; }

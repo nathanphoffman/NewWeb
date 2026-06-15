@@ -71,7 +71,7 @@
   font-size: 0.88em;
   background: rgba(255,179,71,0.06);
   box-shadow: 0 0 10px rgba(255,179,71,0.12);
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 [data-theme="cats"] #content a:hover {

@@ -2,12 +2,30 @@ import './fonts.js';
 import init, { render as wasmRender } from '../build/pkg/engine.js';
 import { handleWasm } from './wasm.js';
 import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, navigateWithData, renderNoData, looksLikeBareUrl, warnBareUrl } from './nav.js';
-import { showToast, showModal, renderPage, closeModals } from './ui.js';
+import { showToast, showModal, showFormModal, renderPage, closeModals, scrollToAnchor } from './ui.js';
+import type { FieldDef } from './types.js';
 import './theme.js';
-import './settings.js';
+import { showSettingsModal } from './settings.js';
 
 const store = new Map<string, string>();
 let allowedKeys = new Set<string>();
+
+function updateViewDataBtn(): void {
+  const menu = document.getElementById('nw-bar-menu')!;
+  let btn = document.getElementById('nw-view-data') as HTMLButtonElement | null;
+  if (store.size > 0) {
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'nw-view-data';
+      btn.textContent = 'View Data';
+      btn.addEventListener('click', showDataModal);
+      const settings = document.getElementById('nw-settings')!;
+      menu.insertBefore(btn, settings);
+    }
+  } else {
+    btn?.remove();
+  }
+}
 
 function dataModalMd(): string {
   const entries = [...store.entries()];
@@ -47,12 +65,21 @@ document.addEventListener('click', (e: MouseEvent) => {
   const a = (e.target as Element).closest('a') as HTMLAnchorElement | null;
   if (!a) return;
   const href = a.getAttribute('href');
-  if (!href || href.startsWith('#')) return;
+  if (!href) return;
+  if (href.startsWith('#')) {
+    e.preventDefault();
+    const anchorId = href.slice(1);
+    const currentPage = location.hash.slice(1).split('#')[0] || 'main.md';
+    history.replaceState({ mdUrl: currentPage, anchor: anchorId }, '', '#' + currentPage + '#' + anchorId);
+    scrollToAnchor(anchorId);
+    return;
+  }
 
   if (href === 'nw:viewdata')  { e.preventDefault(); showDataModal(); return; }
   if (href === 'nw:cleardata') {
     e.preventDefault();
     store.clear();
+    updateViewDataBtn();
     const body = document.querySelector('dialog .nw-modal-body');
     if (body) body.innerHTML = window.newwebRender!(dataModalMd());
     return;
@@ -60,8 +87,27 @@ document.addEventListener('click', (e: MouseEvent) => {
 
   if (href.startsWith('wasm:')) {
     e.preventDefault();
-    allowedKeys = new Set((a.dataset.keys ?? '').split(',').filter(Boolean));
-    handleWasm(a).finally(() => { allowedKeys = new Set(); });
+    const fieldsJson = a.dataset.fields;
+    if (fieldsJson) {
+      const fieldSections = JSON.parse(fieldsJson) as FieldDef[][];
+      const linkText = a.textContent?.trim() ?? 'Submit';
+      showFormModal(linkText, fieldSections, values => {
+        const formKeys = Object.keys(values);
+        for (const [k, v] of Object.entries(values)) store.set(k, v);
+        allowedKeys = new Set([
+          ...(a.dataset.keys ?? '').split(',').filter(Boolean),
+          ...formKeys,
+        ]);
+        handleWasm(a).finally(() => {
+          for (const k of formKeys) store.delete(k);
+          allowedKeys = new Set();
+          updateViewDataBtn();
+        });
+      });
+    } else {
+      allowedKeys = new Set((a.dataset.keys ?? '').split(',').filter(Boolean));
+      handleWasm(a).finally(() => { allowedKeys = new Set(); });
+    }
     return;
   }
   if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); return; }
@@ -81,8 +127,10 @@ document.addEventListener('click', (e: MouseEvent) => {
 
 // back/forward navigation
 window.addEventListener('popstate', async (e: PopStateEvent) => {
-  const url = (e.state as { mdUrl?: string } | null)?.mdUrl ?? 'main.md';
+  const state = e.state as { mdUrl?: string; anchor?: string | null } | null;
+  const url = state?.mdUrl ?? 'main.md';
   await renderNoData(url);
+  if (state?.anchor) scrollToAnchor(state.anchor);
 });
 
 // bootstrap: init WASM renderer, expose host API, load initial page
@@ -103,14 +151,19 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
     error:   (md) => showToast(md, 'error'),
     more:    (md) => showModal(md),
     load:    (url, data) => navigateWithData(url, data),
-    store:   (key, value) => { store.set(key, value); },
+    store:   (key, value) => { store.set(key, value); updateViewDataBtn(); },
     get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
   };
 
-  document.getElementById('nw-view-data')!.addEventListener('click', showDataModal);
+  document.getElementById('nw-home')!.addEventListener('click', () => navigateTo('main'));
+  document.getElementById('nw-settings')!.addEventListener('click', () =>
+    showSettingsModal(() => [...store.entries()], showDataModal)
+  );
 
-  const initial = location.hash ? location.hash.slice(1) : 'main';
-  await replacePage(initial);
+  const hashVal = location.hash ? location.hash.slice(1) : 'main';
+  const [initialPage, initialAnchor = null] = hashVal.split('#') as [string, string?];
+  await replacePage(initialPage, initialAnchor ?? null);
+  if (initialAnchor) scrollToAnchor(initialAnchor);
 })().catch(err => {
   document.getElementById('content')!.innerHTML = `<pre>Boot error: ${err}</pre>`;
 });

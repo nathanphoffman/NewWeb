@@ -19,3 +19,11 @@ declare global {
 }
 
 export type Modal = HTMLDialogElement & { onCancel?: () => void };
+
+export type FieldDef = {
+  key: string;
+  label: string;
+  type: string;
+  maxlength: number | null;
+  options: string[] | null;
+};

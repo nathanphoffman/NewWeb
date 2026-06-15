@@ -1,3 +1,5 @@
+import { applyAnimPaused } from './theme.js';
+
 const MAX_IMAGE_KB_KEY = 'nw-settings-max-image-kb';
 const DEFAULT_MAX_IMAGE_KB = 200;
 
@@ -10,7 +12,16 @@ function setMaxImageKb(kb: number): void {
   localStorage.setItem(MAX_IMAGE_KB_KEY, String(kb));
 }
 
-export function showSettingsModal(): void {
+function makeSection(): HTMLElement {
+  const section = document.createElement('section');
+  section.className = 'nw-settings-section';
+  return section;
+}
+
+export function showSettingsModal(
+  getEntries: () => [string, string][],
+  onViewData: () => void
+): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
 
   const dlg = document.createElement('dialog');
@@ -20,12 +31,8 @@ export function showSettingsModal(): void {
   h2.textContent = 'Settings';
   dlg.appendChild(h2);
 
-  const section = document.createElement('section');
-  section.className = 'nw-settings-section';
-
-  const h3 = document.createElement('h3');
-  h3.textContent = 'Images';
-  section.appendChild(h3);
+  // ── Images ──────────────────────────────────────────────
+  const imgSection = makeSection();
 
   const row = document.createElement('label');
   row.className = 'nw-settings-row';
@@ -39,15 +46,75 @@ export function showSettingsModal(): void {
   input.value = String(getMaxImageKb());
   row.appendChild(rowLabel);
   row.appendChild(input);
-  section.appendChild(row);
+  imgSection.appendChild(row);
 
-  const hint = document.createElement('p');
-  hint.className = 'nw-settings-hint';
-  hint.textContent = 'Images larger than this require a manual click to load.';
-  section.appendChild(hint);
+  const imgHint = document.createElement('p');
+  imgHint.className = 'nw-settings-hint';
+  imgHint.textContent = 'Images larger than this require a manual click to load.';
+  imgSection.appendChild(imgHint);
+  dlg.appendChild(imgSection);
 
-  dlg.appendChild(section);
+  // ── Animations ──────────────────────────────────────────
+  const animSection = makeSection();
 
+  const animRow = document.createElement('div');
+  animRow.className = 'nw-settings-row';
+
+  const animLabel = document.createElement('span');
+  const isPaused = localStorage.getItem('nw-paused') === 'true';
+  animLabel.textContent = 'Page animations';
+
+  const animBtn = document.createElement('button');
+  animBtn.className = 'nw-settings-anim-btn';
+  animBtn.textContent = isPaused ? 'Resume' : 'Stop';
+  animBtn.addEventListener('click', () => {
+    const nowPaused = !document.documentElement.classList.contains('nw-paused');
+    applyAnimPaused(nowPaused);
+    localStorage.setItem('nw-paused', String(nowPaused));
+    animBtn.textContent = nowPaused ? 'Resume' : 'Stop';
+  });
+
+  animRow.appendChild(animLabel);
+  animRow.appendChild(animBtn);
+  animSection.appendChild(animRow);
+  dlg.appendChild(animSection);
+
+  // ── Data ────────────────────────────────────────────────
+  const dataSection = makeSection();
+
+  const entries = getEntries();
+  const hasData = entries.length > 0;
+
+  const dataRow = document.createElement('div');
+  dataRow.className = 'nw-settings-row';
+
+  const dataLabel = document.createElement('span');
+  dataLabel.textContent = 'Session data';
+
+  const dataBtn = document.createElement('button');
+  dataBtn.className = 'nw-settings-data-btn';
+  dataBtn.textContent = 'View Data';
+  dataBtn.disabled = !hasData;
+  if (!hasData) dataBtn.classList.add('nw-settings-data-btn--empty');
+  dataBtn.addEventListener('click', () => {
+    dlg.remove();
+    onViewData();
+  });
+
+  dataRow.appendChild(dataLabel);
+  dataRow.appendChild(dataBtn);
+  dataSection.appendChild(dataRow);
+
+  if (!hasData) {
+    const noData = document.createElement('p');
+    noData.className = 'nw-settings-hint';
+    noData.textContent = 'No data is currently stored.';
+    dataSection.appendChild(noData);
+  }
+
+  dlg.appendChild(dataSection);
+
+  // ── Actions ─────────────────────────────────────────────
   const actions = document.createElement('div');
   actions.className = 'nw-settings-actions';
 
@@ -72,5 +139,3 @@ export function showSettingsModal(): void {
   document.body.appendChild(dlg);
   dlg.showModal();
 }
-
-document.getElementById('nw-settings')!.addEventListener('click', showSettingsModal);

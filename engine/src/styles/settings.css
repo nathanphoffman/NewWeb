@@ -69,6 +69,23 @@
   cursor: pointer;
 }
 
+.nw-settings-anim-btn,
+.nw-settings-data-btn {
+  padding: 0.3em 0.9em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: none;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.nw-settings-data-btn--empty {
+  opacity: 0.35;
+  cursor: default;
+}
+
 .nw-settings-cancel {
   padding: 0.4em 1.2em;
   background: none;

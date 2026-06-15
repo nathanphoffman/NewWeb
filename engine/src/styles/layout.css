@@ -24,7 +24,7 @@ body {
 #content h1, #content h2, #content h3 { margin: 1.2em 0 0.4em; }
 #content p   { margin: 0.6em 0; }
 #content hr  { margin: 1.8em 0; border: none; border-top: 1px solid var(--border); }
-#content ul, #content ol { margin: 1em 0 1em 1.5em; }
+#content ul, #content ol { margin: 1em 0 1em 2.2em; }
 #content li  { margin: 0.3em 0; }
 #content a, dialog a { color: var(--link); }
 #content blockquote {
@@ -70,15 +70,27 @@ body {
   vertical-align: baseline;
 }
 
-/* ── spinner ──────────────────────────────────────────── */
+/* ── loading splash ───────────────────────────────────── */
 #nw-spinner {
-  position: fixed; top: 0.5rem; right: 1rem;
-  width: 18px; height: 18px;
-  border: 2px solid var(--border);
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+#nw-spinner-ring {
+  width: 48px; height: 48px;
+  border: 3px solid var(--border);
   border-top-color: var(--link);
   border-radius: 50%;
-  animation: nw-spin 0.6s linear infinite;
-  display: none;
+  animation: nw-spin 0.7s linear infinite;
+}
+#nw-spinner-text {
+  font-size: 0.95rem;
+  opacity: 0.6;
+  font-family: system-ui, sans-serif;
 }
 @keyframes nw-spin { to { transform: rotate(360deg); } }
 
