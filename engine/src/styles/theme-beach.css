@@ -83,7 +83,7 @@ dialog a {
   border-left: 0px;
   border-right: 0px;
   border-top: 0px;
-  border-color: #1a6b80;
+  border-color: #1a6b8050;
   background: rgba(217,95,59,0.05);
   transition: background 0.18s, border-color 0.18s;
 }
