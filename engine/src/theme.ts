@@ -1,12 +1,12 @@
 import { addCats, removeCats } from './themes/cats';
 import { startMatrixRain, stopMatrixRain } from './themes/terminal';
 import { startPetals, stopPetals } from './themes/sakura';
-import { startTerminalCursor, stopTerminalCursor } from './themes/newspaper';
+import { startTerminalCursor, stopTerminalCursor } from './themes/folio';
 import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
 import { startMossTendrils, stopMossTendrils } from './themes/moss';
 
-const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'linen', 'storm'];
+const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'folio', 'storm'];
 
 let pageSuggestions: string[] = [];
 
@@ -43,7 +43,7 @@ function applyTheme(theme: string): void {
   sel.value = theme;
   if (theme === 'cats') addCats(); else removeCats();
   if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
-  if (theme === 'linen') startTerminalCursor(); else stopTerminalCursor();
+  if (theme === 'folio') startTerminalCursor(); else stopTerminalCursor();
   if (theme === 'sakura') startPetals(); else stopPetals();
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
   if (theme === 'storm') startStormRain(); else stopStormRain();
@@ -65,7 +65,7 @@ export function applyAnimPaused(paused: boolean): void {
     if (paused) stopMossTendrils();
     else startMossTendrils();
   }
-  if (theme === 'linen') {
+  if (theme === 'folio') {
     if (paused) stopTerminalCursor();
     else startTerminalCursor();
   }
