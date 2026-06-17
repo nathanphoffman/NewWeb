@@ -147,7 +147,49 @@ function stopPetals(): void {
   document.querySelectorAll('.nw-sakura-petal').forEach(el => el.remove());
 }
 
-const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura'];
+let crtFlickerTimer: ReturnType<typeof setTimeout> | null = null;
+
+function fireCRTFlash(): void {
+  if (document.documentElement.classList.contains('nw-paused')) return;
+  const el = document.createElement('div');
+  const topPct  = Math.random() * 85;
+  const heightPx = 4 + Math.random() * 90;
+  const opacity  = (0.04 + Math.random() * 0.10).toFixed(3);
+  el.style.cssText =
+    `position:fixed;left:0;right:0;top:${topPct}%;height:${heightPx}px;` +
+    `background:rgba(220,195,60,${opacity});pointer-events:none;z-index:10000;` +
+    `opacity:0;transition:opacity 80ms ease-in;`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => {
+    el.style.opacity = '1';
+    const hold = 60 + Math.random() * 180;
+    setTimeout(() => {
+      el.style.transition = 'opacity 260ms ease-out';
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 300);
+    }, hold);
+  });
+}
+
+function scheduleCRTFlash(): void {
+  const delay = 1200 + Math.random() * 5000;
+  crtFlickerTimer = setTimeout(() => {
+    fireCRTFlash();
+    scheduleCRTFlash();
+  }, delay);
+}
+
+function startCRTFlicker(): void {
+  stopCRTFlicker();
+  scheduleCRTFlash();
+}
+
+function stopCRTFlicker(): void {
+  if (crtFlickerTimer !== null) { clearTimeout(crtFlickerTimer); crtFlickerTimer = null; }
+  document.querySelectorAll('.nw-crt-flash').forEach(el => el.remove());
+}
+
+const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'mustard', 'vaporwave', 'toast', 'crt'];
 
 let pageSuggestions: string[] = [];
 
@@ -185,6 +227,7 @@ function applyTheme(theme: string): void {
   if (theme === 'cats') addCats(); else removeCats();
   if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
   if (theme === 'sakura') startPetals(); else stopPetals();
+  if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
 }
 
 export function applyAnimPaused(paused: boolean): void {
