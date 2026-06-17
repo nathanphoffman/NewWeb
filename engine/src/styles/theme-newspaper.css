@@ -144,3 +144,7 @@ dialog a {
   font-size: 0.88em;
   border: 1px solid var(--border);
 }
+
+#content {
+  border: 1px dotted gray;
+}
