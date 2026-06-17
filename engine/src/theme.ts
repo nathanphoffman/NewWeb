@@ -97,7 +97,7 @@ function stopMatrixRain(): void {
   document.getElementById('nw-matrix')?.remove();
 }
 
-const VALID_THEMES = ['default', 'carbon', 'stone', 'newspaper', 'terminal', 'warm', 'nasa', 'aurora', 'cyber', 'cats'];
+const VALID_THEMES = ['default', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'rust'];
 
 let pageSuggestions: string[] = [];
 
@@ -122,7 +122,8 @@ export function suggestTheme(names: string[]): void {
   pageSuggestions = names;
   const suggested = getSuggestedTheme();
   annotateSuggestion(suggested);
-  if (suggested && !localStorage.getItem('nw-theme')) {
+  const funEnabled = localStorage.getItem('nw-fun-themes') === 'true';
+  if (suggested && !localStorage.getItem('nw-theme') && (funEnabled || !FUN_THEMES.includes(suggested))) {
     applyTheme(suggested);
   }
 }
@@ -137,6 +138,19 @@ function applyTheme(theme: string): void {
 
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
+}
+
+const FUN_THEMES = ['cats', 'cyber'];
+
+export function applyFunThemes(enabled: boolean): void {
+  const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
+  for (const opt of Array.from(sel.options)) {
+    if (FUN_THEMES.includes(opt.value)) opt.hidden = !enabled;
+  }
+  if (!enabled && FUN_THEMES.includes(sel.value)) {
+    applyTheme('default');
+    localStorage.removeItem('nw-theme');
+  }
 }
 
 // hamburger toggle
@@ -154,6 +168,7 @@ applyAnimPaused(savedPaused);
 // theme picker
 const savedTheme = localStorage.getItem('nw-theme');
 if (savedTheme) applyTheme(savedTheme);
+applyFunThemes(localStorage.getItem('nw-fun-themes') === 'true');
 document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event) => {
   const value = (e.target as HTMLSelectElement).value;
   applyTheme(value);

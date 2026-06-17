@@ -1,18 +1,18 @@
-[data-theme="nasa"] {
+:root {
   --bg:        #060b1a;
   --fg:        #c8e6ff;
   --muted:     #5a8ab0;
   --link:      #4fc3f7;
   --border:    rgba(79,195,247,0.2);
-  --code-bg:   rgba(0,20,60,0.85);
+  --code-bg:   rgba(0,10,38,0.97);
   --bar-bg:    rgba(4,10,30,0.97);
   --bar-fg:    #4fc3f7;
   --bar-border:rgba(11,61,145,0.9);
-  --font:      system-ui, sans-serif;
+  --font:      Verdana, sans-serif;
 }
 
 /* nebula on body background — frees ::before and ::after for warp layers */
-[data-theme="nasa"] body {
+body {
   background-color: #060b1a;
   background-image:
     radial-gradient(ellipse 80% 60% at 10% 35%, rgba(11,61,145,0.5)  0%, transparent 70%),
@@ -32,7 +32,7 @@
 }
 
 /* star layer 1 */
-[data-theme="nasa"] body::before {
+body::before {
   content: '';
   position: fixed;
   top: 0; left: 0;
@@ -85,7 +85,7 @@
 }
 
 /* star layer 2 — same stars, offset by half the period for seamless loop */
-[data-theme="nasa"] body::after {
+body::after {
   content: '';
   position: fixed;
   top: 0; left: 0;
@@ -137,7 +137,7 @@
     1100px 380px 0 1px rgba(255,240,200,0.9), 1100px 380px 5px 0 rgba(255,220,150,0.15);
 }
 
-[data-theme="nasa"] #content {
+#content {
   background: rgba(6,11,26,0.72);
   border: 1px solid rgba(79,195,247,0.12);
   border-radius: 4px;
@@ -145,21 +145,21 @@
   -webkit-backdrop-filter: blur(3px);
 }
 
-[data-theme="nasa"] #content h1,
-[data-theme="nasa"] #content h2,
-[data-theme="nasa"] #content h3 {
-  color: #7dd4f8;
-  text-shadow: 0 0 18px rgba(79,195,247,0.35);
-  letter-spacing: 0.03em;
+#content p {
+  letter-spacing: 0.02em;
 }
 
-[data-theme="nasa"] #content a {
-  display: inline-block;
-  padding: 0.28em 0.85em;
-  border: 1px solid rgba(79,195,247,0.55);
+#content h1,
+#content h2,
+#content h3 {
+  color: #7dd4f8;
+  text-shadow: 0 0 18px rgba(79,195,247,0.35);
+  letter-spacing: 0.08em;
+}
+
+#content a {
+  border-color: rgba(79,195,247,0.55);
   border-radius: 2px;
-  color: #4fc3f7;
-  text-decoration: none;
   font-family: 'Courier New', monospace;
   font-size: 0.82em;
   letter-spacing: 0.1em;
@@ -169,19 +169,19 @@
   transition: background 0.18s, box-shadow 0.18s, text-shadow 0.18s, border-color 0.18s;
 }
 
-[data-theme="nasa"] #content a:hover {
+#content a:hover {
   background: rgba(79,195,247,0.13);
   border-color: #4fc3f7;
   box-shadow: 0 0 18px rgba(79,195,247,0.38), inset 0 0 10px rgba(79,195,247,0.08);
   text-shadow: 0 0 8px rgba(79,195,247,0.7);
 }
 
-[data-theme="nasa"] #nw-bar {
+#nw-bar {
   box-shadow: 0 1px 24px rgba(11,61,145,0.5);
   letter-spacing: 0.03em;
 }
 
-[data-theme="nasa"] .nw-logo {
+.nw-logo {
   color: #4fc3f7;
   text-shadow: 0 0 12px rgba(79,195,247,0.55);
   font-family: 'Courier New', monospace;
@@ -190,25 +190,25 @@
   font-weight: 900;
 }
 
-[data-theme="nasa"] #nw-bar select {
+#nw-bar select {
   background: rgba(4,10,30,0.95);
   border-color: rgba(79,195,247,0.35);
 }
 
-[data-theme="nasa"] dialog {
+dialog {
   background: rgba(4,10,30,0.96);
   border-color: rgba(79,195,247,0.35);
   box-shadow: 0 0 40px rgba(79,195,247,0.18);
 }
 
-[data-theme="nasa"] .nw-image-frame {
+.nw-image-frame {
   background: rgba(0,20,60,0.85);
   border-color: rgba(79,195,247,0.45);
   box-shadow: 0 0 16px rgba(79,195,247,0.22), inset 0 0 8px rgba(79,195,247,0.06);
   border-radius: 2px;
 }
 
-[data-theme="nasa"] .nw-image-frame__caption {
+.nw-image-frame__caption {
   font-family: 'Courier New', monospace;
   font-size: 0.75em;
   letter-spacing: 0.08em;

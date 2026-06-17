@@ -1,7 +1,6 @@
 engine/build/
 engine/lib/
-engine/node_modules/
-electron/node_modules/
+node_modules/
 electron/dist/
 shared/
 /index.html

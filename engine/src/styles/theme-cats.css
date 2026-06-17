@@ -1,10 +1,10 @@
-[data-theme="cats"] {
+:root {
   --bg:        #0d0a1a;
   --fg:        #f0e8d0;
   --muted:     #8a7a60;
   --link:      #ffb347;
   --border:    rgba(255,179,71,0.2);
-  --code-bg:   rgba(20,10,35,0.85);
+  --code-bg:   rgba(8,4,18,0.97);
   --bar-bg:    rgba(10,7,20,0.97);
   --bar-fg:    #ffb347;
   --bar-border:rgba(80,40,120,0.9);
@@ -12,7 +12,7 @@
 }
 
 /* moon + night sky + tiled stars on body background */
-[data-theme="cats"] body {
+body {
   background-color: #0d0a1a;
   background-image:
     radial-gradient(circle 80px at 75% 15%, rgba(255,252,220,1) 0%, rgba(255,245,180,0.9) 45%, transparent 70%),
@@ -46,7 +46,7 @@
   will-change: filter, transform;
 }
 
-[data-theme="cats"] #content {
+#content {
   position: relative;
   z-index: 1;
   background: rgba(13,10,26,0.88);
@@ -54,59 +54,57 @@
   border-radius: 8px;
 }
 
-[data-theme="cats"] #content h1,
-[data-theme="cats"] #content h2,
-[data-theme="cats"] #content h3 {
+#content h1,
+#content h2,
+#content h3 {
   color: #ffd080;
   text-shadow: 0 0 16px rgba(255,179,71,0.4);
 }
 
-[data-theme="cats"] #content a {
-  display: inline-block;
+#content a {
   padding: 0.3em 1.1em;
-  border: 1.5px solid rgba(255,179,71,0.55);
+  border-width: 1.5px;
+  border-color: rgba(255,179,71,0.55);
   border-radius: 20px;
-  color: #ffb347;
-  text-decoration: none;
   font-size: 0.88em;
   background: rgba(255,179,71,0.06);
   box-shadow: 0 0 10px rgba(255,179,71,0.12);
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
-[data-theme="cats"] #content a:hover {
+#content a:hover {
   background: rgba(255,179,71,0.16);
   border-color: #ffb347;
   box-shadow: 0 0 20px rgba(255,179,71,0.42);
 }
 
-[data-theme="cats"] #nw-bar {
+#nw-bar {
   box-shadow: 0 1px 20px rgba(80,20,120,0.5);
 }
 
-[data-theme="cats"] .nw-logo {
+.nw-logo {
   color: #ffb347;
   text-shadow: 0 0 10px rgba(255,179,71,0.5);
 }
 
-[data-theme="cats"] #nw-bar select {
+#nw-bar select {
   background: rgba(10,7,20,0.95);
   border-color: rgba(255,179,71,0.35);
 }
 
-[data-theme="cats"] dialog {
+dialog {
   background: rgba(10,7,20,0.96);
   border-color: rgba(255,179,71,0.35);
   box-shadow: 0 0 40px rgba(255,179,71,0.18);
 }
 
-[data-theme="cats"] .nw-image-frame {
+.nw-image-frame {
   border: 1.5px solid rgba(255,179,71,0.55);
   border-radius: 16px;
   background: rgba(20,10,35,0.85);
   box-shadow: 0 0 14px rgba(255,179,71,0.16);
 }
 
-[data-theme="cats"] .nw-image-frame__caption {
+.nw-image-frame__caption {
   color: #8a7a60;
 }

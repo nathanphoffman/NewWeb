@@ -68,10 +68,15 @@ document.addEventListener('click', (e: MouseEvent) => {
   if (!href) return;
   if (href.startsWith('#')) {
     e.preventDefault();
-    const anchorId = href.slice(1);
-    const currentPage = location.hash.slice(1).split('#')[0] || 'main.md';
-    history.replaceState({ mdUrl: currentPage, anchor: anchorId }, '', '#' + currentPage + '#' + anchorId);
-    scrollToAnchor(anchorId);
+    const inner = href.slice(1);
+    const basePart = inner.split('#')[0];
+    if (basePart.includes('/') || basePart.endsWith('.md')) {
+      navigateTo(inner);
+    } else {
+      const currentPage = location.hash.slice(1).split('#')[0] || 'main.md';
+      history.replaceState({ mdUrl: currentPage, anchor: inner }, '', '#' + currentPage + '#' + inner);
+      scrollToAnchor(inner);
+    }
     return;
   }
 
@@ -131,6 +136,17 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
   const url = state?.mdUrl ?? 'main.md';
   await renderNoData(url);
   if (state?.anchor) scrollToAnchor(state.anchor);
+});
+
+// manual URL edits (typing in address bar, hitting Enter)
+// Skip if history.state is set — that means popstate already handled it (back/forward),
+// or we pushed this entry ourselves via pushState/replaceState.
+window.addEventListener('hashchange', async () => {
+  if (history.state) return;
+  const hashVal = location.hash.slice(1) || 'main';
+  const [page, anchor = null] = hashVal.split('#');
+  await renderNoData(page || 'main.md');
+  if (anchor) scrollToAnchor(anchor);
 });
 
 // bootstrap: init WASM renderer, expose host API, load initial page

@@ -1,4 +1,4 @@
-[data-theme="warm"] {
+:root {
   --bg:        #f9f5ea;
   --fg:        #1a3d4a;
   --muted:     #5a8a96;
@@ -8,37 +8,40 @@
   --bar-bg:    #1a3d4a;
   --bar-fg:    #f9f5ea;
   --bar-border:#0f2a35;
-  --font:      system-ui, sans-serif;
+  --font:      Georgia, serif;
 }
 
 /* subtle sand-to-ocean gradient on the body */
-[data-theme="warm"] body {
+body {
   background: linear-gradient(160deg, #f9f5ea 0%, #edf6f8 100%);
   min-height: 100vh;
 }
 
 /* ── headings ──────────────────────────────────────────── */
-[data-theme="warm"] #content h1,
-[data-theme="warm"] #content h2,
-[data-theme="warm"] #content h3 {
+#content h1,
+#content h2,
+#content h3 {
   letter-spacing: 0.01em;
 }
 
-[data-theme="warm"] #content h1 { color: #d95f3b; }
-[data-theme="warm"] #content h2 { color: #1a6b80; }
-[data-theme="warm"] #content h3 { color: #5a8a96; }
+#content h1 { color: #d95f3b; }
+#content h2 { color: #1a6b80; }
+#content h3 { color: #5a8a96; }
 
 /* ── links ─────────────────────────────────────────────── */
-[data-theme="warm"] #content a,
-[data-theme="warm"] dialog a {
-  color: #d95f3b;
+#content a,
+dialog a {
   font-weight: 600;
 }
 
-[data-theme="warm"] #content a:hover { color: #b84820; }
+#content a:hover {
+  color: #b84820;
+  border-color: #b84820;
+  background: rgba(217,95,59,0.07);
+}
 
 /* ── blockquotes ───────────────────────────────────────── */
-[data-theme="warm"] #content blockquote {
+#content blockquote {
   border-left: 3px solid #5ab4c8;
   color: #1a6b80;
   background: rgba(93,180,200,0.07);
@@ -47,29 +50,29 @@
 }
 
 /* ── hr ────────────────────────────────────────────────── */
-[data-theme="warm"] #content hr {
+#content hr {
   border-top-color: #bddde4;
 }
 
 /* ── images ────────────────────────────────────────────── */
-[data-theme="warm"] .nw-image-frame {
+.nw-image-frame {
   border: 2px solid #5ab4c8;
   box-shadow: 0 4px 14px rgba(26,109,128,0.12);
   border-radius: 8px;
 }
 
-[data-theme="warm"] .nw-image-frame__caption {
+.nw-image-frame__caption {
   font-style: italic;
   color: var(--muted);
 }
 
 /* ── bar ───────────────────────────────────────────────── */
-[data-theme="warm"] .nw-logo {
+.nw-logo {
   letter-spacing: 0.02em;
 }
 
-[data-theme="warm"] #nw-bar select,
-[data-theme="warm"] #nw-bar button {
+#nw-bar select,
+#nw-bar button {
   background: #0f2a35;
   color: #f9f5ea;
   border-color: #1a5060;

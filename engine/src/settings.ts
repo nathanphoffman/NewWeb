@@ -1,4 +1,4 @@
-import { applyAnimPaused } from './theme.js';
+import { applyAnimPaused, applyFunThemes } from './theme.js';
 
 const MAX_IMAGE_KB_KEY = 'nw-settings-max-image-kb';
 const DEFAULT_MAX_IMAGE_KB = 200;
@@ -79,6 +79,27 @@ export function showSettingsModal(
   animSection.appendChild(animRow);
   dlg.appendChild(animSection);
 
+  // ── Themes ──────────────────────────────────────────────
+  const themeSection = makeSection();
+
+  const funRow = document.createElement('label');
+  funRow.className = 'nw-settings-row';
+  const funLabel = document.createElement('span');
+  funLabel.textContent = 'Show fun themes';
+  const funCheck = document.createElement('input');
+  funCheck.type = 'checkbox';
+  funCheck.id = 'nw-setting-fun-themes';
+  funCheck.checked = localStorage.getItem('nw-fun-themes') === 'true';
+  funRow.appendChild(funLabel);
+  funRow.appendChild(funCheck);
+  themeSection.appendChild(funRow);
+
+  const funHint = document.createElement('p');
+  funHint.className = 'nw-settings-hint';
+  funHint.textContent = 'Adds Cats and Cyber to the theme list.';
+  themeSection.appendChild(funHint);
+  dlg.appendChild(themeSection);
+
   // ── Data ────────────────────────────────────────────────
   const dataSection = makeSection();
 
@@ -124,6 +145,8 @@ export function showSettingsModal(
   save.addEventListener('click', () => {
     const val = parseInt(input.value, 10);
     if (!isNaN(val) && val > 0) setMaxImageKb(val);
+    localStorage.setItem('nw-fun-themes', String(funCheck.checked));
+    applyFunThemes(funCheck.checked);
     dlg.remove();
   });
 

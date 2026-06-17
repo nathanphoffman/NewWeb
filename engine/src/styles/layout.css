@@ -26,7 +26,20 @@ body {
 #content hr  { margin: 1.8em 0; border: none; border-top: 1px solid var(--border); }
 #content ul, #content ol { margin: 1em 0 1em 2.2em; }
 #content li  { margin: 0.3em 0; }
-#content a, dialog a { color: var(--link); }
+#content a, dialog a {
+  display: inline-block;
+  padding: 0.2em 0.7em;
+  border: 1px solid var(--link);
+  border-radius: 3px;
+  color: var(--link);
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+#content a:hover, dialog a:hover {
+  background: color-mix(in srgb, var(--link) 12%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--link) 20%, transparent);
+}
 #content blockquote {
   margin: 1.2em 0;
   border-left: 3px solid var(--border);
@@ -44,6 +57,7 @@ body {
   background: var(--code-bg);
   padding: 0.8em;
   border-radius: 4px;
+  border: 1px solid var(--border);
   overflow-x: auto;
 }
 #content pre code { background: none; padding: 0; }
@@ -73,23 +87,26 @@ body {
 /* ── loading splash ───────────────────────────────────── */
 #nw-spinner {
   position: fixed; inset: 0; z-index: 1000;
-  background: var(--bg);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.25rem;
+  animation: nw-fadein 0.15s ease both;
 }
+@keyframes nw-fadein { from { opacity: 0; } to { opacity: 1; } }
 #nw-spinner-ring {
-  width: 48px; height: 48px;
-  border: 3px solid var(--border);
-  border-top-color: var(--link);
+  width: 64px; height: 64px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
   border-radius: 50%;
   animation: nw-spin 0.7s linear infinite;
 }
 #nw-spinner-text {
-  font-size: 0.95rem;
-  opacity: 0.6;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
   font-family: system-ui, sans-serif;
 }
 @keyframes nw-spin { to { transform: rotate(360deg); } }

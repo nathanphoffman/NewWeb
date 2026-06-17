@@ -1,4 +1,4 @@
-[data-theme="terminal"] {
+:root {
   --bg:        #0d0d0d;
   --fg:        #00ff41;
   --muted:     #00aa2a;
@@ -11,11 +11,11 @@
   --font:      'Courier New', monospace;
 }
 
-[data-theme="terminal"] #content {
+#content {
   position: relative;
   z-index: 1;
 }
 
-[data-theme="terminal"] .nw-image-frame {
+.nw-image-frame {
   box-shadow: 0 0 8px rgba(0,255,65,0.15);
 }

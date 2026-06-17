@@ -1,4 +1,4 @@
-[data-theme="newspaper"] {
+:root {
   --bg:        #f4efe6;
   --fg:        #0e0b08;
   --muted:     #6b5a48;
@@ -13,34 +13,34 @@
 }
 
 /* ── masthead bar ──────────────────────────────────────── */
-[data-theme="newspaper"] #nw-bar {
+#nw-bar {
   border-bottom: 3px double #f4efe6;
 }
 
-[data-theme="newspaper"] .nw-logo {
+.nw-logo {
   font-family: Georgia, serif;
   font-style: italic;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
 
-[data-theme="newspaper"] #nw-bar select,
-[data-theme="newspaper"] #nw-bar button {
+#nw-bar select,
+#nw-bar button {
   background: #1e1810;
   color: #f4efe6;
   border-color: #4a3c2c;
 }
 
 /* ── headings ──────────────────────────────────────────── */
-[data-theme="newspaper"] #content h1,
-[data-theme="newspaper"] #content h2,
-[data-theme="newspaper"] #content h3 {
+#content h1,
+#content h2,
+#content h3 {
   font-family: Georgia, serif;
   color: #0e0b08;
   letter-spacing: -0.02em;
 }
 
-[data-theme="newspaper"] #content h1 {
+#content h1 {
   font-size: 2.8em;
   font-weight: 900;
   line-height: 1.05;
@@ -49,7 +49,7 @@
   margin-bottom: 0.5em;
 }
 
-[data-theme="newspaper"] #content h2 {
+#content h2 {
   font-size: 1.35em;
   font-variant: small-caps;
   letter-spacing: 0.04em;
@@ -57,81 +57,81 @@
   padding-bottom: 0.2em;
 }
 
-[data-theme="newspaper"] #content h3 {
+#content h3 {
   font-size: 1.1em;
   font-weight: 400;
   font-style: italic;
 }
 
 /* ── body text ─────────────────────────────────────────── */
-[data-theme="newspaper"] #content p {
+#content p {
   line-height: 1.85;
   margin: 0.75em 0;
 }
 
 /* ── links ─────────────────────────────────────────────── */
-[data-theme="newspaper"] #content a,
-[data-theme="newspaper"] dialog a {
-  color: #0e0b08;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: #8b1a1a;
-  text-decoration-thickness: 1.5px;
+#content a,
+dialog a {
+  color: #8b1a1a;
+  border-color: rgba(139,26,26,0.4);
+  font-family: Georgia, serif;
 }
 
-[data-theme="newspaper"] #content a:hover {
-  color: #8b1a1a;
+#content a:hover {
+  color: #6b0f0f;
+  border-color: #8b1a1a;
+  background: rgba(139,26,26,0.05);
 }
 
 /* ── pull-quote blockquotes ────────────────────────────── */
-[data-theme="newspaper"] #content blockquote {
+#content blockquote {
   border-left: none;
   text-align: center;
-  padding: 1em 3em;
-  margin: 2em 0;
+  padding: 0.6em 2em;
+  margin: 1.2em 0;
   color: #0e0b08;
   font-family: Georgia, serif;
-  font-size: 1.35em;
+  font-size: 1.15em;
   font-style: italic;
   line-height: 1.45;
   position: relative;
 }
 
-[data-theme="newspaper"] #content blockquote::before,
-[data-theme="newspaper"] #content blockquote::after {
+#content blockquote::before,
+#content blockquote::after {
   font-family: Georgia, serif;
-  font-size: 5em;
+  font-size: 3.5em;
   line-height: 0;
   position: absolute;
   color: var(--border);
 }
 
-[data-theme="newspaper"] #content blockquote::before {
+#content blockquote::before {
   content: '\201C';
   left: 0.05em;
   top: 0.55em;
 }
 
-[data-theme="newspaper"] #content blockquote::after {
+#content blockquote::after {
   content: '\201D';
   right: 0.05em;
   bottom: -0.1em;
 }
 
 /* ── horizontal rules ──────────────────────────────────── */
-[data-theme="newspaper"] #content hr {
+#content hr {
   border: none;
   border-top: 3px double #0e0b08;
   margin: 2.2em 0;
 }
 
 /* ── images ────────────────────────────────────────────── */
-[data-theme="newspaper"] .nw-image-frame {
+.nw-image-frame {
   border: 2px solid #0e0b08;
   box-shadow: 3px 3px 0 #c8b89a;
 }
 
-[data-theme="newspaper"] .nw-image-frame__caption {
+.nw-image-frame__caption {
   font-family: Georgia, serif;
   font-style: italic;
   font-size: 0.78em;
@@ -139,8 +139,8 @@
 }
 
 /* ── code ──────────────────────────────────────────────── */
-[data-theme="newspaper"] #content code,
-[data-theme="newspaper"] #content pre {
+#content code,
+#content pre {
   font-size: 0.88em;
   border: 1px solid var(--border);
 }

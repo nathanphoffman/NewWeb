@@ -332,14 +332,11 @@ export function updateModal(m: Modal, md: string): void {
 }
 
 export function showSpinner(): void {
-  let s = document.getElementById('nw-spinner');
-  if (!s) {
-    s = document.createElement('div');
-    s.id = 'nw-spinner';
-    s.innerHTML = '<div id="nw-spinner-ring"></div><div id="nw-spinner-text">Running script…</div>';
-    document.body.appendChild(s);
-  }
+  const s = document.getElementById('nw-spinner')!;
+  s.style.animation = 'none';
   s.style.display = 'flex';
+  void s.offsetHeight; // force reflow so animation resets before we remove the override
+  s.style.animation = '';
 }
 
 export function hideSpinner(): void {
