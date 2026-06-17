@@ -1,5 +1,5 @@
 import { renderPage, showModal, showSuspendedBar, showToast, scrollToAnchor } from './ui.js';
-import { suggestTheme } from './theme.js';
+import { applyThemeSuggestion, suggestTheme } from './theme.js';
 import { processTemplate } from './template.js';
 
 const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
@@ -10,11 +10,6 @@ export function looksLikeBareUrl(href: string): boolean {
 
 export function fetchMd(url: string): Promise<string> {
   return fetch(url).then(r => r.text());
-}
-
-function applyThemeSuggestion(md: string): void {
-  const match = md.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
-  if (match) suggestTheme(match[1].split(','));
 }
 
 function extractRefreshWasm(md: string): string | null {

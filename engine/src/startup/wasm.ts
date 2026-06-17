@@ -62,7 +62,13 @@ export function startWASMEngineToPullMarkdown() {
       get: (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
     };
 
-    document.getElementById('nw-home')!.addEventListener('click', () => navigateTo('main'));
+    document.getElementById('nw-home')!.addEventListener('click', () => {
+      const barMenu = document.getElementById('nw-bar-menu');
+      const hamburger = document.getElementById('nw-hamburger');
+      barMenu?.classList.remove('open');
+      hamburger?.setAttribute('aria-expanded', 'false');
+      navigateTo('main');
+    });
     document.getElementById('nw-settings')!.addEventListener('click', () =>
       showSettingsModal(() => [...store.entries()], showDataModal)
     );

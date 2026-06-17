@@ -1,7 +1,6 @@
 import { addCats, removeCats } from './themes/cats';
 import { startMatrixRain, stopMatrixRain } from './themes/terminal';
 import { startPetals, stopPetals } from './themes/sakura';
-import { startTerminalCursor, stopTerminalCursor } from './themes/scribe';
 import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
 import { startMossTendrils, stopMossTendrils } from './themes/moss';
@@ -10,6 +9,11 @@ import { startCyberGleam, stopCyberGleam } from './themes/cyber';
 const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
 
 let pageSuggestions: string[] = [];
+
+export function applyThemeSuggestion(md: string): void {
+  const match = md.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
+  if (match) suggestTheme(match[1].split(','));
+}
 
 function getSuggestedTheme(): string | null {
   for (const name of pageSuggestions) {
@@ -44,7 +48,6 @@ function applyTheme(theme: string): void {
   sel.value = theme;
   if (theme === 'cats') addCats(); else removeCats();
   if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
-  if (theme === 'scribe') startTerminalCursor(); else stopTerminalCursor();
   if (theme === 'sakura') startPetals(); else stopPetals();
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
   if (theme === 'storm') startStormRain(); else stopStormRain();
@@ -54,6 +57,11 @@ function applyTheme(theme: string): void {
 
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
+  const contentEl = document.getElementById('content');
+  if (contentEl) {
+    contentEl.style.animationPlayState = paused ? 'paused' : '';
+    contentEl.style.setProperty('--nw-anim-state', paused ? 'paused' : 'running');
+  }
   const theme = document.documentElement.getAttribute('data-theme');
   if (theme === 'sakura') {
     if (paused) stopPetals();
@@ -66,10 +74,6 @@ export function applyAnimPaused(paused: boolean): void {
   if (theme === 'moss') {
     if (paused) stopMossTendrils();
     else startMossTendrils();
-  }
-  if (theme === 'scribe') {
-    if (paused) stopTerminalCursor();
-    else startTerminalCursor();
   }
   if (theme === 'cyber') {
     if (paused) stopCyberGleam();
