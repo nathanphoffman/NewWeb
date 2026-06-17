@@ -15,12 +15,6 @@
   box-shadow: 0 1px 0 rgba(255,255,255,0.05);
 }
 
-#content {
-  border-left: 1px solid #1e2532;
-  border-right: 1px solid #1e2532;
-  border-bottom: 1px solid #1e2532;
-}
-
 #content h1,
 #content h2,
 #content h3 {

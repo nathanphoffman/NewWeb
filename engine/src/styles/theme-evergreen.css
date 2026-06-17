@@ -1,0 +1,74 @@
+:root {
+  --bg:        #161f1a;
+  --fg:        #d8e8d0;
+  --muted:     #6a8a70;
+  --link:      #6abf7e;
+  --border:    rgba(100,160,110,0.22);
+  --code-bg:   #101810;
+  --bar-bg:    #0e1610;
+  --bar-fg:    #6abf7e;
+  --bar-border:rgba(90,145,100,0.35);
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #161f1a;
+}
+
+#content {
+  border-left: 1px solid rgba(100,160,110,0.18);
+  border-right: 1px solid rgba(100,160,110,0.18);
+  border-bottom: 1px solid rgba(100,160,110,0.18);
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  color: #e4f0dc;
+  letter-spacing: -0.01em;
+}
+
+#content h2 {
+  border-bottom: 1px solid rgba(100,160,110,0.20);
+  padding-bottom: 0.2em;
+}
+
+#content a {
+  border-color: rgba(106,191,126,0.38);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#content a:hover {
+  background: rgba(106,191,126,0.10);
+  border-color: #6abf7e;
+}
+
+#content blockquote {
+  border-left-color: rgba(106,191,126,0.35);
+  color: #6a8a70;
+}
+
+#nw-bar {
+  box-shadow: 0 1px 0 rgba(90,145,100,0.22);
+}
+
+.nw-logo {
+  color: #6abf7e;
+}
+
+#nw-bar select {
+  background: #0e1610;
+  border-color: rgba(90,145,100,0.35);
+}
+
+dialog {
+  background: #111a13;
+  border-color: rgba(100,160,110,0.22);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.50);
+}
+
+.nw-image-frame {
+  border-color: rgba(100,160,110,0.28);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  border-radius: 3px;
+}

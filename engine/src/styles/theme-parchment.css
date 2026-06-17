@@ -1,0 +1,79 @@
+:root {
+  --bg:        #f5f0e8;
+  --fg:        #2c2418;
+  --muted:     #8a7a62;
+  --link:      #7a3e10;
+  --border:    #d8cdb8;
+  --code-bg:   #ede6d8;
+  --bar-bg:    #ece5d8;
+  --bar-fg:    #5a3010;
+  --bar-border:#cec3ae;
+  --font:      Georgia, 'Times New Roman', serif;
+}
+
+body {
+  background-color: #f5f0e8;
+}
+
+#content {
+  border-left: 1px solid #d8cdb8;
+  border-right: 1px solid #d8cdb8;
+  border-bottom: 1px solid #d8cdb8;
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: bold;
+  color: #1e1608;
+  letter-spacing: 0.01em;
+}
+
+#content h2 {
+  border-bottom: 1px solid #d0c4aa;
+  padding-bottom: 0.2em;
+}
+
+#content a {
+  border-color: rgba(122,62,16,0.40);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#content a:hover {
+  background: rgba(122,62,16,0.08);
+  border-color: #7a3e10;
+}
+
+#content blockquote {
+  border-left-color: #c0a882;
+  color: #8a7a62;
+  font-style: italic;
+}
+
+#nw-bar {
+  box-shadow: 0 1px 0 #cec3ae;
+}
+
+.nw-logo {
+  color: #5a3010;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+#nw-bar select {
+  background: #ece5d8;
+  border-color: #cec3ae;
+}
+
+dialog {
+  background: #f2ece0;
+  border-color: #d0c4aa;
+  box-shadow: 0 4px 32px rgba(60,40,16,0.14);
+}
+
+.nw-image-frame {
+  border-color: #c8baa0;
+  box-shadow: 0 2px 12px rgba(60,40,16,0.12);
+  border-radius: 2px;
+}

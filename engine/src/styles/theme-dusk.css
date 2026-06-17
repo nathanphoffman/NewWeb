@@ -1,0 +1,75 @@
+:root {
+  --bg:        #1c1825;
+  --fg:        #e4ddf0;
+  --muted:     #8878a8;
+  --link:      #d4956a;
+  --border:    rgba(160,140,210,0.18);
+  --code-bg:   #141020;
+  --bar-bg:    #120e1e;
+  --bar-fg:    #d4956a;
+  --bar-border:rgba(140,120,190,0.28);
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #1c1825;
+}
+
+#content {
+  border-left: 1px solid rgba(160,140,210,0.14);
+  border-right: 1px solid rgba(160,140,210,0.14);
+  border-bottom: 1px solid rgba(160,140,210,0.14);
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  color: #ede8f8;
+  letter-spacing: -0.01em;
+}
+
+#content h2 {
+  border-bottom: 1px solid rgba(160,140,210,0.18);
+  padding-bottom: 0.2em;
+}
+
+#content a {
+  border-color: rgba(212,149,106,0.40);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#content a:hover {
+  background: rgba(212,149,106,0.10);
+  border-color: #d4956a;
+}
+
+#content blockquote {
+  border-left-color: rgba(160,140,210,0.40);
+  color: #8878a8;
+  font-style: italic;
+}
+
+#nw-bar {
+  box-shadow: 0 1px 0 rgba(140,120,190,0.20);
+}
+
+.nw-logo {
+  color: #d4956a;
+}
+
+#nw-bar select {
+  background: #120e1e;
+  border-color: rgba(140,120,190,0.30);
+}
+
+dialog {
+  background: #161220;
+  border-color: rgba(160,140,210,0.20);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.50);
+}
+
+.nw-image-frame {
+  border-color: rgba(160,140,210,0.22);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.50);
+  border-radius: 3px;
+}
