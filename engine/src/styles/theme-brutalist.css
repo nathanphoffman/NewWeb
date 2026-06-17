@@ -55,16 +55,16 @@ body {
 
 #content a {
   border-radius: 0;
-  border-color: #cc0000;
-  background: transparent;
-  color: #cc0000;
+  border-color: #aaa;
+  background: #1a1a1a;
+  color: #e6e4e0;
   transition: background 0.08s, color 0.08s;
 }
 
 #content a:hover {
-  background: #cc0000;
-  color: #e6e4e0;
-  border-color: #cc0000;
+  background: #000;
+  color: #fff;
+  border-color: #aaa;
 }
 
 #content blockquote {

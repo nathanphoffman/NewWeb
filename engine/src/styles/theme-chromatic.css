@@ -15,10 +15,33 @@ body {
   background-color: #08060f;
 }
 
+@property --nw-chroma-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes nw-chroma-spin {
+  to { --nw-chroma-angle: 360deg; }
+}
+
 #content {
-  border-left:   1px solid rgba(148,88,240,0.13);
-  border-right:  1px solid rgba(148,88,240,0.13);
-  border-bottom: 1px solid rgba(148,88,240,0.13);
+  position: relative;
+  background: #08060f;
+  border: none;
+}
+
+#content::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  background: conic-gradient(from var(--nw-chroma-angle), #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+  animation: nw-chroma-spin 5s linear infinite;
+}
+
+.nw-paused #content::before {
+  animation-play-state: paused;
 }
 
 #content h1 {

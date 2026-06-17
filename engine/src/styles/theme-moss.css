@@ -34,7 +34,7 @@ body {
 }
 
 #content a {
-  border-radius: 4px;
+  border-radius: 8px;
   border-color: #88a85c61;
   background: #88a85c0f;
   transition: background .15s, border-color .15s, box-shadow .15s;

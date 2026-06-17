@@ -5,9 +5,9 @@
   --link:      #6b4c35;
   --border:    #d8d2c6;
   --code-bg:   #ede9e1;
-  --bar-bg:    #1a1510;
-  --bar-fg:    #e8e0d0;
-  --bar-border:#2e261c;
+  --bar-bg:    #ede6db;
+  --bar-fg:    #221e18;
+  --bar-border:#221e18;
   --font:      Georgia, serif;
 }
 
@@ -119,7 +119,7 @@ body {
 }
 
 .nw-logo {
-  color: #e8e0d0;
+  color: #221e18;
   font-family: Georgia, serif;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -127,9 +127,13 @@ body {
 
 #nw-bar select,
 #nw-bar button {
-  background: #261e16;
-  color: #e8e0d0;
-  border-color: #3e3028;
+  background: #ede9e1;
+  color: #221e18;
+  border-color: #333;
+}
+
+#nw-bar {
+  border-color: #333;
 }
 
 dialog {
