@@ -1,14 +1,14 @@
 :root {
   --bg:            #f3f3ee;
   --fg:            #1a2840;
-  --muted:         #6080a8;
-  --link:          #2860b0;
-  --border:        #c0d0e4;
-  --code-bg:       #e8e8e2;
-  --bar-bg:        #ecece6;
-  --bar-fg:        #2860b0;
-  --bar-border:    #b8cce0;
-  --heading-color: #0e1c32;
+  --muted:         #5878a8;
+  --link:          #2070d8;
+  --border:        #b8d0e8;
+  --code-bg:       #e4ecf8;
+  --bar-bg:        #0d1e38;
+  --bar-fg:        #96c4f4;
+  --bar-border:    rgba(20,60,140,0.50);
+  --heading-color: #0a1828;
   --font:          system-ui, -apple-system, sans-serif;
 }
 
@@ -22,25 +22,31 @@
 }
 
 #content a:hover {
-  box-shadow: 0 0 0 3px rgba(40,96,176,0.12);
+  box-shadow: 0 0 0 3px rgba(32,112,216,0.14);
 }
 
 #content blockquote {
-  border-left-color: #b0c8e0;
+  border-left-color: #9ab8d8;
   font-style: italic;
 }
 
 #nw-bar {
-  box-shadow: 0 1px 0 #b8cce0;
+  box-shadow: 0 1px 0 rgba(20,60,140,0.40);
+}
+
+#nw-bar select,
+#nw-bar button {
+  background: #162840;
+  border-color: rgba(30,80,160,0.45);
 }
 
 dialog {
   background: #f0f0ea;
-  box-shadow: 0 4px 32px rgba(20,40,80,0.12);
+  box-shadow: 0 4px 32px rgba(10,30,80,0.14);
 }
 
 .nw-image-frame {
-  border-color: #b8cce0;
-  box-shadow: 0 2px 12px rgba(20,40,80,0.10);
+  border-color: #a8c4e0;
+  box-shadow: 0 2px 12px rgba(10,30,80,0.10);
   border-radius: 3px;
 }

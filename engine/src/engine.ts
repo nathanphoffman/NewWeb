@@ -59,12 +59,7 @@ document.addEventListener('click', (e: MouseEvent) => {
   showModal(buildInfoMd(desc, keys));
 });
 
-// link interception — dispatch by protocol or treat bare paths as markdown
-document.addEventListener('click', (e: MouseEvent) => {
-  const a = (e.target as Element).closest('a') as HTMLAnchorElement | null;
-  if (!a) return;
-  const href = a.getAttribute('href');
-  if (!href) return;
+function handleHashOnClick(e: MouseEvent, href: string) {
   if (href.startsWith('#')) {
     e.preventDefault();
     const inner = href.slice(1);
@@ -78,6 +73,29 @@ document.addEventListener('click', (e: MouseEvent) => {
     }
     return;
   }
+}
+
+function extractALink(e: MouseEvent) {
+  const a = (e.target as Element).closest('a') as HTMLAnchorElement | null;
+  return a;
+}
+
+function extractHrefAttribute(e: MouseEvent, a: HTMLAnchorElement | null) {
+  if (!a) return;
+  const href = a?.getAttribute('href');
+  return href;
+}
+
+// link interception — dispatch by protocol or treat bare paths as markdown
+document.addEventListener('click', (e: MouseEvent) => {
+
+  const a = extractALink(e);
+  const href = extractHrefAttribute(e, a);
+
+  const isNotValidLink = !a || !href;
+  if(isNotValidLink) return;
+
+  handleHashOnClick(e, href);
 
   if (href === 'nw:viewdata') { e.preventDefault(); showDataModal(); return; }
   if (href === 'nw:cleardata') {
