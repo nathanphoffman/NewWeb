@@ -3,7 +3,6 @@ import { startMatrixRain, stopMatrixRain } from './themes/terminal';
 import { startPetals, stopPetals } from './themes/sakura';
 import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
-import { startMossTendrils, stopMossTendrils } from './themes/moss';
 import { startCyberGleam, stopCyberGleam } from './themes/cyber';
 
 const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
@@ -50,7 +49,6 @@ function applyTheme(theme: string): void {
   if (theme === 'sakura') startPetals(); else stopPetals();
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
   if (theme === 'storm') startStormRain(); else stopStormRain();
-  if (theme === 'moss') startMossTendrils(); else stopMossTendrils();
   if (theme === 'cyber') startCyberGleam(); else stopCyberGleam();
 }
 
@@ -69,10 +67,6 @@ export function applyAnimPaused(paused: boolean): void {
   if (theme === 'storm') {
     if (paused) stopStormRain();
     else startStormRain();
-  }
-  if (theme === 'moss') {
-    if (paused) stopMossTendrils();
-    else startMossTendrils();
   }
   if (theme === 'cyber') {
     if (paused) stopCyberGleam();
