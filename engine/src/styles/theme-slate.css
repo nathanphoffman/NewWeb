@@ -15,6 +15,7 @@
 
 #content {
   background: rgba(26,34,44,0.55);
+  animation: nw-slate-shadow 18s ease-in-out infinite;
 }
 
 #content h1, #content h2, #content h3 {
