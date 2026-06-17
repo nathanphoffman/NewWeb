@@ -125,7 +125,7 @@ function spawnPetal(): void {
   wrapper.style.cssText =
     `position:fixed;left:${startX}vw;top:-${size + 10}px;` +
     `width:${size}px;height:${size * 1.25}px;` +
-    `opacity:${opacity};z-index:0;pointer-events:none;` +
+    `opacity:${opacity};z-index:2;pointer-events:none;` +
     `will-change:transform;` +
     `animation:nw-petal-fall ${dur}s linear forwards;`;
 
@@ -141,15 +141,72 @@ function spawnPetal(): void {
 function startPetals(): void {
   stopPetals();
   petalsActive = true;
-  for (let i = 0; i < 10; i++) setTimeout(spawnPetal, i * 700);
-  petalTimer = window.setInterval(spawnPetal, 900);
+  for (let i = 0; i < 5; i++) setTimeout(spawnPetal, i * 700);
+  petalTimer = window.setInterval(spawnPetal, 1200);
 }
 
-function stopPetals(): void {
+function stopPetals(fade = false): void {
   petalsActive = false;
   if (petalTimer !== null) { clearInterval(petalTimer); petalTimer = null; }
-  document.querySelectorAll('.nw-sakura-petal').forEach(el => el.remove());
+  const petals = document.querySelectorAll<HTMLElement>('.nw-sakura-petal');
+  if (fade && petals.length > 0) {
+    petals.forEach(el => {
+      el.style.transition = 'opacity 0.7s ease';
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 750);
+    });
+  } else {
+    petals.forEach(el => el.remove());
+  }
 }
+
+function collectTextNodes(node: Node, out: Text[]): void {
+  for (const child of node.childNodes) {
+    if (child.nodeType === Node.ELEMENT_NODE && (child as Element).tagName === 'A') continue;
+    if (child.nodeType === Node.TEXT_NODE) out.push(child as Text);
+    else collectTextNodes(child, out);
+  }
+}
+
+function startTerminalCursor(): void {
+  stopTerminalCursor();
+  const content = document.getElementById('content');
+  if (!content) return;
+  const paras = content.querySelectorAll('p');
+  if (paras.length === 0) return;
+  const lastP = paras[paras.length - 1];
+
+  // Collect all text nodes not inside <a> elements, then scan backwards
+  // for the last non-whitespace character and split the text node there.
+  const textNodes: Text[] = [];
+  collectTextNodes(lastP, textNodes);
+
+  for (let i = textNodes.length - 1; i >= 0; i--) {
+    const tn = textNodes[i];
+    const text = tn.textContent ?? '';
+    let pos = -1;
+    for (let j = text.length - 1; j >= 0; j--) {
+      if (/\S/.test(text[j])) { pos = j; break; }
+    }
+    if (pos === -1) continue;
+
+    const after = tn.splitText(pos + 1);
+    const cursor = document.createElement('span');
+    cursor.className = 'nw-term-cursor';
+    after.parentNode!.insertBefore(cursor, after);
+    return;
+  }
+}
+
+function stopTerminalCursor(): void {
+  document.querySelectorAll('.nw-term-cursor').forEach(el => el.remove());
+}
+
+document.addEventListener('nw-page-rendered', () => {
+  const theme = document.documentElement.getAttribute('data-theme');
+  const paused = document.documentElement.classList.contains('nw-paused');
+  if (theme === 'newspaper' && !paused) startTerminalCursor();
+});
 
 let crtFlickerTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -159,7 +216,7 @@ function fireCRTFlash(): void {
   el.className = 'nw-crt-flash';
   const heightPct = 20 + Math.random() * 50;
   const topPct    = Math.random() * (100 - heightPct);
-  const opacity  = (0.015 + Math.random() * 0.035).toFixed(3);
+  const opacity  = (0.025 + Math.random() * 0.050).toFixed(3);
   el.style.cssText =
     `position:fixed;left:0;right:0;top:${topPct}%;height:${heightPct}vh;` +
     `background:rgba(220,195,60,${opacity});pointer-events:none;z-index:10000;` +
@@ -194,7 +251,7 @@ function stopCRTFlicker(): void {
   document.querySelectorAll('.nw-crt-flash').forEach(el => el.remove());
 }
 
-const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'vaporwave', 'toast', 'crt', 'blueprint', 'moss', 'linen', 'storm'];
+const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'linen', 'storm'];
 
 let pageSuggestions: string[] = [];
 
@@ -231,15 +288,25 @@ function applyTheme(theme: string): void {
   sel.value = theme;
   if (theme === 'cats') addCats(); else removeCats();
   if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
+  if (theme === 'newspaper') startTerminalCursor(); else stopTerminalCursor();
   if (theme === 'sakura') startPetals(); else stopPetals();
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
 }
 
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
+  const theme = document.documentElement.getAttribute('data-theme');
+  if (theme === 'sakura') {
+    if (paused) stopPetals(true);
+    else startPetals();
+  }
+  if (theme === 'newspaper') {
+    if (paused) stopTerminalCursor();
+    else startTerminalCursor();
+  }
 }
 
-const FUN_THEMES = ['cats', 'cyber'];
+const FUN_THEMES = ['cats'];
 
 export function applyFunThemes(enabled: boolean): void {
   const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;

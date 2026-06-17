@@ -190,6 +190,7 @@ export function renderPage(md: string): void {
   annotateLinks(content);
   highlightBlock(content);
   void processImages(content);
+  document.dispatchEvent(new CustomEvent('nw-page-rendered'));
 }
 
 export function showToast(md: string, type: string): void {
