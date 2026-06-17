@@ -1,19 +1,18 @@
 :root {
-  --bg:        #060b1a;
-  --fg:        #c8e6ff;
-  --muted:     #5a8ab0;
-  --link:      #4fc3f7;
-  --border:    rgba(79,195,247,0.2);
-  --code-bg:   rgba(0,10,38,0.97);
-  --bar-bg:    rgba(4,10,30,0.97);
-  --bar-fg:    #4fc3f7;
-  --bar-border:rgba(11,61,145,0.9);
-  --font:      Verdana, sans-serif;
+  --bg:            #060b1a;
+  --fg:            #c8e6ff;
+  --muted:         #5a8ab0;
+  --link:          #4fc3f7;
+  --border:        rgba(79,195,247,0.2);
+  --code-bg:       rgba(0,10,38,0.97);
+  --bar-bg:        rgba(4,10,30,0.97);
+  --bar-fg:        #4fc3f7;
+  --bar-border:    rgba(11,61,145,0.9);
+  --heading-color: #7dd4f8;
+  --font:          Verdana, sans-serif;
 }
 
-/* nebula on body background — frees ::before and ::after for warp layers */
 body {
-  background-color: #060b1a;
   background-image:
     radial-gradient(ellipse 80% 60% at 10% 35%, rgba(11,61,145,0.5)  0%, transparent 70%),
     radial-gradient(ellipse 55% 55% at 88% 60%, rgba(80,0,180,0.28)  0%, transparent 65%),
@@ -22,7 +21,6 @@ body {
   background-attachment: fixed;
 }
 
-/* warp keyframes — ease-in so stars accelerate like jumping to warp */
 @keyframes nw-warp {
   0%   { transform: scale(0.55); opacity: 0;   filter: blur(0px); }
   6%   {                         opacity: 1;                       }
@@ -31,7 +29,6 @@ body {
   100% { transform: scale(2.5);  opacity: 0;   filter: blur(1.5px); }
 }
 
-/* star layer 1 */
 body::before {
   content: '';
   position: fixed;
@@ -84,7 +81,6 @@ body::before {
     1100px 380px 0 1px rgba(255,240,200,0.9), 1100px 380px 5px 0 rgba(255,220,150,0.15);
 }
 
-/* star layer 2 — same stars, offset by half the period for seamless loop */
 body::after {
   content: '';
   position: fixed;
@@ -149,10 +145,7 @@ body::after {
   letter-spacing: 0.02em;
 }
 
-#content h1,
-#content h2,
-#content h3 {
-  color: #7dd4f8;
+#content h1, #content h2, #content h3 {
   text-shadow: 0 0 18px rgba(79,195,247,0.35);
   letter-spacing: 0.08em;
 }
@@ -182,7 +175,6 @@ body::after {
 }
 
 .nw-logo {
-  color: #4fc3f7;
   text-shadow: 0 0 12px rgba(79,195,247,0.55);
   font-family: 'Courier New', monospace;
   letter-spacing: 0.15em;
@@ -212,6 +204,5 @@ dialog {
   font-family: 'Courier New', monospace;
   font-size: 0.75em;
   letter-spacing: 0.08em;
-  color: #5a8ab0;
   text-transform: uppercase;
 }

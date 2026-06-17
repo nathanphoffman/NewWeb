@@ -1,36 +1,24 @@
 :root {
-  --bg:        #f5f0ff;
-  --fg:        #281840;
-  --muted:     #8868b0;
-  --link:      #6820b0;
-  --border:    rgba(120,80,180,0.18);
-  --code-bg:   #ece4f8;
-  --bar-bg:    #281840;
-  --bar-fg:    #d8c8f0;
-  --bar-border:rgba(80,40,120,0.40);
-  --font:      system-ui, -apple-system, sans-serif;
+  --bg:            #f5f0ff;
+  --fg:            #281840;
+  --muted:         #8868b0;
+  --link:          #6820b0;
+  --border:        rgba(120,80,180,0.18);
+  --code-bg:       #ece4f8;
+  --bar-bg:        #281840;
+  --bar-fg:        #d8c8f0;
+  --bar-border:    rgba(80,40,120,0.40);
+  --heading-color: #1a0e30;
+  --link-radius:   12px;
+  --font:          system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background-color: #f5f0ff;
   background-image: radial-gradient(
     ellipse 80% 50% at 50% 0%,
     rgba(160,100,240,0.07) 0%,
     transparent 70%
   );
-}
-
-#content {
-  border-left:   1px solid rgba(120,80,180,0.16);
-  border-right:  1px solid rgba(120,80,180,0.16);
-  border-bottom: 1px solid rgba(120,80,180,0.16);
-}
-
-#content h1,
-#content h2,
-#content h3 {
-  color: #1a0e30;
-  letter-spacing: -0.01em;
 }
 
 #content h1 {
@@ -42,7 +30,6 @@ body {
 #content h2 {
   border-bottom: 1px solid rgba(120,80,180,0.14);
   padding-bottom: 0.2em;
-  color: #4020780;
 }
 
 #content h3 {
@@ -55,22 +42,12 @@ body {
   line-height: 1.75;
 }
 
-#content a {
-  border-radius: 12px;
-  border-color: rgba(104,32,176,0.38);
-  background: rgba(104,32,176,0.06);
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-}
-
 #content a:hover {
-  background: rgba(104,32,176,0.12);
-  border-color: #6820b0;
   box-shadow: 0 0 12px rgba(104,32,176,0.18);
 }
 
 #content blockquote {
   border-left: 2px solid rgba(120,80,180,0.32);
-  color: #8868b0;
   font-style: italic;
   padding-left: 1.2em;
 }
@@ -79,16 +56,10 @@ body {
   box-shadow: 0 1px 0 rgba(80,40,120,0.22);
 }
 
-.nw-logo {
-  color: #d8c8f0;
-  letter-spacing: 0.02em;
-}
-
 #nw-bar select,
 #nw-bar button {
   background: #341e50;
   border-color: rgba(100,60,150,0.40);
-  color: #d8c8f0;
 }
 
 dialog {

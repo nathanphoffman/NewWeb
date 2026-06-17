@@ -1,18 +1,19 @@
 :root {
-  --bg:        #f7f3ed;
-  --fg:        #221e18;
-  --muted:     #7a7268;
-  --link:      #6b4c35;
-  --border:    #d8d2c6;
-  --code-bg:   #ede9e1;
-  --bar-bg:    #ede6db;
-  --bar-fg:    #221e18;
-  --bar-border:#221e18;
-  --font:      Georgia, serif;
+  --bg:            #f7f3ed;
+  --fg:            #221e18;
+  --muted:         #7a7268;
+  --link:          #6b4c35;
+  --border:        #d8d2c6;
+  --code-bg:       #ede9e1;
+  --bar-bg:        #ede6db;
+  --bar-fg:        #221e18;
+  --bar-border:    #221e18;
+  --heading-color: #18140e;
+  --link-radius:   2px;
+  --font:          Georgia, serif;
 }
 
 body {
-  background-color: #f7f3ed;
   background-image:
     repeating-linear-gradient(
       0deg,
@@ -30,18 +31,6 @@ body {
     );
 }
 
-#content {
-  border-left:   1px solid #d8d2c6;
-  border-right:  1px solid #d8d2c6;
-  border-bottom: 1px solid #d8d2c6;
-}
-
-#content h1,
-#content h2,
-#content h3 {
-  color: #18140e;
-}
-
 #content h1 {
   font-size: 2.2em;
   font-weight: 700;
@@ -54,47 +43,28 @@ body {
 #content h2 {
   font-variant: small-caps;
   letter-spacing: 0.06em;
-  border-bottom: 1px solid #d8d2c6;
+  border-bottom: 1px solid var(--border);
   padding-bottom: .2em;
 }
 
 #content h3 {
+  color: #4a3c2e;
   font-weight: 400;
   font-style: italic;
-  color: #4a3c2e;
 }
 
 #content p {
   line-height: 1.8;
 }
 
-#content a {
-  border-radius: 2px;
-  border-color: rgba(107,76,53,0.4);
-  background: rgba(107,76,53,0.06);
-  transition: background .15s, border-color .15s;
-}
-
-#content a:hover {
-  background: rgba(107,76,53,0.14);
-  border-color: #6b4c35;
-}
-
 #content blockquote {
   border-left: 2px solid #c8a88a;
   padding-left: 1.2em;
-  color: #7a7268;
   font-style: italic;
 }
 
 #content hr {
-  border: none;
-  border-top: 1px solid #d8d2c6;
   margin: 2em 0;
-}
-
-#content pre {
-  border: 1px solid #d8d2c6;
 }
 
 @keyframes nw-cursor-blink {
@@ -119,7 +89,6 @@ body {
 }
 
 .nw-logo {
-  color: #221e18;
   font-family: Georgia, serif;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -138,7 +107,6 @@ body {
 
 dialog {
   background: #f4f0ea;
-  border-color: #d8d2c6;
   box-shadow: 0 4px 32px rgba(34,30,24,0.10);
 }
 

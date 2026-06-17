@@ -20,9 +20,12 @@ body {
   max-width: 960px;
   margin: 0 auto;
   padding: 1rem 2rem 2rem;
+  border-left:   1px solid var(--border);
+  border-right:  1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-#content h1, #content h2, #content h3 { margin: 0.7em 0 0.4em; }
+#content h1, #content h2, #content h3 { margin: 0.7em 0 0.4em; color: var(--heading-color, var(--fg)); }
 #content p   { margin: 0.6em 0; }
 #content hr  { margin: 1.8em 0; border: none; border-top: 1px solid var(--border); }
 #content ul, #content ol { margin: 1em 0 1em 2.2em; }
@@ -30,15 +33,16 @@ body {
 #content a, dialog a {
   display: inline-block;
   padding: 0.2em 0.7em;
-  border: 1px solid var(--link);
-  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--link) 40%, transparent);
+  border-radius: var(--link-radius, 3px);
   color: var(--link);
   text-decoration: none;
-  background: transparent;
-  transition: background 0.15s, box-shadow 0.15s;
+  background: color-mix(in srgb, var(--link) 6%, transparent);
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 #content a:hover, dialog a:hover {
   background: color-mix(in srgb, var(--link) 12%, transparent);
+  border-color: var(--link);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--link) 20%, transparent);
 }
 #content blockquote {

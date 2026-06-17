@@ -1,30 +1,18 @@
 :root {
-  --bg:        #141810;
-  --fg:        #c4c89e;
-  --muted:     #6a7054;
-  --link:      #88a85c;
-  --border:    rgba(110,120,75,.22);
-  --code-bg:   #0e120a;
-  --bar-bg:    #0c1008;
-  --bar-fg:    #88a85c;
-  --bar-border:rgba(100,110,68,.35);
-  --font:      system-ui, -apple-system, sans-serif;
+  --bg:            #141810;
+  --fg:            #c4c89e;
+  --muted:         #6a7054;
+  --link:          #88a85c;
+  --border:        rgba(110,120,75,.22);
+  --code-bg:       #0e120a;
+  --bar-bg:        #0c1008;
+  --bar-fg:        #88a85c;
+  --bar-border:    rgba(100,110,68,.35);
+  --heading-color: #d8dcb2;
+  --font:          system-ui, -apple-system, sans-serif;
 }
 
-body {
-  background-color: #141810;
-}
-
-#content {
-  border-left:   1px solid rgba(110,120,75,.18);
-  border-right:  1px solid rgba(110,120,75,.18);
-  border-bottom: 1px solid rgba(110,120,75,.18);
-}
-
-#content h1,
-#content h2,
-#content h3 {
-  color: #d8dcb2;
+#content h1, #content h2, #content h3 {
   letter-spacing: -.01em;
 }
 
@@ -35,34 +23,19 @@ body {
 
 #content a {
   border-radius: 8px;
-  border-color: #88a85c61;
-  background: #88a85c0f;
-  transition: background .15s, border-color .15s, box-shadow .15s;
 }
 
 #content a:hover {
-  background: #88a85c24;
-  border-color: #88a85c;
   box-shadow: 0 0 0 3px #88a85c1f;
 }
 
 #content blockquote {
   border-left-color: #88a85c59;
-  color: #6a7054;
   font-style: italic;
 }
 
 #nw-bar {
   box-shadow: 0 1px #646e4440;
-}
-
-.nw-logo {
-  color: #88a85c;
-}
-
-#nw-bar select {
-  background: #0c1008;
-  border-color: #646e4459;
 }
 
 dialog {

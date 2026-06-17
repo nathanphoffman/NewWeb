@@ -1,23 +1,21 @@
 :root {
-  --bg:        #070d1a;
-  --fg:        #dff6e8;
-  --muted:     #4a8a68;
-  --link:      #34d399;
-  --border:    rgba(52,211,153,0.15);
-  --code-bg:   rgba(2,16,9,0.97);
-  --bar-bg:    rgba(4,8,20,0.97);
-  --bar-fg:    #34d399;
-  --bar-border:rgba(52,211,153,0.2);
-  --font:      system-ui, -apple-system, sans-serif;
+  --bg:            #070d1a;
+  --fg:            #dff6e8;
+  --muted:         #4a8a68;
+  --link:          #34d399;
+  --border:        rgba(52,211,153,0.15);
+  --code-bg:       rgba(2,16,9,0.97);
+  --bar-bg:        rgba(4,8,20,0.97);
+  --bar-fg:        #34d399;
+  --bar-border:    rgba(52,211,153,0.2);
+  --heading-color: #6ee7b7;
+  --link-radius:   10px;
+  --font:          system-ui, -apple-system, sans-serif;
 }
 
 @keyframes nw-aurora-glow {
   0%, 100% { transform: scaleY(0.125); opacity: 0.65; }
   50%       { transform: scaleY(1.0);  opacity: 1.0;  }
-}
-
-body {
-  background-color: #070d1a;
 }
 
 body::before {
@@ -52,18 +50,12 @@ body::before {
   -webkit-backdrop-filter: blur(10px);
 }
 
-#content h1,
-#content h2,
-#content h3 {
-  color: #6ee7b7;
+#content h1, #content h2, #content h3 {
   text-shadow: 0 0 24px rgba(52,211,153,0.45), 0 0 60px rgba(139,92,246,0.2);
   letter-spacing: 0.01em;
 }
 
 #content a {
-  border-radius: 10px;
-  border-color: rgba(52,211,153,0.42);
-  background: rgba(52,211,153,0.06);
   box-shadow: 0 0 10px rgba(52,211,153,0.14), inset 0 0 14px rgba(139,92,246,0.06);
   text-shadow: 0 0 10px rgba(52,211,153,0.45);
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, text-shadow 0.2s;
@@ -71,15 +63,12 @@ body::before {
 
 #content a:hover {
   color: #a7f3d0;
-  border-color: #34d399;
-  background: rgba(52,211,153,0.12);
   box-shadow: 0 0 22px rgba(52,211,153,0.52), inset 0 0 14px rgba(139,92,246,0.12);
   text-shadow: 0 0 18px rgba(52,211,153,0.8), 0 0 40px rgba(139,92,246,0.3);
 }
 
 #content blockquote {
   border-left-color: rgba(139,92,246,0.6);
-  color: #4a8a68;
 }
 
 #nw-bar {
@@ -87,7 +76,6 @@ body::before {
 }
 
 .nw-logo {
-  color: #34d399;
   text-shadow: 0 0 14px rgba(52,211,153,0.6);
 }
 

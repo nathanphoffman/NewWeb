@@ -1,18 +1,19 @@
 :root {
-  --bg:        #1e0a32;
-  --fg:        #ff71ce;
-  --muted:     #b967ff;
-  --link:      #01cdfe;
-  --border:    rgba(185,103,255,0.30);
-  --code-bg:   #140820;
-  --bar-bg:    #0a0418;
-  --bar-fg:    #ff71ce;
-  --bar-border:rgba(185,103,255,0.45);
-  --font:      system-ui, -apple-system, sans-serif;
+  --bg:            #1e0a32;
+  --fg:            #ff71ce;
+  --muted:         #b967ff;
+  --link:          #01cdfe;
+  --border:        rgba(185,103,255,0.30);
+  --code-bg:       #140820;
+  --bar-bg:        #0a0418;
+  --bar-fg:        #ff71ce;
+  --bar-border:    rgba(185,103,255,0.45);
+  --heading-color: #b967ff;
+  --link-radius:   20px;
+  --font:          system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background-color: #1e0a32;
   background-image:
     linear-gradient(rgba(185,103,255,0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(1,205,254,0.08) 1px, transparent 1px);
@@ -54,10 +55,7 @@ body::before {
   -webkit-backdrop-filter: blur(8px);
 }
 
-#content h1,
-#content h2,
-#content h3 {
-  color: #b967ff;
+#content h1, #content h2, #content h3 {
   letter-spacing: 0.08em;
   text-shadow: 0 0 20px rgba(185,103,255,0.6), 0 0 50px rgba(185,103,255,0.2);
 }
@@ -67,24 +65,18 @@ body::before {
 }
 
 #content a {
-  border-radius: 20px;
-  border-color: rgba(1,205,254,0.50);
-  background: rgba(1,205,254,0.06);
   box-shadow: 0 0 10px rgba(1,205,254,0.18), 0 0 28px rgba(185,103,255,0.08);
   text-shadow: 0 0 8px rgba(1,205,254,0.55);
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 #content a:hover {
-  background: rgba(1,205,254,0.14);
-  border-color: #01cdfe;
   box-shadow: 0 0 22px rgba(1,205,254,0.50), 0 0 48px rgba(185,103,255,0.20);
   text-shadow: 0 0 16px rgba(1,205,254,0.9);
 }
 
 #content blockquote {
   border-left-color: rgba(185,103,255,0.55);
-  color: #b967ff;
 }
 
 #nw-bar {
@@ -92,7 +84,6 @@ body::before {
 }
 
 .nw-logo {
-  color: #ff71ce;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   text-shadow: 0 0 14px rgba(255,113,206,0.65);
@@ -101,7 +92,6 @@ body::before {
 #nw-bar select {
   background: rgba(10,4,24,0.95);
   border-color: rgba(185,103,255,0.40);
-  color: #ff71ce;
 }
 
 dialog {

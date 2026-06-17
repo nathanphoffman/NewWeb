@@ -1,18 +1,15 @@
 :root {
-  --bg:        #08060f;
-  --fg:        #eeeaf8;
-  --muted:     #7070a0;
-  --link:      #d040e8;
-  --border:    rgba(148,88,240,0.16);
-  --code-bg:   #050410;
-  --bar-bg:    #040310;
-  --bar-fg:    #d040e8;
-  --bar-border:rgba(148,80,255,0.28);
-  --font:      system-ui, -apple-system, sans-serif;
-}
-
-body {
-  background-color: #08060f;
+  --bg:         #08060f;
+  --fg:         #eeeaf8;
+  --muted:      #7070a0;
+  --link:       #d040e8;
+  --border:     rgba(148,88,240,0.16);
+  --code-bg:    #050410;
+  --bar-bg:     #040310;
+  --bar-fg:     #d040e8;
+  --bar-border: rgba(148,80,255,0.28);
+  --link-radius:4px;
+  --font:       system-ui, -apple-system, sans-serif;
 }
 
 @property --nw-chroma-angle {
@@ -67,22 +64,12 @@ body {
   font-weight: 400;
 }
 
-#content a {
-  border-radius: 4px;
-  border-color: rgba(208,64,232,0.42);
-  background: rgba(208,64,232,0.06);
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-}
-
 #content a:hover {
-  background: rgba(208,64,232,0.14);
-  border-color: #d040e8;
   box-shadow: 0 0 14px rgba(208,64,232,0.28);
 }
 
 #content blockquote {
   border-left-color: rgba(148,88,240,0.42);
-  color: #7070a0;
 }
 
 #nw-bar {
@@ -90,15 +77,12 @@ body {
 }
 
 .nw-logo {
-  color: #d040e8;
   letter-spacing: 0.06em;
   text-shadow: 0 0 16px rgba(208,64,232,0.55);
 }
 
 #nw-bar select {
-  background: #040310;
   border-color: rgba(148,80,255,0.32);
-  color: #d040e8;
 }
 
 dialog {

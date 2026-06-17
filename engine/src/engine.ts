@@ -1,7 +1,7 @@
 import init, { render as wasmRender } from '../build/pkg/engine.js';
 import { handleWasm } from './wasm.js';
-import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, navigateWithData, renderNoData, looksLikeBareUrl, warnBareUrl } from './nav.js';
-import { showToast, showModal, showFormModal, renderPage, closeModals, scrollToAnchor } from './ui.js';
+import { handleMore, handleNav, handleRedirect, navigateTo, replacePage, navigateWithData, renderNoData, looksLikeBareUrl, warnBareUrl } from './nav.js';
+import { showToast, showModal, showFormModal, scrollToAnchor } from './ui.js';
 import type { FieldDef } from './types.js';
 import './theme.js';
 import { showSettingsModal } from './settings.js';

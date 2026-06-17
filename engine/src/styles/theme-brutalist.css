@@ -1,18 +1,15 @@
 :root {
-  --bg:        #e6e4e0;
-  --fg:        #101010;
-  --muted:     #585856;
-  --link:      #cc0000;
-  --border:    #101010;
-  --code-bg:   #d4d2ce;
-  --bar-bg:    #101010;
-  --bar-fg:    #e6e4e0;
-  --bar-border:#000000;
-  --font:      system-ui, -apple-system, sans-serif;
-}
-
-body {
-  background-color: #e6e4e0;
+  --bg:         #e6e4e0;
+  --fg:         #101010;
+  --muted:      #585856;
+  --link:       #101010;
+  --border:     #101010;
+  --code-bg:    #d4d2ce;
+  --bar-bg:     #101010;
+  --bar-fg:     #e6e4e0;
+  --bar-border: #000000;
+  --link-radius:0;
+  --font:       system-ui, -apple-system, sans-serif;
 }
 
 #content {
@@ -21,10 +18,7 @@ body {
   border-bottom: 2px solid #101010;
 }
 
-#content h1,
-#content h2,
-#content h3 {
-  color: #101010;
+#content h1, #content h2, #content h3 {
   text-transform: uppercase;
   letter-spacing: 0.01em;
 }
@@ -33,7 +27,6 @@ body {
   font-size: 2.4em;
   font-weight: 900;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
   border-bottom: 4px solid #101010;
   padding-bottom: 0.2em;
   line-height: 1.1;
@@ -54,7 +47,6 @@ body {
 }
 
 #content a {
-  border-radius: 0;
   border-color: #aaa;
   background: #1a1a1a;
   color: #e6e4e0;
@@ -65,11 +57,11 @@ body {
   background: #000;
   color: #fff;
   border-color: #aaa;
+  box-shadow: none;
 }
 
 #content blockquote {
   border-left: 4px solid #101010;
-  color: #585856;
   padding-left: 1em;
 }
 
@@ -88,7 +80,6 @@ body {
 }
 
 .nw-logo {
-  color: #e6e4e0;
   font-weight: 900;
   letter-spacing: 0.10em;
   text-transform: uppercase;
@@ -96,9 +87,7 @@ body {
 
 #nw-bar select,
 #nw-bar button {
-  background: #1a1a1a;
   border-color: #aaa;
-  color: #e6e4e0;
   border-radius: 0;
 }
 

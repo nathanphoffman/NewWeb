@@ -1,17 +1,16 @@
 :root {
-  --bg:        #f9f5ea;
-  --fg:        #1a3d4a;
-  --muted:     #5a8a96;
-  --link:      #d95f3b;
-  --border:    #bddde4;
-  --code-bg:   #e8f4f6;
-  --bar-bg:    #1a3d4a;
-  --bar-fg:    #f9f5ea;
-  --bar-border:#0f2a35;
-  --font:      Georgia, serif;
+  --bg:         #f9f5ea;
+  --fg:         #1a3d4a;
+  --muted:      #5a8a96;
+  --link:       #d95f3b;
+  --border:     #bddde4;
+  --code-bg:    #e8f4f6;
+  --bar-bg:     #1a3d4a;
+  --bar-fg:     #f9f5ea;
+  --bar-border: #0f2a35;
+  --font:       Georgia, serif;
 }
 
-/* subtle sand-to-ocean gradient on the body */
 body {
   background: linear-gradient(160deg, #f9f5ea 0%, #edf6f8 100%);
   min-height: 100vh;
@@ -27,13 +26,11 @@ body {
   to   { background-position-x: -600px; }
 }
 
-/* ── wavy content border ───────────────────────────────── */
 #content {
   position: relative;
   overflow: visible;
 }
 
-/* background wave — slower, wider */
 #content::before {
   content: '';
   position: absolute;
@@ -48,7 +45,6 @@ body {
   animation: nw-wave-bg 13s linear infinite;
 }
 
-/* foreground wave — faster, more opaque */
 #content::after {
   content: '';
   position: absolute;
@@ -63,26 +59,18 @@ body {
   animation: nw-wave-fg 7s linear infinite;
 }
 
-/* ── headings ──────────────────────────────────────────── */
-#content h1,
-#content h2,
-#content h3 {
-  letter-spacing: 0.01em;
-}
-
 #content h1 { color: #d95f3b; }
 #content h2 { color: #1a6b80; }
 #content h3 { color: #5a8a96; }
 
-/* ── links ─────────────────────────────────────────────── */
 #content a,
 dialog a {
   border-radius: 14px;
   padding: 0.22em 1em;
   font-weight: 600;
-  border-left: 0px;
-  border-right: 0px;
-  border-top: 0px;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
   border-color: #1a6b8050;
   background: rgba(217,95,59,0.05);
   transition: background 0.18s, border-color 0.18s;
@@ -92,9 +80,9 @@ dialog a {
   color: #b84820;
   border-color: #d95f3b;
   background: #1a6b8011;
+  box-shadow: none;
 }
 
-/* ── blockquotes ───────────────────────────────────────── */
 #content blockquote {
   border-left: 3px solid #5ab4c8;
   color: #1a6b80;
@@ -103,24 +91,10 @@ dialog a {
   padding: 0.6em 1em;
 }
 
-/* ── hr ────────────────────────────────────────────────── */
 #content hr {
   border-top-color: #bddde4;
 }
 
-/* ── images ────────────────────────────────────────────── */
-.nw-image-frame {
-  border: 2px solid #5ab4c8;
-  box-shadow: 0 4px 14px rgba(26,109,128,0.12);
-  border-radius: 8px;
-}
-
-.nw-image-frame__caption {
-  font-style: italic;
-  color: var(--muted);
-}
-
-/* ── bar ───────────────────────────────────────────────── */
 .nw-logo {
   letter-spacing: 0.02em;
 }
@@ -130,4 +104,10 @@ dialog a {
   background: #0f2a35;
   color: #f9f5ea;
   border-color: #1a5060;
+}
+
+.nw-image-frame {
+  border: 2px solid #5ab4c8;
+  box-shadow: 0 4px 14px rgba(26,109,128,0.12);
+  border-radius: 8px;
 }

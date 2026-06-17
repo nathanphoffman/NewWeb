@@ -1,14 +1,16 @@
 :root {
-  --bg:        #fce8f0;
-  --fg:        #280e1c;
-  --muted:     #9a5870;
-  --link:      #c0204a;
-  --border:    #efb0c8;
-  --code-bg:   #f5d8e8;
-  --bar-bg:    #f5dce8;
-  --bar-fg:    #c0204a;
-  --bar-border:#e0a8bc;
-  --font:      system-ui, -apple-system, sans-serif;
+  --bg:            #fce8f0;
+  --fg:            #280e1c;
+  --muted:         #9a5870;
+  --link:          #c0204a;
+  --border:        #efb0c8;
+  --code-bg:       #f5d8e8;
+  --bar-bg:        #f5dce8;
+  --bar-fg:        #c0204a;
+  --bar-border:    #e0a8bc;
+  --heading-color: #1a0810;
+  --link-radius:   14px;
+  --font:          system-ui, -apple-system, sans-serif;
 }
 
 @keyframes nw-petal-fall {
@@ -16,23 +18,13 @@
   to   { transform: translateY(112vh); }
 }
 
-body {
-  background-color: #fce8f0;
-}
-
 #content {
   position: relative;
   z-index: 1;
   background: rgba(252,232,240,0.94);
-  border-left: 1px solid #efb0c8;
-  border-right: 1px solid #efb0c8;
-  border-bottom: 1px solid #efb0c8;
 }
 
-#content h1,
-#content h2,
-#content h3 {
-  color: #1a0810;
+#content h1, #content h2, #content h3 {
   letter-spacing: -0.01em;
 }
 
@@ -41,22 +33,12 @@ body {
   padding-bottom: 0.2em;
 }
 
-#content a {
-  border-radius: 14px;
-  border-color: rgba(192,32,74,0.35);
-  background: rgba(192,32,74,0.05);
-  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
-}
-
 #content a:hover {
-  border-color: #c0204a;
-  background: rgba(192,32,74,0.10);
   box-shadow: 0 0 0 3px rgba(192,32,74,0.10);
 }
 
 #content blockquote {
   border-left-color: #e898b4;
-  color: #9a5870;
   font-style: italic;
 }
 
@@ -64,18 +46,8 @@ body {
   box-shadow: 0 1px 0 #e0a8bc;
 }
 
-.nw-logo {
-  color: #c0204a;
-}
-
-#nw-bar select {
-  background: #f5dce8;
-  border-color: #e0a8bc;
-}
-
 dialog {
   background: #fbe8f0;
-  border-color: #efb0c8;
   box-shadow: 0 4px 32px rgba(50,10,25,0.12);
 }
 

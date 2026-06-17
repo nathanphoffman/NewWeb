@@ -68,7 +68,7 @@
   padding: 0.4em 1em;
   border: 1px solid var(--bar-border);
   border-radius: 6px;
-  background: var(--bg);
+  background: var(--bar-bg);
   color: var(--bar-fg);
   font-size: 1rem;
   cursor: pointer;
@@ -79,8 +79,8 @@
   padding: 0.4em 0.7em;
   border: 1px solid var(--bar-border);
   border-radius: 6px;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--bar-bg);
+  color: var(--bar-fg);
   font-size: 1rem;
   cursor: pointer;
 }

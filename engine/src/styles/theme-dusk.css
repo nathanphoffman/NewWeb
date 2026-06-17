@@ -1,33 +1,28 @@
 :root {
-  --bg:        #1c1825;
-  --fg:        #e4ddf0;
-  --muted:     #8878a8;
-  --link:      #d4956a;
-  --border:    rgba(160,140,210,0.18);
-  --code-bg:   #141020;
-  --bar-bg:    #120e1e;
-  --bar-fg:    #d4956a;
-  --bar-border:rgba(140,120,190,0.28);
-  --font:      system-ui, -apple-system, sans-serif;
+  --bg:            #1c1825;
+  --fg:            #e4ddf0;
+  --muted:         #8878a8;
+  --link:          #d4956a;
+  --border:        rgba(160,140,210,0.18);
+  --code-bg:       #141020;
+  --bar-bg:        #120e1e;
+  --bar-fg:        #d4956a;
+  --bar-border:    rgba(140,120,190,0.28);
+  --heading-color: #ede8f8;
+  --link-radius:   16px;
+  --font:          system-ui, -apple-system, sans-serif;
 }
 
-/* sunset: orange rises, purple retreats */
 @keyframes nw-dusk-orange {
   0%, 100% { opacity: 0.38; }
   50%       { opacity: 0.90; }
 }
 
-/* evening: purple rises, orange retreats */
 @keyframes nw-dusk-purple {
   0%, 100% { opacity: 0.90; }
   50%       { opacity: 0.28; }
 }
 
-body {
-  background-color: #1c1825;
-}
-
-/* orange-gold horizon glow */
 body::before {
   content: '';
   position: fixed;
@@ -48,7 +43,6 @@ body::before {
   pointer-events: none;
 }
 
-/* deep purple wash from above */
 body::after {
   content: '';
   position: fixed;
@@ -71,15 +65,9 @@ body::after {
 #content {
   position: relative;
   z-index: 1;
-  border-left: 1px solid rgba(160,140,210,0.14);
-  border-right: 1px solid rgba(160,140,210,0.14);
-  border-bottom: 1px solid rgba(160,140,210,0.14);
 }
 
-#content h1,
-#content h2,
-#content h3 {
-  color: #ede8f8;
+#content h1, #content h2, #content h3 {
   letter-spacing: -0.01em;
 }
 
@@ -88,23 +76,12 @@ body::after {
   padding-bottom: 0.2em;
 }
 
-#content a {
-  border-radius: 16px;
-  border-color: rgba(212,149,106,0.42);
-  background: rgba(212,149,106,0.07);
-  box-shadow: 0 0 8px rgba(212,149,106,0.10);
-  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
-}
-
 #content a:hover {
-  border-color: #d4956a;
-  background: rgba(212,149,106,0.17);
   box-shadow: 0 0 20px rgba(212,149,106,0.30), 0 0 36px rgba(160,140,210,0.12);
 }
 
 #content blockquote {
   border-left-color: rgba(160,140,210,0.40);
-  color: #8878a8;
   font-style: italic;
 }
 
@@ -112,12 +89,7 @@ body::after {
   box-shadow: 0 1px 0 rgba(140,120,190,0.20);
 }
 
-.nw-logo {
-  color: #d4956a;
-}
-
 #nw-bar select {
-  background: #120e1e;
   border-color: rgba(140,120,190,0.30);
 }
 

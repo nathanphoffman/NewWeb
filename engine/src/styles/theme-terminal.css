@@ -1,14 +1,14 @@
 :root {
-  --bg:        #0d0d0d;
-  --fg:        #00ff41;
-  --muted:     #00aa2a;
-  --link:      #00ff41;
-  --border:    #005515;
-  --code-bg:   #001a07;
-  --bar-bg:    #050505;
-  --bar-fg:    #00ff41;
-  --bar-border:#005515;
-  --font:      'Courier New', monospace;
+  --bg:         #0d0d0d;
+  --fg:         #00ff41;
+  --muted:      #00aa2a;
+  --link:       #00ff41;
+  --border:     #005515;
+  --code-bg:    #001a07;
+  --bar-bg:     #050505;
+  --bar-fg:     #00ff41;
+  --bar-border: #005515;
+  --font:       'Courier New', monospace;
 }
 
 #content {
@@ -16,10 +16,7 @@
   z-index: 1;
 }
 
-
-#content h1,
-#content h2,
-#content h3 {
+#content h1, #content h2, #content h3 {
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -30,15 +27,10 @@
 
 #content a {
   border-radius: 0;
-  border-color: rgba(0,255,65,0.45);
   font-family: 'Courier New', monospace;
-  background: rgba(0,255,65,0.04);
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
 #content a:hover {
-  background: rgba(0,255,65,0.14);
-  border-color: #00ff41;
   box-shadow: 0 0 12px rgba(0,255,65,0.30);
 }
 
