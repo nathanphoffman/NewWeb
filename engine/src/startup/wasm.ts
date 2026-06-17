@@ -41,6 +41,7 @@ export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: strin
 export function startWASMEngineToPullMarkdown() {
   // bootstrap: init WASM renderer, expose host API, load initial page
   (async () => {
+    // !! this should be updated to just engine.wasm
     await init(new URL('engine/build/pkg/engine_bg.wasm', location.href));
     window.newwebRender = wasmRender;
 

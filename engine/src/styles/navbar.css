@@ -75,6 +75,10 @@
   font-family: inherit;
 }
 
+#nw-bar button:hover {
+  background: var(--bar-hover-bg);
+}
+
 #nw-bar select {
   padding: 0.4em 0.7em;
   border: 1px solid var(--bar-border);

@@ -7,7 +7,7 @@ import { startStormRain, stopStormRain } from './themes/storm';
 import { startMossTendrils, stopMossTendrils } from './themes/moss';
 import { startCyberGleam, stopCyberGleam } from './themes/cyber';
 
-const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'brutalist', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore', 'wisteria'];
+const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
 
 let pageSuggestions: string[] = [];
 

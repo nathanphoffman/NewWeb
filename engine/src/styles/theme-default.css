@@ -14,6 +14,7 @@
   --bar-bg:       #f0f0f0;
   --bar-fg:       #333333;
   --bar-border:   #cccccc;
+  --bar-hover-bg: #e4e4e4;
   --heading-color:var(--fg);
   --font:         system-ui, sans-serif;
 }

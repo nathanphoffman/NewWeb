@@ -7,7 +7,8 @@
   --code-bg:    #001a07;
   --bar-bg:     #050505;
   --bar-fg:     #00ff41;
-  --bar-border: #005515;
+  --bar-border:   #005515;
+  --bar-hover-bg: rgba(0,255,65,0.10);
   --font:       'Courier New', monospace;
 }
 

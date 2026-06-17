@@ -8,6 +8,7 @@
   --bar-bg:        #0d1e38;
   --bar-fg:        #96c4f4;
   --bar-border:    rgba(20,60,140,0.50);
+  --bar-hover-bg:  #1e3850;
   --heading-color: #0a1828;
   --font:          system-ui, -apple-system, sans-serif;
 }

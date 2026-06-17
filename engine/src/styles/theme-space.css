@@ -8,6 +8,7 @@
   --bar-bg:        rgba(4,10,30,0.97);
   --bar-fg:        #4fc3f7;
   --bar-border:    rgba(11,61,145,0.9);
+  --bar-hover-bg:  rgba(12,26,60,0.97);
   --heading-color: #7dd4f8;
   --font:          Verdana, sans-serif;
 }
