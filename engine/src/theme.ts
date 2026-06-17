@@ -5,6 +5,7 @@ import { startTerminalCursor, stopTerminalCursor } from './themes/folio';
 import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
 import { startMossTendrils, stopMossTendrils } from './themes/moss';
+import { startCyberGleam, stopCyberGleam } from './themes/cyber';
 
 const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'folio', 'storm'];
 
@@ -48,6 +49,7 @@ function applyTheme(theme: string): void {
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
   if (theme === 'storm') startStormRain(); else stopStormRain();
   if (theme === 'moss') startMossTendrils(); else stopMossTendrils();
+  if (theme === 'cyber') startCyberGleam(); else stopCyberGleam();
 }
 
 export function applyAnimPaused(paused: boolean): void {
@@ -68,6 +70,10 @@ export function applyAnimPaused(paused: boolean): void {
   if (theme === 'folio') {
     if (paused) stopTerminalCursor();
     else startTerminalCursor();
+  }
+  if (theme === 'cyber') {
+    if (paused) stopCyberGleam();
+    else startCyberGleam();
   }
 }
 

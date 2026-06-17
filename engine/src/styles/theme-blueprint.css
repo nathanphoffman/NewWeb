@@ -42,7 +42,7 @@ body {
 }
 
 #content h1::before { content: '// '; color: rgba(100,160,220,0.50); }
-#content h2::before { content: '-- '; color: rgba(100,160,220,0.40); }
+#content h2::before { content: '- '; color: rgba(100,160,220,0.40); }
 
 #content a {
   border-radius: 0;
