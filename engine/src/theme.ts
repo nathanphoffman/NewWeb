@@ -36,8 +36,7 @@ export function suggestTheme(names: string[]): void {
   pageSuggestions = names;
   const suggested = getSuggestedTheme();
   annotateSuggestion(suggested);
-  const funEnabled = localStorage.getItem('nw-fun-themes') === 'true';
-  if (suggested && !localStorage.getItem('nw-theme') && (funEnabled || !FUN_THEMES.includes(suggested))) {
+  if (suggested && !localStorage.getItem('nw-theme')) {
     applyTheme(suggested);
   }
 }
@@ -81,19 +80,6 @@ export function applyAnimPaused(paused: boolean): void {
   }
 }
 
-const FUN_THEMES = ['cats'];
-
-export function applyFunThemes(enabled: boolean): void {
-  const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
-  for (const opt of Array.from(sel.options)) {
-    if (FUN_THEMES.includes(opt.value)) opt.hidden = !enabled;
-  }
-  if (!enabled && FUN_THEMES.includes(sel.value)) {
-    applyTheme('default');
-    localStorage.removeItem('nw-theme');
-  }
-}
-
 // hamburger toggle
 const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
 const barMenu   = document.getElementById('nw-bar-menu') as HTMLDivElement;
@@ -117,7 +103,6 @@ if (savedTheme) {
     if (!localStorage.getItem('nw-theme')) applyTheme(e.matches ? 'carbon' : 'quill');
   });
 }
-applyFunThemes(localStorage.getItem('nw-fun-themes') === 'true');
 document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event) => {
   const value = (e.target as HTMLSelectElement).value;
   applyTheme(value);
