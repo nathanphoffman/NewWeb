@@ -84,7 +84,7 @@ body::after {
 }
 
 #content a {
-  border-radius: 20px;
+  border-radius: 10px;
   border-color: rgba(52,211,153,0.42);
   background: rgba(52,211,153,0.06);
   box-shadow: 0 0 10px rgba(52,211,153,0.14), inset 0 0 14px rgba(139,92,246,0.06);
