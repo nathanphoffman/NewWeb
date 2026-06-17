@@ -1,78 +1,86 @@
 :root {
-  --bg:        #fdf0f3;
-  --fg:        #2a1822;
-  --muted:     #9a6878;
-  --link:      #b82848;
-  --border:    #f0c8d4;
-  --code-bg:   #f8e4ea;
-  --bar-bg:    #f8e8ec;
-  --bar-fg:    #b82848;
-  --bar-border:#e8c0cc;
+  --bg:        #fce8f0;
+  --fg:        #280e1c;
+  --muted:     #9a5870;
+  --link:      #c0204a;
+  --border:    #efb0c8;
+  --code-bg:   #f5d8e8;
+  --bar-bg:    #f5dce8;
+  --bar-fg:    #c0204a;
+  --bar-border:#e0a8bc;
   --font:      system-ui, -apple-system, sans-serif;
 }
 
+@keyframes nw-petal-fall {
+  from { transform: translateY(0); }
+  to   { transform: translateY(112vh); }
+}
+
 body {
-  background-color: #fdf0f3;
+  background-color: #fce8f0;
 }
 
 #content {
-  border-left: 1px solid #f0c8d4;
-  border-right: 1px solid #f0c8d4;
-  border-bottom: 1px solid #f0c8d4;
+  position: relative;
+  z-index: 1;
+  background: rgba(252,232,240,0.94);
+  border-left: 1px solid #efb0c8;
+  border-right: 1px solid #efb0c8;
+  border-bottom: 1px solid #efb0c8;
 }
 
 #content h1,
 #content h2,
 #content h3 {
-  color: #1a0c14;
+  color: #1a0810;
   letter-spacing: -0.01em;
 }
 
 #content h2 {
-  border-bottom: 1px solid #f0c8d4;
+  border-bottom: 1px solid #efb0c8;
   padding-bottom: 0.2em;
 }
 
 #content a {
   border-radius: 14px;
-  border-color: rgba(184,40,72,0.35);
-  background: rgba(184,40,72,0.05);
+  border-color: rgba(192,32,74,0.35);
+  background: rgba(192,32,74,0.05);
   transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
 }
 
 #content a:hover {
-  border-color: #b82848;
-  background: rgba(184,40,72,0.10);
-  box-shadow: 0 0 0 3px rgba(184,40,72,0.10);
+  border-color: #c0204a;
+  background: rgba(192,32,74,0.10);
+  box-shadow: 0 0 0 3px rgba(192,32,74,0.10);
 }
 
 #content blockquote {
-  border-left-color: #e8a8bc;
-  color: #9a6878;
+  border-left-color: #e898b4;
+  color: #9a5870;
   font-style: italic;
 }
 
 #nw-bar {
-  box-shadow: 0 1px 0 #e8c0cc;
+  box-shadow: 0 1px 0 #e0a8bc;
 }
 
 .nw-logo {
-  color: #b82848;
+  color: #c0204a;
 }
 
 #nw-bar select {
-  background: #f8e8ec;
-  border-color: #e8c0cc;
+  background: #f5dce8;
+  border-color: #e0a8bc;
 }
 
 dialog {
-  background: #fceef2;
-  border-color: #f0c8d4;
-  box-shadow: 0 4px 32px rgba(50,10,25,0.10);
+  background: #fbe8f0;
+  border-color: #efb0c8;
+  box-shadow: 0 4px 32px rgba(50,10,25,0.12);
 }
 
 .nw-image-frame {
-  border-color: #e8c0cc;
+  border-color: #e0a8bc;
   box-shadow: 0 2px 12px rgba(50,10,25,0.08);
   border-radius: 8px;
 }

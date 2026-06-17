@@ -1,9 +1,9 @@
 :root {
   --bg:        #f4efe6;
   --fg:        #0e0b08;
-  --muted:     #6b5a48;
-  --link:      #8b1a1a;
-  --border:    #c8b89a;
+  --muted:     #6a6460;
+  --link:      #4a4540;
+  --border:    #c0b4aa;
   --code-bg:   #ece5d5;
   --bar-bg:    #0e0b08;
   --bar-fg:    #f4efe6;
@@ -72,9 +72,9 @@
 /* ── links ─────────────────────────────────────────────── */
 #content a,
 dialog a {
-  color: #8b1a1a;
+  color: #4a4540;
   border-radius: 0;
-  border-color: rgba(139,26,26,0.50);
+  border-color: rgba(74,69,64,0.45);
   font-family: Georgia, serif;
   padding: 0.15em 0.55em;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
@@ -82,8 +82,8 @@ dialog a {
 
 #content a:hover {
   color: #f4efe6;
-  background: #8b1a1a;
-  border-color: #8b1a1a;
+  background: #1e1a16;
+  border-color: #1e1a16;
 }
 
 /* ── pull-quote blockquotes ────────────────────────────── */
@@ -131,7 +131,7 @@ dialog a {
 /* ── images ────────────────────────────────────────────── */
 .nw-image-frame {
   border: 2px solid #0e0b08;
-  box-shadow: 3px 3px 0 #c8b89a;
+  box-shadow: 3px 3px 0 #c0b4aa;
 }
 
 .nw-image-frame__caption {

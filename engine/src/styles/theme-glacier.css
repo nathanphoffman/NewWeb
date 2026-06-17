@@ -1,19 +1,19 @@
 :root {
   --font-mono: 'Courier New', monospace;
-  --bg:        #f0f5fa;
+  --bg:        #f3f3ee;
   --fg:        #1a2840;
   --muted:     #6080a8;
   --link:      #2860b0;
   --border:    #c0d0e4;
-  --code-bg:   #e4edf6;
-  --bar-bg:    #e8f0f8;
+  --code-bg:   #e8e8e2;
+  --bar-bg:    #ecece6;
   --bar-fg:    #2860b0;
   --bar-border:#b8cce0;
   --font:      system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background-color: #f0f5fa;
+  background-color: #f3f3ee;
 }
 
 #content {
@@ -62,12 +62,12 @@ body {
 }
 
 #nw-bar select {
-  background: #e8f0f8;
+  background: #ecece6;
   border-color: #b8cce0;
 }
 
 dialog {
-  background: #edf3f9;
+  background: #f0f0ea;
   border-color: #c0d0e4;
   box-shadow: 0 4px 32px rgba(20,40,80,0.12);
 }
