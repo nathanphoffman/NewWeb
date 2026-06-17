@@ -7,7 +7,7 @@ import { startStormRain, stopStormRain } from './themes/storm';
 import { startMossTendrils, stopMossTendrils } from './themes/moss';
 import { startCyberGleam, stopCyberGleam } from './themes/cyber';
 
-const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'brutalist', 'chromatic', 'daguerreotype', 'ember', 'linen', 'obsidian', 'scriptorium', 'voidcore', 'wisteria'];
+const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'brutalist', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore', 'wisteria'];
 
 let pageSuggestions: string[] = [];
 
@@ -102,9 +102,17 @@ hamburger.addEventListener('click', () => {
 const savedPaused = localStorage.getItem('nw-paused') === 'true';
 applyAnimPaused(savedPaused);
 
-// theme picker
+// theme picker — saved > page suggestion > system preference
 const savedTheme = localStorage.getItem('nw-theme');
-if (savedTheme) applyTheme(savedTheme);
+if (savedTheme) {
+  applyTheme(savedTheme);
+} else {
+  const systemDefault = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'carbon' : 'quill';
+  applyTheme(systemDefault);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('nw-theme')) applyTheme(e.matches ? 'carbon' : 'quill');
+  });
+}
 applyFunThemes(localStorage.getItem('nw-fun-themes') === 'true');
 document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event) => {
   const value = (e.target as HTMLSelectElement).value;

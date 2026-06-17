@@ -47,16 +47,16 @@
 }
 
 #content a {
-  border-color: #aaa;
-  background: #1a1a1a;
-  color: #e6e4e0;
+  border-color: #101010;
+  background: transparent;
+  color: #101010;
   transition: background 0.08s, color 0.08s;
 }
 
 #content a:hover {
-  background: #000;
-  color: #fff;
-  border-color: #aaa;
+  background: #101010;
+  color: #e6e4e0;
+  border-color: #101010;
   box-shadow: none;
 }
 
