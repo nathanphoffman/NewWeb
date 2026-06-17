@@ -40,6 +40,7 @@ let matrixAnim: number | null = null;
 let matrixResizer: (() => void) | null = null;
 
 function startMatrixRain(): void {
+  if (document.documentElement.classList.contains('nw-paused')) return;
   stopMatrixRain();
 
   const canvas = document.createElement('canvas');
@@ -139,25 +140,17 @@ function spawnPetal(): void {
 }
 
 function startPetals(): void {
+  if (document.documentElement.classList.contains('nw-paused')) return;
   stopPetals();
   petalsActive = true;
   for (let i = 0; i < 5; i++) setTimeout(spawnPetal, i * 700);
   petalTimer = window.setInterval(spawnPetal, 1200);
 }
 
-function stopPetals(fade = false): void {
+function stopPetals(): void {
   petalsActive = false;
   if (petalTimer !== null) { clearInterval(petalTimer); petalTimer = null; }
-  const petals = document.querySelectorAll<HTMLElement>('.nw-sakura-petal');
-  if (fade && petals.length > 0) {
-    petals.forEach(el => {
-      el.style.transition = 'opacity 0.7s ease';
-      el.style.opacity = '0';
-      setTimeout(() => el.remove(), 750);
-    });
-  } else {
-    petals.forEach(el => el.remove());
-  }
+  document.querySelectorAll('.nw-sakura-petal').forEach(el => el.remove());
 }
 
 function collectTextNodes(node: Node, out: Text[]): void {
@@ -169,6 +162,7 @@ function collectTextNodes(node: Node, out: Text[]): void {
 }
 
 function startTerminalCursor(): void {
+  if (document.documentElement.classList.contains('nw-paused')) return;
   stopTerminalCursor();
   const content = document.getElementById('content');
   if (!content) return;
@@ -251,6 +245,81 @@ function stopCRTFlicker(): void {
   document.querySelectorAll('.nw-crt-flash').forEach(el => el.remove());
 }
 
+let stormRainActive = false;
+let stormRainCanvas: HTMLCanvasElement | null = null;
+let stormRainResizer: (() => void) | null = null;
+
+function startStormRain(): void {
+  if (document.documentElement.classList.contains('nw-paused')) return;
+  stopStormRain();
+  stormRainActive = true;
+
+  const canvas = document.createElement('canvas');
+  stormRainCanvas = canvas;
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;opacity:0.38;';
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d')!;
+  const LEAN = 0.18;
+
+  type Drop = { x: number; y: number; len: number; speed: number; alpha: number };
+  let drops: Drop[] = [];
+
+  const resize = (): void => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const count = Math.floor(canvas.width * canvas.height / 14000);
+    drops = Array.from({ length: count }, () => ({
+      x:     Math.random() * canvas.width,
+      y:     Math.random() * canvas.height,
+      len:   10 + Math.random() * 18,
+      speed: 5  + Math.random() * 9,
+      alpha: 0.25 + Math.random() * 0.55,
+    }));
+  };
+  resize();
+  window.addEventListener('resize', resize);
+  stormRainResizer = resize;
+
+  const dx = Math.sin(LEAN);
+  const dy = Math.cos(LEAN);
+
+  let last = 0;
+  const draw = (ts: number): void => {
+    if (!stormRainActive) return;
+    requestAnimationFrame(draw);
+    if (ts - last < 28) return;
+    last = ts;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (const d of drops) {
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x + d.len * dx, d.y + d.len * dy);
+      ctx.strokeStyle = `rgba(165,190,230,${d.alpha})`;
+      ctx.lineWidth = 1.0;
+      ctx.stroke();
+
+      d.x += d.speed * dx;
+      d.y += d.speed * dy;
+
+      if (d.y > canvas.height + d.len) {
+        d.y = -d.len - Math.random() * 80;
+        d.x = Math.random() * canvas.width;
+      }
+    }
+  };
+  requestAnimationFrame(draw);
+}
+
+function stopStormRain(): void {
+  stormRainActive = false;
+  if (stormRainResizer) { window.removeEventListener('resize', stormRainResizer); stormRainResizer = null; }
+  stormRainCanvas?.remove();
+  stormRainCanvas = null;
+}
+
 const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'linen', 'storm'];
 
 let pageSuggestions: string[] = [];
@@ -291,14 +360,19 @@ function applyTheme(theme: string): void {
   if (theme === 'newspaper') startTerminalCursor(); else stopTerminalCursor();
   if (theme === 'sakura') startPetals(); else stopPetals();
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
+  if (theme === 'storm') startStormRain(); else stopStormRain();
 }
 
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
   const theme = document.documentElement.getAttribute('data-theme');
   if (theme === 'sakura') {
-    if (paused) stopPetals(true);
+    if (paused) stopPetals();
     else startPetals();
+  }
+  if (theme === 'storm') {
+    if (paused) stopStormRain();
+    else startStormRain();
   }
   if (theme === 'newspaper') {
     if (paused) stopTerminalCursor();
