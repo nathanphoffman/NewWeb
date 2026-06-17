@@ -50,13 +50,21 @@ body {
 /* ── links ─────────────────────────────────────────────── */
 #content a,
 dialog a {
+  border-radius: 14px;
+  padding: 0.22em 1em;
   font-weight: 600;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  border-color: #1a6b80;
+  background: rgba(217,95,59,0.05);
+  transition: background 0.18s, border-color 0.18s;
 }
 
 #content a:hover {
   color: #b84820;
-  border-color: #b84820;
-  background: rgba(217,95,59,0.07);
+  border-color: #d95f3b;
+  background: #1a6b8011;
 }
 
 /* ── blockquotes ───────────────────────────────────────── */

@@ -73,14 +73,17 @@
 #content a,
 dialog a {
   color: #8b1a1a;
-  border-color: rgba(139,26,26,0.4);
+  border-radius: 0;
+  border-color: rgba(139,26,26,0.50);
   font-family: Georgia, serif;
+  padding: 0.15em 0.55em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 #content a:hover {
-  color: #6b0f0f;
+  color: #f4efe6;
+  background: #8b1a1a;
   border-color: #8b1a1a;
-  background: rgba(139,26,26,0.05);
 }
 
 /* ── pull-quote blockquotes ────────────────────────────── */

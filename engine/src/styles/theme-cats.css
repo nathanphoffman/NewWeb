@@ -68,14 +68,14 @@ body {
   border-radius: 20px;
   font-size: 0.88em;
   background: rgba(255,179,71,0.06);
-  box-shadow: 0 0 10px rgba(255,179,71,0.12);
+  box-shadow: 0 0 10px rgba(255,179,71,0.14), 0 0 22px rgba(80,20,120,0.10);
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 #content a:hover {
-  background: rgba(255,179,71,0.16);
+  background: rgba(255,179,71,0.18);
   border-color: #ffb347;
-  box-shadow: 0 0 20px rgba(255,179,71,0.42);
+  box-shadow: 0 0 24px rgba(255,179,71,0.52), 0 0 44px rgba(80,20,120,0.18);
 }
 
 #nw-bar {

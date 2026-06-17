@@ -1,24 +1,24 @@
 :root {
-  --bg:        #f5f0e8;
-  --fg:        #2c2418;
-  --muted:     #8a7a62;
-  --link:      #7a3e10;
-  --border:    #d8cdb8;
-  --code-bg:   #ede6d8;
-  --bar-bg:    #ece5d8;
-  --bar-fg:    #5a3010;
-  --bar-border:#cec3ae;
+  --bg:        #f7f3ea;
+  --fg:        #1a1e30;
+  --muted:     #70789a;
+  --link:      #2e4d9a;
+  --border:    #d0ccd8;
+  --code-bg:   #ede8de;
+  --bar-bg:    #ece8df;
+  --bar-fg:    #2e4d9a;
+  --bar-border:#c8c4cc;
   --font:      Georgia, 'Times New Roman', serif;
 }
 
 body {
-  background-color: #f5f0e8;
+  background-color: #f7f3ea;
 }
 
 #content {
-  border-left: 1px solid #d8cdb8;
-  border-right: 1px solid #d8cdb8;
-  border-bottom: 1px solid #d8cdb8;
+  border-left: 1px solid #d0ccd8;
+  border-right: 1px solid #d0ccd8;
+  border-bottom: 1px solid #d0ccd8;
 }
 
 #content h1,
@@ -26,54 +26,58 @@ body {
 #content h3 {
   font-family: Georgia, 'Times New Roman', serif;
   font-weight: bold;
-  color: #1e1608;
+  color: #0e1222;
   letter-spacing: 0.01em;
 }
 
 #content h2 {
-  border-bottom: 1px solid #d0c4aa;
+  border-bottom: 1px solid #d0ccd8;
   padding-bottom: 0.2em;
 }
 
 #content a {
-  border-color: rgba(122,62,16,0.40);
+  border: none;
+  border-bottom: 1.5px solid rgba(46,77,154,0.45);
+  border-radius: 0;
+  padding: 0.05em 0.15em;
+  background: rgba(46,77,154,0.07);
   transition: background 0.15s, border-color 0.15s;
 }
 
 #content a:hover {
-  background: rgba(122,62,16,0.08);
-  border-color: #7a3e10;
+  background: rgba(46,77,154,0.15);
+  border-bottom-color: #2e4d9a;
 }
 
 #content blockquote {
-  border-left-color: #c0a882;
-  color: #8a7a62;
+  border-left-color: rgba(46,77,154,0.30);
+  color: #70789a;
   font-style: italic;
 }
 
 #nw-bar {
-  box-shadow: 0 1px 0 #cec3ae;
+  box-shadow: 0 1px 0 #c8c4cc;
 }
 
 .nw-logo {
-  color: #5a3010;
+  color: #2e4d9a;
   font-family: Georgia, serif;
   font-style: italic;
 }
 
 #nw-bar select {
-  background: #ece5d8;
-  border-color: #cec3ae;
+  background: #ece8df;
+  border-color: #c8c4cc;
 }
 
 dialog {
-  background: #f2ece0;
-  border-color: #d0c4aa;
-  box-shadow: 0 4px 32px rgba(60,40,16,0.14);
+  background: #f4f0e6;
+  border-color: #d0ccd8;
+  box-shadow: 0 4px 32px rgba(20,24,50,0.12);
 }
 
 .nw-image-frame {
-  border-color: #c8baa0;
-  box-shadow: 0 2px 12px rgba(60,40,16,0.12);
+  border-color: #c8c4cc;
+  box-shadow: 0 2px 12px rgba(20,24,50,0.10);
   border-radius: 2px;
 }

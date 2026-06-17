@@ -1,0 +1,98 @@
+:root {
+  --bg:        #0a0a0a;
+  --fg:        #e0d5c0;
+  --muted:     #786858;
+  --link:      #c8a840;
+  --border:    rgba(120,100,60,0.22);
+  --code-bg:   #050505;
+  --bar-bg:    #050505;
+  --bar-fg:    #c8a840;
+  --bar-border:rgba(110,90,50,0.40);
+  --font:      Georgia, 'Times New Roman', serif;
+}
+
+body {
+  background-color: #0a0a0a;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 75% 75% at 50% 50%, transparent 35%, rgba(0,0,0,0.55) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+#content {
+  position: relative;
+  z-index: 1;
+  border-left: 1px solid rgba(120,100,60,0.18);
+  border-right: 1px solid rgba(120,100,60,0.18);
+  border-bottom: 1px solid rgba(120,100,60,0.18);
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #f0e4c0;
+  letter-spacing: 0.01em;
+}
+
+#content h1 {
+  font-size: 2em;
+}
+
+#content h2 {
+  border-bottom: 1px solid rgba(120,100,60,0.22);
+  padding-bottom: 0.2em;
+}
+
+#content a {
+  border-radius: 0;
+  border-color: transparent;
+  border-left: 2px solid rgba(200,168,64,0.65);
+  background: rgba(200,168,64,0.05);
+  font-family: Georgia, serif;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#content a:hover {
+  color: #0a0a0a;
+  background: #c8a840;
+  border-left-color: #c8a840;
+}
+
+#content blockquote {
+  border-left: 3px solid rgba(200,168,64,0.35);
+  color: #786858;
+  font-style: italic;
+}
+
+#nw-bar {
+  box-shadow: 0 1px 0 rgba(110,90,50,0.30);
+}
+
+.nw-logo {
+  color: #c8a840;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+#nw-bar select {
+  background: #050505;
+  border-color: rgba(110,90,50,0.40);
+}
+
+dialog {
+  background: #080808;
+  border-color: rgba(120,100,60,0.22);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.80);
+}
+
+.nw-image-frame {
+  border-color: rgba(120,100,60,0.30);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.80);
+  border-radius: 0;
+}

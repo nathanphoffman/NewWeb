@@ -97,7 +97,7 @@ function stopMatrixRain(): void {
   document.getElementById('nw-matrix')?.remove();
 }
 
-const VALID_THEMES = ['default', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'evergreen', 'parchment', 'slate'];
+const VALID_THEMES = ['default', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'parchment', 'slate', 'ember', 'midnight', 'vineyard', 'noir', 'glacier', 'sakura'];
 
 let pageSuggestions: string[] = [];
 

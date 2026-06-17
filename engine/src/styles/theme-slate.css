@@ -34,13 +34,16 @@ body {
 }
 
 #content a {
-  border-color: rgba(136,184,232,0.35);
-  transition: background 0.15s, border-color 0.15s;
+  border-radius: 4px;
+  border-color: rgba(136,184,232,0.32);
+  background: rgba(136,184,232,0.06);
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
 #content a:hover {
-  background: rgba(136,184,232,0.10);
+  background: rgba(136,184,232,0.14);
   border-color: #88b8e8;
+  box-shadow: 0 0 0 3px rgba(136,184,232,0.14);
 }
 
 #content blockquote {

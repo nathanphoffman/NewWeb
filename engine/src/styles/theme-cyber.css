@@ -66,15 +66,25 @@ body::after {
 }
 
 #content a {
-  border-color: rgba(0,245,212,0.4);
-  text-shadow: 0 0 8px rgba(0,245,212,0.55);
-  transition: color 0.15s, text-shadow 0.15s, background 0.15s, border-color 0.15s;
+  border-radius: 0;
+  border-color: rgba(0,245,212,0.38);
+  border-left-width: 2px;
+  border-left-color: rgba(0,245,212,0.75);
+  background: rgba(0,245,212,0.04);
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px rgba(0,245,212,0.5);
+  box-shadow: 0 0 8px rgba(0,245,212,0.08);
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, text-shadow 0.15s;
 }
 
 #content a:hover {
   color: #80ffed;
-  border-color: #00f5d4;
-  background: rgba(0,245,212,0.07);
+  border-color: rgba(0,245,212,0.7);
+  border-left-color: #00f5d4;
+  background: rgba(0,245,212,0.10);
+  box-shadow: 0 0 20px rgba(0,245,212,0.35), inset 0 0 8px rgba(0,245,212,0.06);
   text-shadow: 0 0 18px rgba(0,245,212,0.9), 0 0 40px rgba(0,245,212,0.3);
 }
 
