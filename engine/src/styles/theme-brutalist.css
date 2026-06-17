@@ -97,7 +97,7 @@ body {
 #nw-bar select,
 #nw-bar button {
   background: #1a1a1a;
-  border-color: #000;
+  border-color: #aaa;
   color: #e6e4e0;
   border-radius: 0;
 }

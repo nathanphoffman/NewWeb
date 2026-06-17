@@ -39,5 +39,5 @@ export function stopTerminalCursor(): void {
 document.addEventListener('nw-page-rendered', () => {
   const theme = document.documentElement.getAttribute('data-theme');
   const paused = document.documentElement.classList.contains('nw-paused');
-  if (theme === 'folio' && !paused) startTerminalCursor();
+  if (theme === 'scribe' && !paused) startTerminalCursor();
 });
