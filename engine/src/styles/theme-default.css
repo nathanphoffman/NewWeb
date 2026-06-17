@@ -16,3 +16,9 @@
   --bar-border:#cccccc;
   --font:      system-ui, sans-serif;
 }
+
+#content {
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+}
