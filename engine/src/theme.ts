@@ -105,8 +105,10 @@ const _petalTemplate = (() => {
 })();
 const PETAL_COLORS = ['#f0a0bc', '#fbc8d8', '#e87898', '#f8d0e0', '#eda8c0'];
 let petalTimer: number | null = null;
+let petalsActive = false;
 
 function spawnPetal(): void {
+  if (!petalsActive) return;
   // wrapper moves straight down in global coords; SVG child holds static rotation
   // so the visual angle never tilts the fall axis
   const wrapper = document.createElement('div');
@@ -138,11 +140,13 @@ function spawnPetal(): void {
 
 function startPetals(): void {
   stopPetals();
+  petalsActive = true;
   for (let i = 0; i < 10; i++) setTimeout(spawnPetal, i * 700);
   petalTimer = window.setInterval(spawnPetal, 900);
 }
 
 function stopPetals(): void {
+  petalsActive = false;
   if (petalTimer !== null) { clearInterval(petalTimer); petalTimer = null; }
   document.querySelectorAll('.nw-sakura-petal').forEach(el => el.remove());
 }
@@ -152,11 +156,12 @@ let crtFlickerTimer: ReturnType<typeof setTimeout> | null = null;
 function fireCRTFlash(): void {
   if (document.documentElement.classList.contains('nw-paused')) return;
   const el = document.createElement('div');
-  const topPct  = Math.random() * 85;
-  const heightPx = 4 + Math.random() * 90;
-  const opacity  = (0.04 + Math.random() * 0.10).toFixed(3);
+  el.className = 'nw-crt-flash';
+  const heightPct = 20 + Math.random() * 50;
+  const topPct    = Math.random() * (100 - heightPct);
+  const opacity  = (0.015 + Math.random() * 0.035).toFixed(3);
   el.style.cssText =
-    `position:fixed;left:0;right:0;top:${topPct}%;height:${heightPx}px;` +
+    `position:fixed;left:0;right:0;top:${topPct}%;height:${heightPct}vh;` +
     `background:rgba(220,195,60,${opacity});pointer-events:none;z-index:10000;` +
     `opacity:0;transition:opacity 80ms ease-in;`;
   document.body.appendChild(el);
