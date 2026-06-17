@@ -1,0 +1,102 @@
+:root {
+  --bg:        #141820;
+  --fg:        #ccd4e8;
+  --muted:     #5868a0;
+  --link:      #6888e0;
+  --border:    rgba(80,105,190,.2);
+  --code-bg:   #0e1018;
+  --bar-bg:    #0c0e16;
+  --bar-fg:    #6888e0;
+  --bar-border:rgba(72,95,180,.32);
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+@keyframes nw-storm-flicker {
+  0%, 92%, 96%, 100% { opacity: 1;   }
+  93%                 { opacity: .85; }
+  94%                 { opacity: 1;   }
+  95%                 { opacity: .8;  }
+}
+
+body {
+  background-color: #141820;
+  animation: nw-storm-flicker 18s ease-in-out infinite;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 110%;
+  height: 50%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(80,110,220,.12) 0%, rgba(50,70,160,.06) 50%, transparent 80%);
+  filter: blur(55px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+#content {
+  position: relative;
+  z-index: 1;
+  border-left:   1px solid rgba(80,105,190,.16);
+  border-right:  1px solid rgba(80,105,190,.16);
+  border-bottom: 1px solid rgba(80,105,190,.16);
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  color: #e0e8f8;
+  letter-spacing: -.01em;
+}
+
+#content h2 {
+  border-bottom: 1px solid rgba(80,105,190,.18);
+  padding-bottom: .2em;
+}
+
+#content a {
+  border-radius: 4px;
+  border-color: #6888e066;
+  background: #6888e00f;
+  transition: background .15s, border-color .15s, box-shadow .15s;
+}
+
+#content a:hover {
+  background: #6888e021;
+  border-color: #6888e0;
+  box-shadow: 0 0 0 3px #6888e024;
+}
+
+#content blockquote {
+  border-left-color: #6888e059;
+  color: #5868a0;
+  font-style: italic;
+}
+
+#nw-bar {
+  box-shadow: 0 1px #485fb440;
+}
+
+.nw-logo {
+  color: #6888e0;
+}
+
+#nw-bar select {
+  background: #0c0e16;
+  border-color: #485fb452;
+}
+
+dialog {
+  background: #101420;
+  border-color: #5069be33;
+  box-shadow: 0 8px 40px #000000a6;
+}
+
+.nw-image-frame {
+  border-color: #5069be40;
+  box-shadow: 0 4px 20px #0000008c;
+  border-radius: 3px;
+}

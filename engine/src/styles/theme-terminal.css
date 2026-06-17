@@ -16,6 +16,17 @@
   z-index: 1;
 }
 
+#content h1,
+#content h2,
+#content h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+#nw-bar {
+  box-shadow: 0 1px 18px rgba(0,255,65,0.18);
+}
+
 #content a {
   border-radius: 0;
   border-color: rgba(0,255,65,0.45);

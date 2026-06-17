@@ -189,7 +189,7 @@ function stopCRTFlicker(): void {
   document.querySelectorAll('.nw-crt-flash').forEach(el => el.remove());
 }
 
-const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'mustard', 'vaporwave', 'toast', 'crt'];
+const VALID_THEMES = ['glacier', 'carbon', 'newspaper', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'vaporwave', 'toast', 'crt', 'blueprint', 'moss', 'linen', 'storm'];
 
 let pageSuggestions: string[] = [];
 

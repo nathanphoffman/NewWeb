@@ -1,0 +1,111 @@
+:root {
+  --bg:        #0d1f3c;
+  --fg:        #ddeeff;
+  --muted:     #6a9ac4;
+  --link:      #7dd4fc;
+  --border:    rgba(100,160,220,0.25);
+  --code-bg:   #081428;
+  --bar-bg:    #071020;
+  --bar-fg:    #ddeeff;
+  --bar-border:rgba(100,160,220,0.32);
+  --font:      'Courier New', monospace;
+}
+
+@keyframes nw-blueprint-zoom {
+  0%   { background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px; }
+  100% { background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px; }
+}
+
+body {
+  background-color: #0d1f3c;
+  background-image:
+    linear-gradient(rgba(100,160,220,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,160,220,0.07) 1px, transparent 1px),
+    linear-gradient(rgba(100,160,220,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,160,220,0.03) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  background-position: center, center, center, center;
+  animation: nw-blueprint-zoom 90s linear infinite;
+}
+
+#content {
+  position: relative;
+  z-index: 1;
+  border-left: 1px solid rgba(100,160,220,0.22);
+  border-right: 1px solid rgba(100,160,220,0.22);
+  border-bottom: 1px solid rgba(100,160,220,0.22);
+  background: rgba(13,31,60,0.90);
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  font-family: 'Courier New', monospace;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  border-bottom: 1px solid rgba(100,160,220,0.30);
+  padding-bottom: 0.2em;
+}
+
+#content h1::before { content: '// '; color: rgba(100,160,220,0.50); }
+#content h2::before { content: '-- '; color: rgba(100,160,220,0.40); }
+
+#content a {
+  border-radius: 0;
+  border-color: rgba(125,212,252,0.45);
+  background: rgba(125,212,252,0.05);
+  font-family: 'Courier New', monospace;
+  color: #7dd4fc;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+#content a:hover {
+  background: rgba(125,212,252,0.12);
+  border-color: #7dd4fc;
+  box-shadow: 0 0 12px rgba(125,212,252,0.22);
+}
+
+#content blockquote {
+  border-left: 2px solid rgba(100,160,220,0.45);
+  color: #6a9ac4;
+  font-style: normal;
+}
+
+#content blockquote::before {
+  content: '> ';
+  color: rgba(100,160,220,0.45);
+}
+
+#content hr {
+  border-color: rgba(100,160,220,0.25);
+  border-style: dashed;
+}
+
+#nw-bar {
+  box-shadow: 0 1px 0 rgba(100,160,220,0.22);
+}
+
+.nw-logo {
+  color: #ddeeff;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#nw-bar select {
+  background: #071020;
+  border-color: rgba(100,160,220,0.30);
+}
+
+dialog {
+  background: #0a1828;
+  border-color: rgba(100,160,220,0.28);
+  box-shadow: 0 0 40px rgba(100,160,220,0.10);
+}
+
+.nw-image-frame {
+  border-color: rgba(100,160,220,0.30);
+  border-radius: 0;
+  box-shadow: 0 0 16px rgba(100,160,220,0.10);
+}

@@ -1,0 +1,77 @@
+:root {
+  --bg:        #f8f4ee;
+  --fg:        #2c2820;
+  --muted:     #8a8070;
+  --link:      #5a5248;
+  --border:    #ddd8ce;
+  --code-bg:   #f0ece4;
+  --bar-bg:    #f0ece4;
+  --bar-fg:    #5a5248;
+  --bar-border:#d4cec4;
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #f8f4ee;
+}
+
+#content {
+  border-left:   1px solid #ddd8ce;
+  border-right:  1px solid #ddd8ce;
+  border-bottom: 1px solid #ddd8ce;
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  color: #18140e;
+  letter-spacing: -.01em;
+}
+
+#content h2 {
+  border-bottom: 1px solid #ddd8ce;
+  padding-bottom: .2em;
+}
+
+#content a {
+  border-radius: 3px;
+  border-color: #5a524859;
+  background: #5a52480d;
+  transition: background .15s, border-color .15s;
+}
+
+#content a:hover {
+  background: #5a52481a;
+  border-color: #5a5248;
+}
+
+#content blockquote {
+  border-left-color: #ccc4b8;
+  color: #8a8070;
+  font-style: italic;
+}
+
+#nw-bar {
+  box-shadow: 0 1px #d4cec4;
+}
+
+.nw-logo {
+  color: #5a5248;
+}
+
+#nw-bar select {
+  background: #f0ece4;
+  border-color: #d4cec4;
+}
+
+dialog {
+  background: #f4f0ea;
+  border-color: #ddd8ce;
+  box-shadow: 0 4px 32px #2820181a;
+}
+
+.nw-image-frame {
+  border-color: #d4cec4;
+  box-shadow: 0 2px 12px #28201814;
+  border-radius: 2px;
+}
