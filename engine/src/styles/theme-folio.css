@@ -113,22 +113,9 @@ body {
   animation: nw-cursor-blink 1s step-end infinite;
 }
 
-.nw-term-cursor::before,
 .nw-term-cursor::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0.45em;
-  height: 2px;
-  background: #221e18;
-}
-
-.nw-term-cursor::before { top: 0; }
-.nw-term-cursor::after  { bottom: 0; }
-
-#nw-bar {
-  border-bottom: 3px double #e8e0d0;
+  content: '|';
+  animation: nw-cursor-blink 1s step-end infinite;
 }
 
 .nw-logo {

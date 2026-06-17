@@ -1,0 +1,116 @@
+:root {
+  --bg:        #e6e4e0;
+  --fg:        #101010;
+  --muted:     #585856;
+  --link:      #cc0000;
+  --border:    #101010;
+  --code-bg:   #d4d2ce;
+  --bar-bg:    #101010;
+  --bar-fg:    #e6e4e0;
+  --bar-border:#000000;
+  --font:      system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #e6e4e0;
+}
+
+#content {
+  border-left:   2px solid #101010;
+  border-right:  2px solid #101010;
+  border-bottom: 2px solid #101010;
+}
+
+#content h1,
+#content h2,
+#content h3 {
+  color: #101010;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+#content h1 {
+  font-size: 2.4em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  border-bottom: 4px solid #101010;
+  padding-bottom: 0.2em;
+  line-height: 1.1;
+}
+
+#content h2 {
+  font-weight: 700;
+  font-size: 1.05em;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid #101010;
+  padding-bottom: 0.2em;
+}
+
+#content h3 {
+  font-weight: 600;
+  font-size: 0.95em;
+  letter-spacing: 0.06em;
+}
+
+#content a {
+  border-radius: 0;
+  border-color: #cc0000;
+  background: transparent;
+  color: #cc0000;
+  transition: background 0.08s, color 0.08s;
+}
+
+#content a:hover {
+  background: #cc0000;
+  color: #e6e4e0;
+  border-color: #cc0000;
+}
+
+#content blockquote {
+  border-left: 4px solid #101010;
+  color: #585856;
+  padding-left: 1em;
+}
+
+#content pre {
+  border: 2px solid #101010;
+  border-radius: 0;
+}
+
+#content code {
+  border-radius: 0;
+}
+
+#nw-bar {
+  border-bottom: 2px solid #000;
+  box-shadow: none;
+}
+
+.nw-logo {
+  color: #e6e4e0;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+#nw-bar select,
+#nw-bar button {
+  background: #1a1a1a;
+  border-color: #000;
+  color: #e6e4e0;
+  border-radius: 0;
+}
+
+dialog {
+  background: #dedad6;
+  border: 2px solid #101010;
+  border-radius: 0;
+  box-shadow: 5px 5px 0 #101010;
+}
+
+.nw-image-frame {
+  border: 2px solid #101010;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 #101010;
+}
