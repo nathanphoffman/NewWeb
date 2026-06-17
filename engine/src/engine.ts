@@ -1,4 +1,3 @@
-import './fonts.js';
 import init, { render as wasmRender } from '../build/pkg/engine.js';
 import { handleWasm } from './wasm.js';
 import { handleMore, handleNav, handleRedirect, fetchMd, navigateTo, replacePage, navigateWithData, renderNoData, looksLikeBareUrl, warnBareUrl } from './nav.js';
@@ -80,7 +79,7 @@ document.addEventListener('click', (e: MouseEvent) => {
     return;
   }
 
-  if (href === 'nw:viewdata')  { e.preventDefault(); showDataModal(); return; }
+  if (href === 'nw:viewdata') { e.preventDefault(); showDataModal(); return; }
   if (href === 'nw:cleardata') {
     e.preventDefault();
     store.clear();
@@ -115,7 +114,7 @@ document.addEventListener('click', (e: MouseEvent) => {
     }
     return;
   }
-  if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); return; }
+  if (href.startsWith('more:')) { e.preventDefault(); handleMore(a); return; }
   if (href.startsWith('custom://')) { e.preventDefault(); handleNav(a); return; }
 
   // external links with explicit scheme — let browser handle
@@ -163,12 +162,12 @@ window.addEventListener('hashchange', async () => {
       }
     },
     replace: (url) => replacePage(url),
-    info:    (md) => showToast(md, 'info'),
-    error:   (md) => showToast(md, 'error'),
-    more:    (md) => showModal(md),
-    load:    (url, data) => navigateWithData(url, data),
-    store:   (key, value) => { store.set(key, value); updateViewDataBtn(); },
-    get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
+    info: (md) => showToast(md, 'info'),
+    error: (md) => showToast(md, 'error'),
+    more: (md) => showModal(md),
+    load: (url, data) => navigateWithData(url, data),
+    store: (key, value) => { store.set(key, value); updateViewDataBtn(); },
+    get: (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
   };
 
   document.getElementById('nw-home')!.addEventListener('click', () => navigateTo('main'));

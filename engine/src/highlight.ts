@@ -1,5 +1,7 @@
 import Prism from 'prismjs';
 
+// this was an experimental highlight customization
+//  -- in theory this is only to be appied in certain cases
 Prism.languages['deor'] = {
   comment: {
     pattern: /#.*/,
