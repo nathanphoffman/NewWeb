@@ -14,6 +14,7 @@ declare global {
       load:  (url: string, data: Record<string, unknown>) => void;
       store: (key: string, value: string) => void;
       get:   (key: string) => string;
+      auth:  (success: boolean) => void;
     };
   }
 }

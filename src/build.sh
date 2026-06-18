@@ -9,3 +9,5 @@ tinygo build -target wasm -o menu.wasm ./menu/
 echo "✓ src/menu.wasm built"
 tinygo build -target wasm -o profile.wasm ./profile/
 echo "✓ src/profile.wasm built"
+tinygo build -target wasm -o auth.wasm ./auth/
+echo "✓ src/auth.wasm built"

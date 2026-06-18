@@ -104,6 +104,7 @@ window.addEventListener('popstate', async (e: PopStateEvent) => {
     load:    (url, data) => navigateWithData(url, data),
     store:   (key, value) => { store.set(key, value); },
     get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
+    auth:    (_success) => { /* hookup point — electron auth handling TBD */ },
   };
 
   document.getElementById('nw-view-data')!.addEventListener('click', showDataModal);

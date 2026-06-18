@@ -15,7 +15,7 @@ async function loadTinyRuntime(): Promise<void> {
   });
 }
 
-async function loadAndExecute(file: string): Promise<void> {
+export async function loadAndExecute(file: string): Promise<void> {
   await loadTinyRuntime();
   const bytes = await fetch(file).then(r => r.arrayBuffer());
   const go = new GoTiny!();

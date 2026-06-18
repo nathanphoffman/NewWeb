@@ -1,0 +1,6 @@
+{
+  "auth": {
+    "endpoint": "/api/auth",
+    "hashMethod": "plain"
+  }
+}
