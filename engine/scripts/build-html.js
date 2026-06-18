@@ -7,9 +7,14 @@ import { fileURLToPath } from 'url';
 //  this allows users to merely include a single html and wasm file to
 //  get up and running with markdown rendering
 
-const dir = dirname(fileURLToPath(import.meta.url));
+const dir  = dirname(fileURLToPath(import.meta.url));
 const root = join(dir, '..');
 const stylesDir = join(root, 'src/styles');
+
+// Optional args: [templateFile, outputFile, jsBundleFile]
+const templateFile = process.argv[2] ?? 'src/index.html';
+const outputFile   = process.argv[3] ?? '../index.html';
+const jsBundleFile = process.argv[4] ?? 'build/engine.bundle.js';
 
 // Reads a bare theme CSS file (no [data-theme] selectors) and scopes every
 // rule to [data-theme="X"]. :root becomes [data-theme="X"]; @keyframes and
@@ -78,11 +83,11 @@ const rawCss = bundledCss + '\n' + readdirSync(stylesDir)
   .join('\n');
 
 const css = transformSync(rawCss, { loader: 'css', minify: true }).code;
-const js = readFileSync(join(root, 'build/engine.bundle.js'), 'utf8');
+const js = readFileSync(join(root, jsBundleFile), 'utf8');
 
-let html = readFileSync(join(root, 'src/index.html'), 'utf8');
+let html = readFileSync(join(root, templateFile), 'utf8');
 html = html.replace('<!-- STYLES -->', `<style>\n${css}</style>`);
 html = html.replace('<!-- SCRIPT -->', `<script type="module">\n${js}</script>`);
 
-writeFileSync(join(root, '../index.html'), html);
-console.log('✓ index.html written');
+writeFileSync(join(root, outputFile), html);
+console.log(`✓ ${outputFile} written`);

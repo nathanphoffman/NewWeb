@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="quill">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NewWeb</title>
+  <!-- STYLES -->
+  <script>(function(){var t=localStorage.getItem('nw-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'carbon':'quill';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+  <div id="nw-bar">
+    <a class="nw-logo" target="_new" href="https://newwebproject.dev">A New Web Project</a>
+    <button id="nw-hamburger" aria-label="Menu" aria-expanded="false">&#9776;</button>
+    <div id="nw-bar-menu">
+      <button id="nw-home">Home</button>
+      <button id="nw-settings">Settings</button>
+      <label for="nw-theme-select" style="opacity:0.6">Theme</label>
+      <select id="nw-theme-select">
+        <option value="aurora">Aurora</option>
+        <option value="beach">Beach</option>
+        <option value="blueprint">Blueprint</option>
+        <option value="blackboard">Blackboard</option>
+        <option value="carbon">Carbon</option>
+        <option value="cats">Cats</option>
+        <option value="chromatic">Chromatic</option>
+        <option value="crt">CRT</option>
+        <option value="cyber">Cyber</option>
+        <option value="dusk">Dusk</option>
+        <option value="scribe">Scribe</option>
+        <option value="glacier">Glacier</option>
+        <option value="quill">Quill</option>
+        <option value="moss">Moss</option>
+        <option value="sakura">Sakura</option>
+        <option value="slate">Slate</option>
+        <option value="space">Space</option>
+        <option value="storm">Storm</option>
+        <option value="terminal">Terminal</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="content"><p>Loading…</p></div>
+  <div id="nw-spinner"><div id="nw-spinner-ring"></div><div id="nw-spinner-text">Running script…</div></div>
+
+  <!-- SCRIPT -->
+</body>
+</html>

@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "build:js-slim": "esbuild src/engine-slim.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine-slim.bundle.js",
     "build:js": "esbuild src/engine.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js",
     "build:editor-js": "esbuild src/editor.ts --bundle --minify --format=iife --global-name=nwEditor --outfile=build/editor.bundle.js",
     "build:electron-js": "esbuild src/engine-electron.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine-electron.bundle.js",
-    "build:html": "node scripts/build-html.js",
-    "build": "npm run typecheck && npm run build:editor-js && npm run build:js && npm run build:html",
+    "build:html-slim": "node scripts/build-html.js src/index-slim.html ../index.html build/engine-slim.bundle.js",
+    "build:html-full": "node scripts/build-html.js src/index.html ../index-full.html build/engine.bundle.js",
+    "build": "npm run typecheck && npm run build:js-slim && npm run build:html-slim",
+    "build:full": "npm run typecheck && npm run build:editor-js && npm run build:js && npm run build:html-full",
     "build:electron": "npm run typecheck && npm run build:electron-js",
-    "watch": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js --watch"
+    "watch": "esbuild src/engine-slim.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine-slim.bundle.js --watch"
   },
   "devDependencies": {
     "@types/prismjs": "^1.26.6",

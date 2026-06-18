@@ -4,9 +4,13 @@ default: build
 build:
     cd engine && bash build.sh
 
-# typescript + html/css rebuild (fast, no rust)
+# slim engine rebuild: no editor/auth, used by just dev
 build-engine:
     cd engine && npm run build
+
+# full engine rebuild: includes editor + auth, used by serve-site
+build-engine-full:
+    cd engine && npm run build:full
 
 # rust wasm only
 build-rs:
@@ -50,13 +54,9 @@ package-electron: build-electron
     cd electron && npm run dist
 
 # copy engine artifacts into newweb-site/static/ and start the Bun server
-serve-site: build-engine build-go
+serve-site: build-engine-full build-go
     bash newweb-site/setup.sh
     cd newweb-site && bun server.ts
-
-# start minimal test site on port 3000
-simple-site:
-    node simple-site/server.js
 
 # build everything then serve
 dev: build-rs build-go build-engine serve

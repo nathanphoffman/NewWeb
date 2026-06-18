@@ -9,7 +9,7 @@ mkdir -p "$SCRIPT_DIR/static/src"
 
 mkdir -p "$SCRIPT_DIR/static/engine/lib"
 
-cp "$PROJECT_ROOT/index.html"                            "$SCRIPT_DIR/static/index.html"
+cp "$PROJECT_ROOT/index-full.html"                       "$SCRIPT_DIR/static/index.html"
 cp "$PROJECT_ROOT/engine/build/editor.bundle.js"         "$SCRIPT_DIR/static/engine/build/editor.bundle.js"
 cp "$PROJECT_ROOT/engine/build/pkg/engine_bg.wasm"       "$SCRIPT_DIR/static/engine/build/pkg/engine_bg.wasm"
 cp "$PROJECT_ROOT/engine/lib/wasm_exec_tiny.js"          "$SCRIPT_DIR/static/engine/lib/wasm_exec_tiny.js"

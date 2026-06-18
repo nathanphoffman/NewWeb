@@ -21,8 +21,8 @@ function makeSection(): HTMLElement {
 export function showSettingsModal(
   getEntries: () => [string, string][],
   onViewData: () => void,
-  onLogin: () => void,
-  isLoggedIn: boolean,
+  onLogin?: () => void,
+  isLoggedIn = false,
 ): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
 
@@ -116,25 +116,27 @@ export function showSettingsModal(
 
   dlg.appendChild(dataSection);
 
-  // ── Auth ────────────────────────────────────────────────
-  const authSection = makeSection();
-  const authRow = document.createElement('div');
-  authRow.className = 'nw-settings-row';
+  // ── Auth (only shown when a login handler is wired up) ──
+  if (onLogin) {
+    const authSection = makeSection();
+    const authRow = document.createElement('div');
+    authRow.className = 'nw-settings-row';
 
-  const authLabel = document.createElement('span');
-  authLabel.textContent = isLoggedIn ? 'Logged in' : 'Account';
+    const authLabel = document.createElement('span');
+    authLabel.textContent = isLoggedIn ? 'Logged in' : 'Account';
 
-  const loginBtn = document.createElement('button');
-  loginBtn.className = 'nw-settings-login-btn';
-  if (isLoggedIn) loginBtn.classList.add('nw-settings-login-btn--loggedin');
-  loginBtn.textContent = 'Login';
-  loginBtn.disabled = isLoggedIn;
-  loginBtn.addEventListener('click', () => { dlg.remove(); onLogin(); });
+    const loginBtn = document.createElement('button');
+    loginBtn.className = 'nw-settings-login-btn';
+    if (isLoggedIn) loginBtn.classList.add('nw-settings-login-btn--loggedin');
+    loginBtn.textContent = 'Login';
+    loginBtn.disabled = isLoggedIn;
+    loginBtn.addEventListener('click', () => { dlg.remove(); onLogin!(); });
 
-  authRow.appendChild(authLabel);
-  authRow.appendChild(loginBtn);
-  authSection.appendChild(authRow);
-  dlg.appendChild(authSection);
+    authRow.appendChild(authLabel);
+    authRow.appendChild(loginBtn);
+    authSection.appendChild(authRow);
+    dlg.appendChild(authSection);
+  }
 
   // ── Actions ─────────────────────────────────────────────
   const actions = document.createElement('div');
