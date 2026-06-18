@@ -15,6 +15,19 @@ declare global {
 }
 
 let allowedKeys = new Set<string>();
+let apiFetchPending = false;
+
+// Keys written by the engine itself — never exposed to user-loaded WASM modules
+const PROTECTED_KEYS = new Set(['new_web_username', 'new_web_password_hash']);
+
+function logout(): void {
+  store.delete('new_web_username');
+  store.delete('new_web_password_hash');
+  localStorage.removeItem('new_web_username');
+  localStorage.removeItem('new_web_password_hash');
+  setLoggedIn(false);
+  updateAuthButtons(openEditModal, openAddModal, logout);
+}
 
 async function loadConfig(): Promise<void> {
   try {
@@ -70,17 +83,19 @@ async function openEditModal(): Promise<void> {
     store.set('cms.filepath', mdUrl);
     store.set('cms.content', savedContent);
     allowedKeys = new Set(['cms.action', 'cms.filepath', 'cms.content']);
+    apiFetchPending = false;
     showSpinner();
     try {
       await loadAndExecute('src/cms.wasm');
     } catch {
       showToast('CMS module failed to load', 'error');
+      hideSpinner();
     } finally {
       store.delete('cms.action');
       store.delete('cms.filepath');
       store.delete('cms.content');
       allowedKeys = new Set();
-      hideSpinner();
+      if (!apiFetchPending) hideSpinner();
     }
   });
 }
@@ -91,17 +106,19 @@ function openAddModal(): void {
     store.set('cms.filepath', filepath);
     store.set('cms.content', content);
     allowedKeys = new Set(['cms.action', 'cms.filepath', 'cms.content']);
+    apiFetchPending = false;
     showSpinner();
     try {
       await loadAndExecute('src/cms.wasm');
     } catch {
       showToast('CMS module failed to load', 'error');
+      hideSpinner();
     } finally {
       store.delete('cms.action');
       store.delete('cms.filepath');
       store.delete('cms.content');
       allowedKeys = new Set();
-      hideSpinner();
+      if (!apiFetchPending) hideSpinner();
     }
   });
 }
@@ -157,18 +174,81 @@ export function startWASMEngineToPullMarkdown() {
       more: (md) => showModal(md),
       load: (url, data) => navigateWithData(url, data),
       store: (key, value) => { store.set(key, value); updateViewDataBtn(); },
-      get: (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
-      auth: (success) => {
-        hideSpinner();
+      get: (key) => {
+        if (PROTECTED_KEYS.has(key)) return '';
+        return allowedKeys.has(key) ? (store.get(key) ?? '') : '';
+      },
+      auth: async (success, H, username) => {
+        const timeToken = store.get('auth.time_token') ?? '';
         store.delete('auth.username');
         store.delete('auth.password');
+        store.delete('auth.time_token');
         allowedKeys = new Set();
-        if (success) {
-          setLoggedIn(true);
-          updateAuthButtons(openEditModal, openAddModal);
-          showToast('Login successful', 'info');
-        } else {
+        if (!success) {
+          hideSpinner();
           showToast('Login failed', 'error');
+          return;
+        }
+        try {
+          const res = await fetch('/api/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, token: timeToken }),
+          });
+          if (res.ok) {
+            store.set('new_web_username', username);
+            store.set('new_web_password_hash', H);
+            localStorage.setItem('new_web_username', username);
+            localStorage.setItem('new_web_password_hash', H);
+            updateViewDataBtn();
+            setLoggedIn(true);
+            updateAuthButtons(openEditModal, openAddModal, logout);
+            showToast('Login successful', 'info');
+          } else {
+            showToast('Login failed', 'error');
+          }
+        } catch {
+          showToast('Auth server error', 'error');
+        } finally {
+          hideSpinner();
+        }
+      },
+      apiFetch: async (method, url, body) => {
+        apiFetchPending = true;
+        const H        = localStorage.getItem('new_web_password_hash') ?? '';
+        const username = localStorage.getItem('new_web_username') ?? '';
+        if (!H || !username) {
+          apiFetchPending = false;
+          hideSpinner();
+          showToast('Not logged in', 'error');
+          return;
+        }
+        try {
+          const minute = Math.floor(Date.now() / 60000).toString();
+          const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(H + minute));
+          const token = Array.from(new Uint8Array(hashBuf))
+            .map(b => b.toString(16).padStart(2, '0')).join('');
+          const res = await fetch(url, {
+            method,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+              'X-NW-Username': username,
+            },
+            body: body || undefined,
+          });
+          let json: { message?: string; error?: string } = {};
+          try { json = await res.json(); } catch { /* non-JSON response */ }
+          if (res.ok) {
+            showToast(json.message ?? 'Saved', 'info');
+          } else {
+            showToast(json.error ?? 'Request failed', 'error');
+          }
+        } catch {
+          showToast('Network error', 'error');
+        } finally {
+          apiFetchPending = false;
+          hideSpinner();
         }
       },
     };
@@ -188,6 +268,17 @@ export function startWASMEngineToPullMarkdown() {
         getIsLoggedIn()
       )
     );
+
+    // Restore persisted login session
+    const storedUsername = localStorage.getItem('new_web_username');
+    const storedToken    = localStorage.getItem('new_web_password_hash');
+    if (storedUsername && storedToken) {
+      store.set('new_web_username', storedUsername);
+      store.set('new_web_password_hash', storedToken);
+      updateViewDataBtn();
+      setLoggedIn(true);
+      updateAuthButtons(openEditModal, openAddModal, logout);
+    }
 
     const hashVal = location.hash ? location.hash.slice(1) : 'main';
     const [initialPage, initialAnchor = null] = hashVal.split('#') as [string, string?];

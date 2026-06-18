@@ -4,16 +4,40 @@ package main
 
 import "newweb/src/newweb"
 
+func jsonEscape(s string) string {
+	out := ""
+	for _, c := range s {
+		switch c {
+		case '"':
+			out += `\"`
+		case '\\':
+			out += `\\`
+		case '\n':
+			out += `\n`
+		case '\r':
+			out += `\r`
+		case '\t':
+			out += `\t`
+		default:
+			if c >= 0x20 {
+				out += string(c)
+			}
+		}
+	}
+	return out
+}
+
 func main() {
 	action := newweb.Get("cms.action")
 	filepath := newweb.Get("cms.filepath")
-	// cms.content is available for future backend POST
-	_ = newweb.Get("cms.content")
+	content := newweb.Get("cms.content")
+
+	body := `{"path":"` + jsonEscape(filepath) + `","content":"` + jsonEscape(content) + `"}`
 
 	switch action {
 	case "create":
-		newweb.Info("Created: " + filepath)
+		newweb.ApiFetch("POST", "/api/file", body)
 	default:
-		newweb.Info("Post saved")
+		newweb.ApiFetch("PUT", "/api/file", body)
 	}
 }

@@ -34,6 +34,10 @@ func Get(key string) string {
 	return api.Call("get", key).String()
 }
 
-func Auth(success bool) {
-	api.Call("auth", success)
+func Auth(success bool, token, username string) {
+	api.Call("auth", success, token, username)
+}
+
+func ApiFetch(method, url, body string) {
+	api.Call("apiFetch", method, url, body)
 }

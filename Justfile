@@ -49,6 +49,11 @@ electron: build-electron
 package-electron: build-electron
     cd electron && npm run dist
 
+# copy engine artifacts into newweb-site/static/ and start the Bun server
+serve-site: build-engine build-go
+    bash newweb-site/setup.sh
+    cd newweb-site && bun server.ts
+
 # start minimal test site on port 3000
 simple-site:
     node simple-site/server.js

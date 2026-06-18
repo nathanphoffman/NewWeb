@@ -27,11 +27,12 @@ export function getIsLoggedIn(): boolean {
   return isLoggedIn;
 }
 
-export function updateAuthButtons(onEdit: () => void, onAdd: () => void): void {
+export function updateAuthButtons(onEdit: () => void, onAdd: () => void, onLogout: () => void): void {
   const menu = document.getElementById('nw-bar-menu')!;
   const settings = document.getElementById('nw-settings')!;
-  let editBtn = document.getElementById('nw-edit') as HTMLButtonElement | null;
-  let addBtn  = document.getElementById('nw-add')  as HTMLButtonElement | null;
+  let editBtn   = document.getElementById('nw-edit')   as HTMLButtonElement | null;
+  let addBtn    = document.getElementById('nw-add')    as HTMLButtonElement | null;
+  let logoutBtn = document.getElementById('nw-logout') as HTMLButtonElement | null;
   if (isLoggedIn) {
     if (!editBtn) {
       editBtn = document.createElement('button');
@@ -47,7 +48,15 @@ export function updateAuthButtons(onEdit: () => void, onAdd: () => void): void {
       addBtn.addEventListener('click', onAdd);
       menu.insertBefore(addBtn, editBtn);
     }
+    if (!logoutBtn) {
+      logoutBtn = document.createElement('button');
+      logoutBtn.id = 'nw-logout';
+      logoutBtn.textContent = 'Logout';
+      logoutBtn.addEventListener('click', onLogout);
+      menu.insertBefore(logoutBtn, addBtn);
+    }
   } else {
+    logoutBtn?.remove();
     addBtn?.remove();
     editBtn?.remove();
   }
