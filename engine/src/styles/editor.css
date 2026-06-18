@@ -1,0 +1,110 @@
+/* ── editor modal (full-screen) ───────────────────────── */
+.nw-editor-modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  transform: none;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.nw-editor-modal::backdrop {
+  background: transparent;
+}
+
+.nw-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--bar-border);
+  flex-shrink: 0;
+}
+
+.nw-editor-title {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nw-editor-filepath {
+  flex: 1;
+  padding: 0.35em 0.6em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.nw-editor-filepath:focus {
+  outline: 2px solid var(--link, var(--fg));
+  outline-offset: 1px;
+}
+
+.nw-editor-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.nw-editor-save {
+  padding: 0.35em 1.1em;
+  background: var(--link, var(--fg));
+  color: var(--bg);
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.nw-editor-save:hover {
+  opacity: 0.85;
+}
+
+.nw-editor-close {
+  padding: 0.35em 1.1em;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.nw-editor-close:hover {
+  background: var(--bar-hover-bg, rgba(128, 128, 128, 0.15));
+}
+
+.nw-editor-cm {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.nw-editor-cm > .cm-editor {
+  height: 100%;
+}
+
+.nw-editor-cm > .cm-editor > .cm-scroller {
+  overflow: auto;
+}

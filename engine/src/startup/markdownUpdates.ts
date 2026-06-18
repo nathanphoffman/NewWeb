@@ -27,7 +27,7 @@ export function getIsLoggedIn(): boolean {
   return isLoggedIn;
 }
 
-export function updateAuthButtons(): void {
+export function updateAuthButtons(onEdit: () => void, onAdd: () => void): void {
   const menu = document.getElementById('nw-bar-menu')!;
   const settings = document.getElementById('nw-settings')!;
   let editBtn = document.getElementById('nw-edit') as HTMLButtonElement | null;
@@ -37,14 +37,14 @@ export function updateAuthButtons(): void {
       editBtn = document.createElement('button');
       editBtn.id = 'nw-edit';
       editBtn.textContent = 'Edit';
-      editBtn.addEventListener('click', () => { /* hookup point */ });
+      editBtn.addEventListener('click', onEdit);
       menu.insertBefore(editBtn, settings);
     }
     if (!addBtn) {
       addBtn = document.createElement('button');
       addBtn.id = 'nw-add';
       addBtn.textContent = 'Add';
-      addBtn.addEventListener('click', () => { /* hookup point */ });
+      addBtn.addEventListener('click', onAdd);
       menu.insertBefore(addBtn, editBtn);
     }
   } else {

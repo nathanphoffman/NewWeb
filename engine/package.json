@@ -6,9 +6,10 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build:js": "esbuild src/engine.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js",
+    "build:editor-js": "esbuild src/editor.ts --bundle --minify --format=iife --global-name=nwEditor --outfile=build/editor.bundle.js",
     "build:electron-js": "esbuild src/engine-electron.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine-electron.bundle.js",
     "build:html": "node scripts/build-html.js",
-    "build": "npm run typecheck && npm run build:js && npm run build:html",
+    "build": "npm run typecheck && npm run build:editor-js && npm run build:js && npm run build:html",
     "build:electron": "npm run typecheck && npm run build:electron-js",
     "watch": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js --watch"
   },
@@ -17,5 +18,9 @@
     "esbuild": "^0.25.0",
     "prismjs": "^1.30.0",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@codemirror/lang-markdown": "^6.5.0",
+    "codemirror": "^6.0.2"
   }
 }

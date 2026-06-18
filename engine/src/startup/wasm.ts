@@ -7,6 +7,13 @@ import { updateViewDataBtn, updateAuthButtons, setLoggedIn, getIsLoggedIn } from
 import init, { render as wasmRender } from '../../build/pkg/engine.js';
 import { showSettingsModal } from "../settings";
 
+declare global {
+  const nwEditor: {
+    showEditModal(filename: string, initialContent: string, onSave: (content: string) => void): void;
+    showAddModal(onSave: (filepath: string, content: string) => void): void;
+  };
+}
+
 let allowedKeys = new Set<string>();
 
 async function loadConfig(): Promise<void> {
@@ -44,6 +51,57 @@ function openLoginForm(): void {
       store.delete('auth.password');
       allowedKeys = new Set();
       showToast('Auth module failed to load', 'error');
+    }
+  });
+}
+
+async function openEditModal(): Promise<void> {
+  const mdUrl = (history.state as { mdUrl?: string } | null)?.mdUrl;
+  if (!mdUrl) { showToast('No page loaded', 'error'); return; }
+  let content: string;
+  try {
+    content = await fetch(mdUrl).then(r => r.text());
+  } catch {
+    showToast('Failed to load page content', 'error');
+    return;
+  }
+  nwEditor.showEditModal(mdUrl, content, async (savedContent) => {
+    store.set('cms.action', 'edit');
+    store.set('cms.filepath', mdUrl);
+    store.set('cms.content', savedContent);
+    allowedKeys = new Set(['cms.action', 'cms.filepath', 'cms.content']);
+    showSpinner();
+    try {
+      await loadAndExecute('src/cms.wasm');
+    } catch {
+      showToast('CMS module failed to load', 'error');
+    } finally {
+      store.delete('cms.action');
+      store.delete('cms.filepath');
+      store.delete('cms.content');
+      allowedKeys = new Set();
+      hideSpinner();
+    }
+  });
+}
+
+function openAddModal(): void {
+  nwEditor.showAddModal(async (filepath, content) => {
+    store.set('cms.action', 'create');
+    store.set('cms.filepath', filepath);
+    store.set('cms.content', content);
+    allowedKeys = new Set(['cms.action', 'cms.filepath', 'cms.content']);
+    showSpinner();
+    try {
+      await loadAndExecute('src/cms.wasm');
+    } catch {
+      showToast('CMS module failed to load', 'error');
+    } finally {
+      store.delete('cms.action');
+      store.delete('cms.filepath');
+      store.delete('cms.content');
+      allowedKeys = new Set();
+      hideSpinner();
     }
   });
 }
@@ -107,7 +165,7 @@ export function startWASMEngineToPullMarkdown() {
         allowedKeys = new Set();
         if (success) {
           setLoggedIn(true);
-          updateAuthButtons();
+          updateAuthButtons(openEditModal, openAddModal);
           showToast('Login successful', 'info');
         } else {
           showToast('Login failed', 'error');
