@@ -4,6 +4,7 @@ const authTokens: Record<string, string> = {};
 
 let GoTiny: (new () => Go) | null = null;
 
+// lazily injects the TinyGo wasm_exec runtime script; no-ops if already loaded
 async function loadTinyRuntime(): Promise<void> {
   if (GoTiny) return;
   await new Promise<void>((resolve, reject) => {
@@ -15,6 +16,7 @@ async function loadTinyRuntime(): Promise<void> {
   });
 }
 
+// fetches a wasm binary and runs it using the TinyGo runtime
 export async function loadAndExecute(file: string): Promise<void> {
   await loadTinyRuntime();
   const bytes = await fetch(file).then(r => r.arrayBuffer());
@@ -23,6 +25,7 @@ export async function loadAndExecute(file: string): Promise<void> {
   await go.run(module.instance);
 }
 
+// handles a click on a wasm: link — shows spinner, loads and executes the wasm file, then hides spinner
 export async function handleWasm(a: HTMLAnchorElement): Promise<void> {
   if (a.dataset.pending) return;
   a.dataset.pending = 'true';
@@ -35,6 +38,7 @@ export async function handleWasm(a: HTMLAnchorElement): Promise<void> {
   hideSpinner();
 }
 
+// makes a same-origin authenticated POST from within a wasm module; blocks cross-domain requests
 export async function wasmFetch(url: string, data: unknown): Promise<string | null> {
   const requestDomain = new URL(url).hostname;
   const pageDomain = window.location.hostname;
@@ -52,6 +56,7 @@ export async function wasmFetch(url: string, data: unknown): Promise<string | nu
   }).then(r => r.text());
 }
 
+// parses a "wasm:file.wasm?key=val" href into a file path and query params object
 export function parseWasmUrl(href: string): { file: string; params: Record<string, string> } {
   const withoutProtocol = href.replace('wasm:', '');
   const [file, qs] = withoutProtocol.split('?');

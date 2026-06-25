@@ -1,5 +1,6 @@
 import { showDataModal, store } from "./engineCode";
 
+// shows the "View Data" menu button when the store has entries, removes it when empty
 export function updateViewDataBtn(): void {
   const menu = document.getElementById('nw-bar-menu')!;
   let btn = document.getElementById('nw-view-data') as HTMLButtonElement | null;
@@ -19,14 +20,17 @@ export function updateViewDataBtn(): void {
 
 let isLoggedIn = false;
 
+// sets the module-level login state flag
 export function setLoggedIn(value: boolean): void {
   isLoggedIn = value;
 }
 
+// returns the current login state
 export function getIsLoggedIn(): boolean {
   return isLoggedIn;
 }
 
+// adds Edit/Add/Logout buttons to the menu when logged in, removes them when logged out
 export function updateAuthButtons(onEdit: () => void, onAdd: () => void, onLogout: () => void): void {
   const menu = document.getElementById('nw-bar-menu')!;
   const settings = document.getElementById('nw-settings')!;

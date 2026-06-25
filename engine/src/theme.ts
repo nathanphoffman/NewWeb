@@ -9,11 +9,13 @@ const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora
 
 let pageSuggestions: string[] = [];
 
+// reads a <!-- themes: name1, name2 --> comment from markdown and applies the suggestion
 export function applyThemeSuggestion(md: string): void {
   const match = md.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
   if (match) suggestTheme(match[1].split(','));
 }
 
+// returns the first valid theme that matches a page suggestion prefix, or null if none match
 function getSuggestedTheme(): string | null {
   for (const name of pageSuggestions) {
     const q = name.trim().toLowerCase();
@@ -23,6 +25,7 @@ function getSuggestedTheme(): string | null {
   return null;
 }
 
+// appends "(site default)" to the suggested theme's option in the theme picker dropdown
 function annotateSuggestion(suggested: string | null): void {
   const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
   Array.from(sel.options).forEach(opt => {
@@ -31,6 +34,7 @@ function annotateSuggestion(suggested: string | null): void {
   });
 }
 
+// records page theme suggestions and applies the best match if the user has no saved preference
 export function suggestTheme(names: string[]): void {
   pageSuggestions = names;
   const suggested = getSuggestedTheme();
@@ -40,6 +44,7 @@ export function suggestTheme(names: string[]): void {
   }
 }
 
+// sets the data-theme attribute and starts/stops any theme-specific visual effects (matrix rain, petals, etc.)
 function applyTheme(theme: string): void {
   const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
   document.documentElement.setAttribute('data-theme', theme);
@@ -52,6 +57,7 @@ function applyTheme(theme: string): void {
   if (theme === 'cyber') startCyberGleam(); else stopCyberGleam();
 }
 
+// pauses or resumes all page animations, including theme-specific effects that need explicit start/stop
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle('nw-paused', paused);
   const contentEl = document.getElementById('content');

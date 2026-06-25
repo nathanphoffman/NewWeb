@@ -20,6 +20,7 @@ let apiFetchPending = false;
 // Keys written by the engine itself — never exposed to user-loaded WASM modules
 const PROTECTED_KEYS = new Set(['new_web_username', 'new_web_password_hash']);
 
+// clears stored credentials and updates the menu to remove auth buttons
 function logout(): void {
   store.delete('new_web_username');
   store.delete('new_web_password_hash');
@@ -29,6 +30,7 @@ function logout(): void {
   updateAuthButtons(openEditModal, openAddModal, logout);
 }
 
+// fetches newweb.config.json and flattens its values into the session store under the "config." prefix
 async function loadConfig(): Promise<void> {
   try {
     const cfg = await fetch('newweb.config.json').then(r => r.json()) as Record<string, unknown>;
@@ -46,6 +48,7 @@ async function loadConfig(): Promise<void> {
   } catch { /* config file is optional */ }
 }
 
+// shows the login form modal and, on submit, loads auth.wasm with the credentials scoped in allowedKeys
 function openLoginForm(): void {
   const fieldSections: FieldDef[][] = [[
     { key: 'auth.username', label: 'Username', type: 'text',     maxlength: 64,  options: null },
@@ -68,6 +71,7 @@ function openLoginForm(): void {
   });
 }
 
+// fetches the current page's markdown and opens the editor modal; on save runs cms.wasm to persist the change
 async function openEditModal(): Promise<void> {
   const mdUrl = (history.state as { mdUrl?: string } | null)?.mdUrl;
   if (!mdUrl) { showToast('No page loaded', 'error'); return; }
@@ -100,6 +104,7 @@ async function openEditModal(): Promise<void> {
   });
 }
 
+// opens the "add new page" editor modal; on save runs cms.wasm to create the file
 function openAddModal(): void {
   nwEditor.showAddModal(async (filepath, content) => {
     store.set('cms.action', 'create');
@@ -123,6 +128,7 @@ function openAddModal(): void {
   });
 }
 
+// intercepts wasm: link clicks — shows a form if fields are declared, then executes the wasm with scoped key access
 export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: string) {
 
   if (href.startsWith('wasm:')) {
@@ -152,6 +158,7 @@ export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: strin
   }
 }
 
+// bootstraps the engine: loads config, initializes the wasm markdown renderer, exposes the newweb host API, and loads the initial page
 export function startWASMEngineToPullMarkdown() {
   // bootstrap: init WASM renderer, expose host API, load initial page
   (async () => {

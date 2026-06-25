@@ -1,3 +1,4 @@
+// replaces ${key} placeholders in text with values from the context object
 function interpolate(text: string, ctx: Record<string, unknown>): string {
   return text.replace(/\$\{([^}]+)\}/g, (_, key) => {
     const val = ctx[key.trim()];
@@ -5,6 +6,7 @@ function interpolate(text: string, ctx: Record<string, unknown>): string {
   });
 }
 
+// expands <!-- foreach: array use partial.md --> directives by fetching the partial and repeating it for each array item
 async function processForeach(md: string, data: Record<string, unknown>): Promise<string> {
   const pattern = /<!--\s*foreach:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
   const matches = [...md.matchAll(pattern)];
@@ -31,6 +33,7 @@ async function processForeach(md: string, data: Record<string, unknown>): Promis
   });
 }
 
+// replaces <!-- if: key use partial.md --> directives with the fetched partial when the key is truthy
 async function processIf(md: string, data: Record<string, unknown>): Promise<string> {
   const pattern = /<!--\s*if:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
   const matches = [...md.matchAll(pattern)];
@@ -48,6 +51,7 @@ async function processIf(md: string, data: Record<string, unknown>): Promise<str
   });
 }
 
+// applies interpolation, foreach, and if template passes to a markdown string in order
 export async function processTemplate(md: string, data: Record<string, unknown>): Promise<string> {
   let result = interpolate(md, data);
   result = await processForeach(result, data);

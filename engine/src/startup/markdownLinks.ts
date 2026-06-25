@@ -4,6 +4,7 @@ import { extractALink, extractHrefAttribute } from "../utility";
 import { handleNewWebPersonalDataLinks } from "./engineLinks";
 import { handleWASMClick } from "./wasm";
 
+// handles # links — navigates to a new page if the fragment looks like a path, otherwise scrolls to the anchor
 export function handleHashOnClick(e: MouseEvent, href: string) {
     if (href.startsWith('#')) {
         e.preventDefault();
@@ -20,6 +21,7 @@ export function handleHashOnClick(e: MouseEvent, href: string) {
     }
 }
 
+// attaches the global document click interceptor that routes all link clicks by protocol or path type
 export function startOnClickListeners() {
 
     // link interception — dispatch by protocol or treat bare paths as markdown

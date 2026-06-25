@@ -4,10 +4,12 @@ import { highlightBlock } from './highlight.js';
 
 const KNOWN_TYPES = new Set(['text', 'email', 'password', 'number', 'tel', 'date', 'textarea']);
 
+// converts a camelCase field name to a human-readable Title Case label
 function camelToLabel(s: string): string {
   return s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
 }
 
+// parses a comma-separated field definition string (e.g. "name, age:number:3, role:admin|user") into FieldDef objects
 function parseFields(text: string): FieldDef[] {
   return text.split(',').map(s => s.trim()).filter(Boolean).map(def => {
     const colonIdx = def.indexOf(':');
@@ -33,10 +35,12 @@ function parseFields(text: string): FieldDef[] {
   });
 }
 
+// removes all open <dialog> elements from the DOM
 export function closeModals(): void {
   document.querySelectorAll('dialog').forEach(d => d.remove());
 }
 
+// walks the preceding sibling HTML comments of a wasm link to extract script_reasoning, data keys, and field definitions
 function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string[]; fieldSections: FieldDef[][] } {
   let node: Node | null = a.parentElement;
   let desc = '';
@@ -58,6 +62,7 @@ function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string
   return { desc, keys, fieldSections };
 }
 
+// HEAD-checks an image URL and returns true if it fits within the configured max size
 async function checkSize(src: string): Promise<boolean> {
   if (src.startsWith('data:')) return true;
   try {
@@ -70,6 +75,7 @@ async function checkSize(src: string): Promise<boolean> {
   }
 }
 
+// opens an image in a fullscreen lightbox dialog
 function showLightbox(src: string, alt: string): void {
   const dlg = document.createElement('dialog');
   dlg.className = 'nw-lightbox';
@@ -93,6 +99,7 @@ function showLightbox(src: string, alt: string): void {
   dlg.showModal();
 }
 
+// wraps an image in a <figure> with optional caption; clicking opens the lightbox
 function buildFrame(src: string, alt: string): HTMLElement {
   const fig = document.createElement('figure');
   fig.className = 'nw-image-frame';
@@ -111,6 +118,7 @@ function buildFrame(src: string, alt: string): HTMLElement {
   return fig;
 }
 
+// creates a button that loads an oversized image on demand instead of auto-loading it
 function buildFallback(src: string, alt: string): HTMLElement {
   const btn = document.createElement('button');
   const text = "Image size is beyond set limit, click to load it anyway.";
@@ -122,6 +130,7 @@ function buildFallback(src: string, alt: string): HTMLElement {
   return btn;
 }
 
+// replaces nw-img-placeholder spans with framed images or fallback buttons based on size
 async function processImages(container: Element): Promise<void> {
   const placeholders = Array.from(
     container.querySelectorAll<HTMLElement>('span.nw-img-placeholder')
@@ -134,6 +143,7 @@ async function processImages(container: Element): Promise<void> {
   }));
 }
 
+// adds a globe icon to external links and a gear info button next to wasm: links
 function annotateLinks(container: Element): void {
   container.querySelectorAll('a[href]').forEach(el => {
     const a = el as HTMLAnchorElement;
@@ -152,10 +162,12 @@ function annotateLinks(container: Element): void {
   });
 }
 
+// converts heading text to a lowercase URL-safe id slug
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// assigns slugified id attributes to headings that don't already have one, de-duplicating with a counter
 function addHeadingIds(container: Element): void {
   const seen = new Map<string, number>();
   container.querySelectorAll<HTMLElement>('h1,h2,h3,h4,h5,h6').forEach(h => {
@@ -168,11 +180,13 @@ function addHeadingIds(container: Element): void {
   });
 }
 
+// smoothly scrolls to the element with the given id
 export function scrollToAnchor(id: string): void {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// renders markdown into #content, replacing <img> tags with placeholders, then runs heading ids, link annotation, syntax highlighting, and image loading
 export function renderPage(md: string): void {
   closeModals();
   window.scrollTo(0, 0);
@@ -193,6 +207,7 @@ export function renderPage(md: string): void {
   document.dispatchEvent(new CustomEvent('nw-page-rendered'));
 }
 
+// shows a self-dismissing toast notification rendered from markdown
 export function showToast(md: string, type: string): void {
   const el = document.createElement('div');
   el.className = `nw-toast nw-toast-${type}`;
@@ -201,6 +216,7 @@ export function showToast(md: string, type: string): void {
   setTimeout(() => el.remove(), 3000);
 }
 
+// opens a <dialog> modal with rendered markdown content and a close button
 export function showModal(md: string, closeLabel = 'Close'): Modal {
   closeModals();
   const dlg = document.createElement('dialog') as Modal;
@@ -216,6 +232,7 @@ export function showModal(md: string, closeLabel = 'Close'): Modal {
   return dlg;
 }
 
+// builds and opens a form dialog for collecting user input before running a wasm script
 export function showFormModal(
   linkText: string,
   fieldSections: FieldDef[][],
@@ -327,11 +344,13 @@ export function showFormModal(
   (form.elements[0] as HTMLElement | undefined)?.focus();
 }
 
+// updates the text content of an existing modal's body
 export function updateModal(m: Modal, md: string): void {
   const body = m.querySelector('.nw-modal-body');
   if (body) body.textContent = md;
 }
 
+// shows the loading spinner, resetting its animation
 export function showSpinner(): void {
   const s = document.getElementById('nw-spinner')!;
   s.style.animation = 'none';
@@ -340,11 +359,13 @@ export function showSpinner(): void {
   s.style.animation = '';
 }
 
+// hides the loading spinner
 export function hideSpinner(): void {
   const s = document.getElementById('nw-spinner');
   if (s) s.style.display = 'none';
 }
 
+// shows a sticky bar notifying the user that a redirect was cancelled, with Continue and Dismiss actions
 export function showSuspendedBar(url: string): void {
   const bar = document.createElement('div');
   bar.id = 'nw-suspended';

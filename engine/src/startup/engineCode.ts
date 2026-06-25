@@ -2,6 +2,7 @@ import { showModal } from "../ui";
 
 export const store = new Map<string, string>();
 
+// builds the markdown string for the session data modal, showing stored key-value pairs as a JSON block
 export function dataModalMd(): string {
     const entries = [...store.entries()];
     const dataBlock = entries.length
@@ -10,10 +11,12 @@ export function dataModalMd(): string {
     return `### Your Session Data\n\nThis data exists only for your current browser session — it is cleared when you leave or refresh the page. Sites use session data for logins, personalization, and data access.\n\n---\n\n${dataBlock}\n\n[Clear all data](nw:cleardata)`;
 }
 
+// opens the session data modal
 export function showDataModal(): void {
     showModal(dataModalMd());
 }
 
+// builds markdown for the wasm script info modal, showing the description and which session keys it will access
 export function buildInfoMd(desc: string, keys: string[]): string {
     const reasonSection = desc.trim()
         ? `### Why this script?\n${desc}`

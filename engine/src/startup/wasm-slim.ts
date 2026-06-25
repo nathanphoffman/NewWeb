@@ -9,6 +9,7 @@ import { showSettingsModal } from "../settings";
 
 let allowedKeys = new Set<string>();
 
+// intercepts wasm: link clicks — shows a form if fields are declared, then executes the wasm with scoped key access
 export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: string) {
   if (href.startsWith('wasm:')) {
     e.preventDefault();
@@ -37,6 +38,7 @@ export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: strin
   }
 }
 
+// slim bootstrap: initializes the wasm renderer and exposes the newweb host API without auth or config loading
 export function startWASMEngineToPullMarkdown() {
   (async () => {
     await init(new URL('engine/build/pkg/engine_bg.wasm', location.href));

@@ -3,21 +3,25 @@ import { applyAnimPaused } from './theme.js';
 const MAX_IMAGE_KB_KEY = 'nw-settings-max-image-kb';
 const DEFAULT_MAX_IMAGE_KB = 200;
 
+// reads the max auto-load image size from localStorage, defaulting to 200 KB
 export function getMaxImageKb(): number {
   const val = parseInt(localStorage.getItem(MAX_IMAGE_KB_KEY) ?? '', 10);
   return isNaN(val) || val <= 0 ? DEFAULT_MAX_IMAGE_KB : val;
 }
 
+// persists the max image KB setting to localStorage
 function setMaxImageKb(kb: number): void {
   localStorage.setItem(MAX_IMAGE_KB_KEY, String(kb));
 }
 
+// creates a styled settings section container element
 function makeSection(): HTMLElement {
   const section = document.createElement('section');
   section.className = 'nw-settings-section';
   return section;
 }
 
+// builds and opens the settings dialog with sections for image size, animations, session data, and optional auth
 export function showSettingsModal(
   getEntries: () => [string, string][],
   onViewData: () => void,
