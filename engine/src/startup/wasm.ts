@@ -71,6 +71,7 @@ function openLoginForm(): void {
   });
 }
 
+// this is for non-slim editor mode
 // fetches the current page's markdown and opens the editor modal; on save runs cms.wasm to persist the change
 async function openEditModal(): Promise<void> {
   const mdUrl = (history.state as { mdUrl?: string } | null)?.mdUrl;
@@ -104,6 +105,7 @@ async function openEditModal(): Promise<void> {
   });
 }
 
+// this is for non-slim editor mode
 // opens the "add new page" editor modal; on save runs cms.wasm to create the file
 function openAddModal(): void {
   nwEditor.showAddModal(async (filepath, content) => {

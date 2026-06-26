@@ -34,8 +34,8 @@ export function getIsLoggedIn(): boolean {
 export function updateAuthButtons(onEdit: () => void, onAdd: () => void, onLogout: () => void): void {
   const menu = document.getElementById('nw-bar-menu')!;
   const settings = document.getElementById('nw-settings')!;
-  let editBtn   = document.getElementById('nw-edit')   as HTMLButtonElement | null;
-  let addBtn    = document.getElementById('nw-add')    as HTMLButtonElement | null;
+  let editBtn = document.getElementById('nw-edit') as HTMLButtonElement | null;
+  let addBtn = document.getElementById('nw-add') as HTMLButtonElement | null;
   let logoutBtn = document.getElementById('nw-logout') as HTMLButtonElement | null;
   if (isLoggedIn) {
     if (!editBtn) {
