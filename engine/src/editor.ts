@@ -42,7 +42,7 @@ function mountEditor(parent: HTMLElement, doc: string): EditorView {
   if (activeView) activeView.destroy();
   activeView = new EditorView({
     doc,
-    extensions: [basicSetup, markdown(), EditorView.lineWrapping, editorTheme],
+    extensions: [basicSetup, markdown(), EditorView.lineWrapping, editorTheme, EditorView.contentAttributes.of({ spellcheck: 'true' })],
     parent,
   });
   return activeView;
