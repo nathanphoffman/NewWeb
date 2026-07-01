@@ -69,8 +69,7 @@ body {
 
 #content table {
   display: block;
-  width: max-content;
-  max-width: 100%;
+  width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
   margin: 0.8em 0;

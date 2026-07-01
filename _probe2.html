@@ -1,0 +1,17 @@
+<!doctype html><html><body>
+<iframe id="f" src="http://localhost:8080/index.html#table_test" style="width:1000px;height:1600px;border:0"></iframe>
+<script>
+setTimeout(() => {
+  const doc = document.getElementById('f').contentWindow.document;
+  const tables = [...doc.querySelectorAll('table')];
+  const basic = tables[0];
+  const result = {
+    contentClientWidth: doc.getElementById('content').clientWidth,
+    basicTableOffsetWidth: basic.offsetWidth,
+    basicTableComputedWidth: getComputedStyle(basic).width,
+    basicTableDisplay: getComputedStyle(basic).display,
+  };
+  document.title = 'RESULT:' + JSON.stringify(result);
+}, 5000);
+</script>
+</body></html>

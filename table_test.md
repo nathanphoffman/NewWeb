@@ -31,6 +31,13 @@
 | a     | b     | c     | d     | e     | f     | g     | h     | i     | j      |
 | aa    | bb    | cc    | dd    | ee    | ff    | gg    | hh    | ii    | jj     |
 
+## Unbreakable content (tests overflow scroll, not page-wide squish)
+
+| Short | Long unbreakable value |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| a     | https://example.com/a/very/long/unbreakable/url/that/should/force/this/table/to/scroll/instead/of/squishing/every/column/down/to/nothing/at/all/1234567890 |
+| b     | another-unbreakably-long-token-1234567890-1234567890-1234567890-1234567890-1234567890-1234567890-1234567890 |
+
 ## Many rows (tests zebra striping)
 
 | # | Value |
