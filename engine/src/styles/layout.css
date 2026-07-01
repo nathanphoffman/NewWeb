@@ -7,6 +7,16 @@
 /* ── reset ────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-y: scroll;
+  scrollbar-color: var(--border) var(--bg);
+  scrollbar-width: thin;
+}
+html::-webkit-scrollbar { width: 10px; height: 10px; }
+html::-webkit-scrollbar-track { background: var(--bg); }
+html::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+html::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
 body {
   background: var(--bg);
   color: var(--fg);
@@ -81,6 +91,16 @@ body {
 }
 #content th { background: var(--code-bg); font-weight: 600; }
 #content tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--fg) 4%, transparent); }
+
+/* ── themed horizontal-scroll containers (code blocks, tables) ── */
+#content pre, #content table {
+  scrollbar-color: var(--border) var(--code-bg);
+  scrollbar-width: thin;
+}
+#content pre::-webkit-scrollbar, #content table::-webkit-scrollbar { width: 10px; height: 10px; }
+#content pre::-webkit-scrollbar-track, #content table::-webkit-scrollbar-track { background: var(--code-bg); }
+#content pre::-webkit-scrollbar-thumb, #content table::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+#content pre::-webkit-scrollbar-thumb:hover, #content table::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
 /* ── link icons ───────────────────────────────────────── */
 .nw-link-icon {
