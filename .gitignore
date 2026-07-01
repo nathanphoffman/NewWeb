@@ -3,7 +3,9 @@ engine/lib/
 node_modules/
 electron/dist/
 shared/
-/index.html
+/site/index.html
+/site/engine
+/site/src
 src/*.wasm
 engine-rs/target/
 *.deb

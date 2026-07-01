@@ -6,7 +6,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build:js": "esbuild src/engine.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js",
-    "build:html": "node scripts/build-html.js src/index.html ../index.html build/engine.bundle.js",
+    "build:html": "node scripts/build-html.js src/index.html ../site/index.html build/engine.bundle.js",
     "build": "npm run typecheck && npm run build:js && npm run build:html",
     "watch": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js --watch"
   },

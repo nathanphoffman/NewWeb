@@ -20,9 +20,14 @@ build-rs:
 build-go:
     bash src/build.sh
 
+# ensure site/ has symlinks to the build artifacts it depends on
+link-site:
+    ln -sfn ../engine site/engine
+    ln -sfn ../src site/src
+
 # start local dev server
-serve:
-    node server.js
+serve: link-site
+    node site/server.js
 
 # watch typescript for changes
 watch:
@@ -30,7 +35,7 @@ watch:
 
 # copy latest build artifacts into setup/
 update-setup: build-engine
-    cp index.html setup/index.html
+    cp site/index.html setup/index.html
     mkdir -p setup/engine/build/pkg
     cp engine/build/pkg/engine_bg.wasm setup/engine/build/pkg/engine_bg.wasm
 

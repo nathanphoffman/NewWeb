@@ -11,13 +11,13 @@ try {
 } finally {
     Pop-Location
 }
-Write-Host "v built -> $ScriptDir\index.html"
+Write-Host "v built -> $ScriptDir\site\index.html"
 
 Write-Host "-> syncing -> setup/..."
-Copy-Item "$ScriptDir\index.html"            "$ScriptDir\setup\index.html" -Force
+Copy-Item "$ScriptDir\site\index.html"       "$ScriptDir\setup\index.html" -Force
 Copy-Item "$Engine\build\pkg\engine_bg.wasm" "$ScriptDir\setup\engine\build\pkg\engine_bg.wasm" -Force
 Write-Host "v setup\ synced"
 
 Write-Host "-> copying documentation..."
-Copy-Item "$ScriptDir\documentation.md" "$ScriptDir\setup\documentation.md" -Force
+Copy-Item "$ScriptDir\site\documentation.md" "$ScriptDir\setup\documentation.md" -Force
 Write-Host "v documentation.md copied to setup\"
