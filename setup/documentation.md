@@ -64,6 +64,14 @@ The suggested theme appears as "(site default)" in the picker. It applies automa
 
 **Theme priority**: user saved preference → page suggestion → system dark/light mode (carbon / quill).
 
+**Page title** — add to any `.md` file to set the browser tab title while that page is open:
+
+```markdown
+<!-- title: Nate's Site -->
+```
+
+Resets to the site's default title when navigating to a page that doesn't declare one.
+
 ---
 
 ## Settings

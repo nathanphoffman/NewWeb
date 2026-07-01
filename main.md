@@ -1,3 +1,5 @@
+<!-- title: The New Web Project -->
+
 # Welcome to the New Web Project
 To get started right away, learn how to [Set Up Your First Site](first_site)
 
