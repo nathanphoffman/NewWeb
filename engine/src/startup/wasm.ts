@@ -59,8 +59,6 @@ export function startWASMEngineToPullMarkdown() {
       load:    (url, data) => navigateWithData(url, data),
       store:   (key, value) => { store.set(key, value); updateViewDataBtn(); },
       get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
-      auth:    () => {},     // not used in slim build
-      apiFetch: () => {},    // not used in slim build
     };
 
     document.getElementById('nw-home')!.addEventListener('click', () => {

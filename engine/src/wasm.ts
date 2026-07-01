@@ -1,6 +1,4 @@
-import { showToast, showSpinner, hideSpinner } from './ui.js';
-
-const authTokens: Record<string, string> = {};
+import { showSpinner, hideSpinner } from './ui.js';
 
 let GoTiny: (new () => Go) | null = null;
 
@@ -36,24 +34,6 @@ export async function handleWasm(a: HTMLAnchorElement): Promise<void> {
 
   delete a.dataset.pending;
   hideSpinner();
-}
-
-// makes a same-origin authenticated POST from within a wasm module; blocks cross-domain requests
-export async function wasmFetch(url: string, data: unknown): Promise<string | null> {
-  const requestDomain = new URL(url).hostname;
-  const pageDomain = window.location.hostname;
-  if (requestDomain !== pageDomain) {
-    showToast('Cross-domain fetch prohibited', 'error');
-    return null;
-  }
-  const token = authTokens[window.location.hostname];
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  return fetch(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(data),
-  }).then(r => r.text());
 }
 
 // parses a "wasm:file.wasm?key=val" href into a file path and query params object

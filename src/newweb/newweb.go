@@ -33,11 +33,3 @@ func Store(key, value string) {
 func Get(key string) string {
 	return api.Call("get", key).String()
 }
-
-func Auth(success bool, token, username string) {
-	api.Call("auth", success, token, username)
-}
-
-func ApiFetch(method, url, body string) {
-	api.Call("apiFetch", method, url, body)
-}

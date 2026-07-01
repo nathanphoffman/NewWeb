@@ -22,8 +22,7 @@ function getProxyPort(hostname) {
 // Paths that belong to the browser itself — always served from disk
 function isBrowserAsset(pathname) {
   return pathname === '/' ||
-    pathname === '/shell.html' ||
-    pathname.startsWith('/shared/') ||
+    pathname === '/index.html' ||
     pathname.startsWith('/engine/');
 }
 
@@ -65,7 +64,7 @@ app.whenReady().then(() => {
 
     if (url.hostname === 'localhost' || proxyPort) {
       if (isBrowserAsset(pathname)) {
-        const filePath = path.join(ROOT, pathname === '/' ? 'shell.html' : pathname);
+        const filePath = path.join(ROOT, pathname === '/' ? 'index.html' : pathname);
         return net.fetch('file://' + filePath);
       }
       if (proxyPort) {
@@ -76,7 +75,7 @@ app.whenReady().then(() => {
 
     // external NewWeb site — browser assets still from disk, content fetched remotely
     if (isBrowserAsset(pathname)) {
-      const filePath = path.join(ROOT, pathname === '/' ? 'shell.html' : pathname);
+      const filePath = path.join(ROOT, pathname === '/' ? 'index.html' : pathname);
       return net.fetch('file://' + filePath);
     }
     const scheme = isPrivateHost(url.hostname) ? 'http' : 'https';

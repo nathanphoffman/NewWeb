@@ -6,16 +6,11 @@ NewWeb is a markdown-first web framework. Sites are `.md` files rendered in the 
 
 ## Builds
 
-| Build | Command | Includes |
-|-------|---------|----------|
-| **Slim** | `npx degit .../setup my-site` | Viewer, themes, WASM scripting |
-| **Full** | `npx degit .../setup-full my-site` | Everything above + in-browser markdown editor, auth, CMS |
+Get started: `npx degit .../setup my-site`. Includes the viewer, themes, and WASM scripting.
 
-Both builds run with `npm start` → `http://localhost:8080`.
+Runs with `npm start` → `http://localhost:8080`.
 
-Required files for static hosting:
-- **Slim**: `index.html`, `engine/build/pkg/engine_bg.wasm`, `.md` files
-- **Full**: above + `engine/build/editor.bundle.js`
+Required files for static hosting: `index.html`, `engine/build/pkg/engine_bg.wasm`, `.md` files.
 
 ---
 
@@ -103,7 +98,6 @@ The Settings button (nav bar) opens a modal with:
 - **Max auto-load image size (KB)** — images above this threshold show a "click to load" button instead of loading automatically. Default: 200 KB.
 - **Animations** — pause or resume all theme animations.
 - **Session data** — view current session store contents.
-- **Login** *(full build only)* — opens login form for CMS auth.
 
 ---
 
@@ -164,7 +158,7 @@ If a page is loaded without session data, this comment adds a "This page require
 
 ## `window.newweb` API
 
-WASM modules interact with the engine via `window.newweb`. All calls are available in both builds unless noted.
+WASM modules interact with the engine via `window.newweb`.
 
 | Method | Description |
 |--------|-------------|
@@ -176,8 +170,6 @@ WASM modules interact with the engine via `window.newweb`. All calls are availab
 | `newweb.load(url, data)` | Navigate to a page and render it with template data |
 | `newweb.store(key, value)` | Write a value to the session store |
 | `newweb.get(key)` | Read a value from the session store (scoped to declared keys) |
-| `newweb.auth(success, hash, user)` | Auth result callback *(full build only)* |
-| `newweb.apiFetch(method, url, body)` | Authenticated API request with HMAC token *(full build only)* |
 
 Session store data is in-memory only — cleared on page refresh or navigation away.
 
@@ -208,32 +200,6 @@ Repeats `partials/item-row.md` for each element in `data.items`. Each repetition
 
 ---
 
-## Config
-
-An optional `newweb.config.json` file in the project root is loaded on startup *(full build only)* and flattened into the session store under the `config.` prefix.
-
-```json
-{
-  "auth": {
-    "endpoint": "/api/auth",
-    "hashMethod": "plain"
-  }
-}
-```
-
-These values are accessible to WASM modules as `config.auth.endpoint`, `config.auth.hashMethod`, etc.
-
----
-
-## In-Browser Editor *(full build only)*
-
-When logged in, the nav bar shows **Edit** and **Add** buttons.
-
-- **Edit** — opens the current page's markdown in a CodeMirror editor. Saving runs `src/cms.wasm` to persist the change.
-- **Add** — opens a new-file editor. Saving creates the file via `src/cms.wasm`.
-
----
-
 ## URL Structure
 
 Pages are hash-routed. The URL updates as you navigate:
@@ -250,7 +216,7 @@ Browser back/forward buttons work normally.
 
 ## Development
 
-### Rebuild both setup packages after engine changes:
+### Rebuild the setup package after engine changes:
 
 **Linux / macOS:**
 ```bash
@@ -265,16 +231,15 @@ bash sync-setup.sh
 ### Engine build scripts (run from repo root):
 
 ```bash
-bash engine/build.sh        # builds Rust WASM + slim JS
+bash engine/build.sh        # builds Rust WASM + JS
 bash engine-rs/build.sh     # Rust WASM only (wasm-pack)
-bash src/build.sh           # TinyGo WASM modules (auth, cms, etc.)
+bash src/build.sh           # TinyGo WASM example modules (menu, order, profile, visit)
 ```
 
 ### Engine npm scripts (run from `engine/`):
 
 ```bash
-npm run build              # slim (typecheck + JS + HTML)
-npm run build:full         # full (typecheck + editor + JS + HTML)
-npm run watch              # slim JS in watch mode
+npm run build              # typecheck + JS + HTML
+npm run watch               # JS in watch mode
 npm run typecheck          # TypeScript only
 ```

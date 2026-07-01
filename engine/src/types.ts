@@ -14,8 +14,6 @@ declare global {
       load:  (url: string, data: Record<string, unknown>) => void;
       store: (key: string, value: string) => void;
       get:   (key: string) => string;
-      auth:     (success: boolean, passwordHash: string, username: string) => void;
-      apiFetch: (method: string, url: string, body: string) => void;
     };
   }
 }

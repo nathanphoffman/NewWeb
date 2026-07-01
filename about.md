@@ -2,6 +2,7 @@
 
 You navigated here from `main.md` — the link was intercepted by the engine and the WASM renderer rendered this file in place.
 
+
 ## How it works
 
 1. Rust WASM (`engine_bg.wasm`) exposes `newwebRender(md)` — a pulldown-cmark wrapper

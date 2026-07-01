@@ -21,11 +21,9 @@
       "preload.js"
     ],
     "extraResources": [
-      { "from": "../shell.html",                              "to": "shell.html" },
-      { "from": "../welcome.md",                             "to": "welcome.md" },
-      { "from": "../engine/build/engine-electron.bundle.js", "to": "engine/build/engine-electron.bundle.js" },
-      { "from": "../engine/build/pkg/engine_bg.wasm",        "to": "shared/pkg/engine_bg.wasm" },
-      { "from": "../engine/src/styles",                      "to": "shared/styles" }
+      { "from": "../index.html",                       "to": "index.html" },
+      { "from": "../welcome.md",                        "to": "welcome.md" },
+      { "from": "../engine/build/pkg/engine_bg.wasm",   "to": "engine/build/pkg/engine_bg.wasm" }
     ],
     "linux": {
       "target": ["AppImage"],

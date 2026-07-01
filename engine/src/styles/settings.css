@@ -70,8 +70,7 @@
 }
 
 .nw-settings-anim-btn,
-.nw-settings-data-btn,
-.nw-settings-login-btn {
+.nw-settings-data-btn {
   padding: 0.3em 0.9em;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -82,8 +81,7 @@
   cursor: pointer;
 }
 
-.nw-settings-data-btn--empty,
-.nw-settings-login-btn--loggedin {
+.nw-settings-data-btn--empty {
   opacity: 0.35;
   cursor: default;
 }
