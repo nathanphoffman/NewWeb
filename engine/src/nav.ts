@@ -2,6 +2,7 @@ import { renderPage, showModal, showSuspendedBar, showToast, scrollToAnchor } fr
 import { applyThemeSuggestion, suggestTheme } from './theme.js';
 import { applyTitleDirective } from './title.js';
 import { applyLogoDirective } from './logo.js';
+import { processIncludes } from './include.js';
 import { processTemplate } from './template.js';
 
 const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
@@ -36,9 +37,10 @@ export async function navigateTo(path: string): Promise<void> {
   applyThemeSuggestion(md);
   applyTitleDirective(md);
   applyLogoDirective(md);
+  const composed = await processIncludes(md);
   const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
   history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', '#' + hashUrl);
-  renderPage(md);
+  renderPage(composed);
   if (anchor) scrollToAnchor(anchor);
 }
 
@@ -50,7 +52,8 @@ export async function navigateWithData(path: string, data: Record<string, unknow
   applyThemeSuggestion(raw);
   applyTitleDirective(raw);
   applyLogoDirective(raw);
-  const md = await processTemplate(raw, data);
+  const composed = await processIncludes(raw);
+  const md = await processTemplate(composed, data);
   const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
   history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', '#' + hashUrl);
   renderPage(md);
@@ -64,11 +67,12 @@ export async function renderNoData(mdPath: string): Promise<void> {
   applyTitleDirective(raw);
   applyLogoDirective(raw);
   const refreshWasm = extractRefreshWasm(raw);
+  const composed = await processIncludes(raw);
   if (refreshWasm) {
     const notice = `> _This page requires data to display._ [Load now](wasm:${refreshWasm})\n\n`;
-    renderPage(await processTemplate(notice + raw, {}));
+    renderPage(await processTemplate(notice + composed, {}));
   } else {
-    renderPage(raw);
+    renderPage(composed);
   }
 }
 

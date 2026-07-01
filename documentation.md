@@ -72,6 +72,28 @@ The suggested theme appears as "(site default)" in the picker. It applies automa
 
 Resets to the site's default title when navigating to a page that doesn't declare one.
 
+**Include other files** — pull other `.md` files into the current page:
+
+```markdown
+<!-- include: docs/chapter2.md, docs/chapter3.md -->
+```
+
+With no `sort:`, the referenced files are fetched and stitched into the page in the order listed — useful for breaking up one long document into several files.
+
+Add `sort:` to instead treat each referenced file as a collection of many entries and merge them all into one combined, ordered listing (e.g. a blog index built from several category files):
+
+```markdown
+<!-- include: docs/coding.md, docs/space.md, sort: #, sort_dir: desc, limit_to: 20 -->
+```
+
+- `sort: #` splits each file into entries on its top-level (`#`) headings; the entry's sort key is the heading text.
+- `sort: "date posted:"` splits on any line starting with that literal text instead; the sort key is whatever follows it on that line. Use a consistently sortable format like `YYYY-MM-DD` — this is a plain text sort, not real date parsing.
+- `sort_dir: asc` (default) or `desc`.
+- `limit_to: N` keeps only the first N entries after all files are merged and sorted (not per file).
+- Entries always include their full content — there's no preview/excerpt mode.
+- Text in a file before its first matching marker line isn't part of any entry and is dropped.
+- One level of nesting is resolved (an included file may itself use `include:`); anything nested deeper than that is left as-is.
+
 ---
 
 ## Settings
