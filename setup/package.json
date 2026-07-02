@@ -4,6 +4,7 @@
   "description": "A markdown-first web framework powered by WASM",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "update": "node update.js"
   }
 }

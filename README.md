@@ -12,6 +12,12 @@ npm start
 
 Open `http://localhost:8080`.
 
+To pull the latest engine build (`index.html` + `engine_bg.wasm`) later, without touching your own markdown files:
+
+```bash
+npm run update
+```
+
 ## Documentation
 
 Full feature reference is in [`documentation.md`](site/documentation.md). It covers links, themes, WASM scripting, templates, the session store API, images, settings, and build scripts. A copy is included in every project created from `setup/` for local AI and user reference.
@@ -36,16 +42,36 @@ Requires:
 
 ## Updating the setup build
 
-After changing engine source, run the sync script to rebuild and update `setup/`.
+After changing engine source, run the sync script to rebuild and update `setup/`:
 
-**Linux / macOS:**
 ```bash
-bash sync-setup.sh
-```
-
-**Windows (PowerShell):**
-```powershell
-.\sync-setup.ps1
+node sync-setup.js
 ```
 
 This rebuilds the JS bundle and copies all artifacts into `setup/`.
+
+## Development setup
+
+Prerequisites:
+- [Rust + cargo](https://rustup.rs)
+- Node.js + npm
+- Go
+- [`just`](https://github.com/casey/just)
+
+Install the wasm/Go toolchain:
+
+```bash
+cargo install wasm-pack
+
+# TinyGo (Linux, via .deb — see https://tinygo.org/getting-started/install/ for other platforms)
+wget https://github.com/tinygo-org/tinygo/releases/download/v0.37.0/tinygo_0.37.0_amd64.deb
+sudo dpkg -i tinygo_0.37.0_amd64.deb
+# or: sudo snap install tinygo --classic
+```
+
+Install engine dependencies and run the dev server:
+
+```bash
+cd engine && npm install && cd ..
+just dev
+```

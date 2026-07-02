@@ -5,6 +5,11 @@ How To Run
 If you are seeing this file you have likely ran a git command to copy this directory, if so
 then all you need to do is run "npm run start" to start the web server.
 
+Updating
+-----------------------
+To pull the latest engine build (index.html + engine_bg.wasm) from the NewWeb
+repo without touching your own markdown files, run "npm run update".
+
 Basic Usage
 -----------------------
 The markdown that is your homepage is 'main.md'  If you create other markdown files 

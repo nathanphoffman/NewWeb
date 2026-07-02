@@ -8,7 +8,7 @@ build:
 build-engine:
     cd engine && npm run build
 
-# full engine rebuild: includes editor + auth, used by serve-site
+# full engine rebuild: includes editor + auth
 build-engine-full:
     cd engine && npm run build:full
 
@@ -22,7 +22,7 @@ build-go:
 
 # build the engine and copy its wasm + index.html into site/
 sync-site:
-    bash sync-site.sh
+    node sync-site.js
 
 # start local dev server
 serve: sync-site
@@ -32,11 +32,9 @@ serve: sync-site
 watch:
     cd engine && npm run watch
 
-# copy latest build artifacts into setup/
-update-setup: sync-site
-    cp site/index.html setup/index.html
-    mkdir -p setup/engine/build/pkg
-    cp engine/build/pkg/engine_bg.wasm setup/engine/build/pkg/engine_bg.wasm
+# copy latest build artifacts + docs into setup/ (runs sync-site internally)
+update-setup:
+    node sync-setup.js
 
 # run the setup demo server
 serve-setup:
@@ -56,11 +54,6 @@ electron: build-electron
 # build and package into distributable (AppImage + deb on Linux)
 package-electron: build-electron
     cd electron && npm run dist
-
-# copy engine artifacts into newweb-site/static/ and start the Bun server
-serve-site: build-engine-full build-go
-    bash newweb-site/setup.sh
-    cd newweb-site && bun server.ts
 
 # build everything then serve
 dev: build-rs build-go serve
