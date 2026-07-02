@@ -8,10 +8,6 @@ build:
 build-engine:
     cd engine && npm run build
 
-# full engine rebuild: includes editor + auth
-build-engine-full:
-    cd engine && npm run build:full
-
 # rust wasm only
 build-rs:
     bash engine-rs/build.sh
@@ -40,12 +36,9 @@ update-setup:
 serve-setup:
     node setup/server.js
 
-# build electron engine bundle and ensure shared/ symlinks exist
+# ensure setup/ (the lean build electron ships) is up to date
 build-electron:
-    cd engine && npm run build:electron
-    mkdir -p shared
-    ln -sfn ../engine/build/pkg shared/pkg
-    ln -sfn ../engine/src/styles shared/styles
+    node sync-setup.js
 
 # build electron engine then start the app
 electron: build-electron

@@ -18,12 +18,12 @@
     "afterPack": "./after-pack.js",
     "files": [
       "main.js",
-      "preload.js"
+      "preload.js",
+      "welcome.md"
     ],
     "extraResources": [
-      { "from": "../index.html",                       "to": "index.html" },
-      { "from": "../welcome.md",                        "to": "welcome.md" },
-      { "from": "../engine/build/pkg/engine_bg.wasm",   "to": "engine/build/pkg/engine_bg.wasm" }
+      { "from": "../setup/index.html",                     "to": "index.html" },
+      { "from": "../setup/engine/build/pkg/engine_bg.wasm", "to": "engine/build/pkg/engine_bg.wasm" }
     ],
     "linux": {
       "target": ["AppImage"],

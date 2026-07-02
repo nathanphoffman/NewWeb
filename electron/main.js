@@ -1,9 +1,9 @@
 const { app, BrowserWindow, shell, protocol, net, ipcMain, Menu } = require('electron');
 const path = require('path');
 
-// dev: __dirname is electron/, root is one level up
+// dev: __dirname is electron/, site assets live in ../setup (the same lean build degit ships)
 // packaged: extraResources land in resources/, pointed to by process.resourcesPath
-const ROOT = app.isPackaged ? process.resourcesPath : path.join(__dirname, '..');
+const ROOT = app.isPackaged ? process.resourcesPath : path.join(__dirname, '..', 'setup');
 
 // Must be called before app.whenReady()
 protocol.registerSchemesAsPrivileged([{
@@ -61,6 +61,11 @@ app.whenReady().then(() => {
     const url = new URL(request.url);
     const pathname = url.pathname || '/';
     const proxyPort = getProxyPort(url.hostname);
+
+    // app-chrome landing page — ships with the app itself, not with the site build in ROOT
+    if (pathname === '/welcome.md') {
+      return net.fetch('file://' + path.join(__dirname, 'welcome.md'));
+    }
 
     if (url.hostname === 'localhost' || proxyPort) {
       if (isBrowserAsset(pathname)) {
