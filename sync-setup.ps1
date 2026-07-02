@@ -1,21 +1,14 @@
 #Requires -Version 5.1
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$Engine = Join-Path $ScriptDir "engine"
 
-Write-Host "-> building JS..."
-Push-Location $Engine
-try {
-    npm run build:js
-    npm run build:html
-} finally {
-    Pop-Location
-}
-Write-Host "v built -> $ScriptDir\site\index.html"
+& (Join-Path $ScriptDir "sync-site.ps1")
 
 Write-Host "-> syncing -> setup/..."
-Copy-Item "$ScriptDir\site\index.html"       "$ScriptDir\setup\index.html" -Force
-Copy-Item "$Engine\build\pkg\engine_bg.wasm" "$ScriptDir\setup\engine\build\pkg\engine_bg.wasm" -Force
+$PkgDir = Join-Path $ScriptDir "setup\engine\build\pkg"
+New-Item -ItemType Directory -Force -Path $PkgDir | Out-Null
+Copy-Item "$ScriptDir\site\index.html"                      "$ScriptDir\setup\index.html" -Force
+Copy-Item "$ScriptDir\site\engine\build\pkg\engine_bg.wasm" "$PkgDir\engine_bg.wasm" -Force
 Write-Host "v setup\ synced"
 
 Write-Host "-> copying documentation..."

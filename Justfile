@@ -4,7 +4,7 @@ default: build
 build:
     cd engine && bash build.sh
 
-# slim engine rebuild: no editor/auth, used by just dev
+# slim engine rebuild: no editor/auth (sync-site runs this same build internally)
 build-engine:
     cd engine && npm run build
 
@@ -18,15 +18,14 @@ build-rs:
 
 # go wasm modules
 build-go:
-    bash src/build.sh
+    bash site/src/build.sh
 
-# ensure site/ has symlinks to the build artifacts it depends on
-link-site:
-    ln -sfn ../engine site/engine
-    ln -sfn ../src site/src
+# build the engine and copy its wasm + index.html into site/
+sync-site:
+    bash sync-site.sh
 
 # start local dev server
-serve: link-site
+serve: sync-site
     node site/server.js
 
 # watch typescript for changes
@@ -34,7 +33,7 @@ watch:
     cd engine && npm run watch
 
 # copy latest build artifacts into setup/
-update-setup: build-engine
+update-setup: sync-site
     cp site/index.html setup/index.html
     mkdir -p setup/engine/build/pkg
     cp engine/build/pkg/engine_bg.wasm setup/engine/build/pkg/engine_bg.wasm
@@ -64,4 +63,4 @@ serve-site: build-engine-full build-go
     cd newweb-site && bun server.ts
 
 # build everything then serve
-dev: build-rs build-go build-engine serve
+dev: build-rs build-go serve

@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
 set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ENGINE="$SCRIPT_DIR/engine"
 
-echo "→ building JS..."
-cd "$ENGINE"
-npm run build:js
-npm run build:html
-echo "✓ built → $SCRIPT_DIR/site/index.html"
+bash "$SCRIPT_DIR/sync-site.sh"
 
 echo "→ syncing → setup/..."
-cp "$SCRIPT_DIR/site/index.html"      "$SCRIPT_DIR/setup/index.html"
-cp "$ENGINE/build/pkg/engine_bg.wasm" "$SCRIPT_DIR/setup/engine/build/pkg/engine_bg.wasm"
+mkdir -p "$SCRIPT_DIR/setup/engine/build/pkg"
+cp "$SCRIPT_DIR/site/index.html"                       "$SCRIPT_DIR/setup/index.html"
+cp "$SCRIPT_DIR/site/engine/build/pkg/engine_bg.wasm"  "$SCRIPT_DIR/setup/engine/build/pkg/engine_bg.wasm"
 echo "✓ setup/ synced"
 
 echo "→ copying documentation..."

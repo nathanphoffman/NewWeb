@@ -5,8 +5,7 @@ electron/dist/
 shared/
 /site/index.html
 /site/engine
-/site/src
-src/*.wasm
+site/src/*.wasm
 engine-rs/target/
 *.deb
 
