@@ -79,7 +79,10 @@ export function startWASMEngineToPullMarkdown() {
     const [initialPage, initialAnchor = null] = hashVal.split('#') as [string, string?];
     await replacePage(initialPage, initialAnchor ?? null);
     if (initialAnchor) scrollToAnchor(initialAnchor);
+    document.getElementById('content')!.classList.add('nw-loaded');
   })().catch(err => {
-    document.getElementById('content')!.innerHTML = `<pre>Boot error: ${err}</pre>`;
+    const content = document.getElementById('content')!;
+    content.innerHTML = `<pre>Boot error: ${err}</pre>`;
+    content.classList.add('nw-loaded');
   });
 }

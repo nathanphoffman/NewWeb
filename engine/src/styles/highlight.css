@@ -14,4 +14,3 @@
 .token.function                { color: var(--hl-builtin); }
 .token.variable                { color: var(--hl-type); }
 .token.escape                  { font-weight: bold; }
-.token.invalid-operator        { color: var(--hl-number); text-decoration: line-through; font-weight: bold; }

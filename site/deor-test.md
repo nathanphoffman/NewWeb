@@ -62,7 +62,7 @@ fn main()
     print(crit_bonus)
 ```
 
-A sample exercising the newer grammar constructs (types, macros, string interpolation, banned operators):
+A sample exercising the newer grammar constructs (types, macros, string interpolation):
 
 ```deor
 const private raw
@@ -76,13 +76,10 @@ shape rollConfig
     bool advantage
 
 fn RollResult roll_die(Die die)
-    assert!(die.sides > 0)
-    print("rolling a d{die.sides}\n")
+    assert!(sides > 0)
+    print("rolling a d{sides}\n")
 
-    if die.sides == 20
-        crash "banned == used for demo"
-
-    for i in range(die.sides)
+    for i in range(sides)
         if i == 0
             continue
         break

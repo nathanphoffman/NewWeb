@@ -49,11 +49,7 @@ Prism.languages['deor'] = {
     pattern: /\b[a-z_][a-z0-9_]*(?=\s*\()/,
     alias: 'function',
   },
-  'banned-operator': {
-    pattern: /==|!=|&&|\|\|/,
-    alias: 'invalid-operator',
-  },
-  operator: /\+=|-=|\*=|\/=|%=|<=|>=|[+\-*/%<>]|(?<![=!<>+\-*/%])=(?![=])/,
+  operator: /\+=|-=|\*=|\/=|%=|<=|>=|==|!=|&&|\|\||[+\-*/%<>]|(?<![=!<>+\-*/%])=(?![=])/,
 } satisfies Prism.Grammar;
 
 // applies Prism syntax highlighting to all language-tagged code blocks within a container

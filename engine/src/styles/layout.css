@@ -44,6 +44,11 @@ body {
   border-left:   1px solid var(--border);
   border-right:  1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+#content.nw-loaded {
+  opacity: 1;
 }
 
 #content h1, #content h2, #content h3 { margin: 0.7em 0 0.4em; color: var(--heading-color, var(--fg)); }
