@@ -12,6 +12,13 @@
   --heading-color: #6ee7b7;
   --link-radius:   10px;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #4a8a68;
+  --hl-string:     #6ee7b7;
+  --hl-number:     #fb7185;
+  --hl-keyword:    #34d399;
+  --hl-type:       #22d3ee;
+  --hl-builtin:    #a78bfa;
+  --hl-operator:   #7dd3ae;
 }
 
 @keyframes nw-aurora-glow {

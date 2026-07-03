@@ -62,6 +62,34 @@ fn main()
     print(crit_bonus)
 ```
 
+A sample exercising the newer grammar constructs (types, macros, string interpolation, banned operators):
+
+```deor
+const private raw
+
+enum dieFace
+    one
+    two
+
+shape rollConfig
+    int sides
+    bool advantage
+
+fn RollResult roll_die(Die die)
+    assert!(die.sides > 0)
+    print("rolling a d{die.sides}\n")
+
+    if die.sides == 20
+        crash "banned == used for demo"
+
+    for i in range(die.sides)
+        if i == 0
+            continue
+        break
+
+    return result
+```
+
 Compare with an unlabeled block (no highlighting):
 
 ```

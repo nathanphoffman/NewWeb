@@ -10,6 +10,13 @@
   --bar-border:   #005515;
   --bar-hover-bg: rgba(0,255,65,0.10);
   --font:       'Courier New', monospace;
+  --hl-comment:   #4a7a4a;
+  --hl-string:    #7fff7f;
+  --hl-number:    #ffff00;
+  --hl-keyword:   #00e5ff;
+  --hl-type:      #00ffaa;
+  --hl-builtin:   #ff79c6;
+  --hl-operator:  #88ff88;
 }
 
 #content {

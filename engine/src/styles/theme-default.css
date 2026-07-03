@@ -17,4 +17,11 @@
   --bar-hover-bg: #e4e4e4;
   --heading-color:var(--fg);
   --font:         system-ui, sans-serif;
+  --hl-comment:   #717171;
+  --hl-string:    #217830;
+  --hl-number:    #b32020;
+  --hl-keyword:   #0055cc;
+  --hl-type:      #1a8090;
+  --hl-builtin:   #7a3090;
+  --hl-operator:  #555555;
 }

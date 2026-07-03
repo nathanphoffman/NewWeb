@@ -12,6 +12,13 @@
   --heading-color: #ffd080;
   --link-radius:   20px;
   --font:          system-ui, sans-serif;
+  --hl-comment:    #8a7a60;
+  --hl-string:     #b8d888;
+  --hl-number:     #ff6b8a;
+  --hl-keyword:    #ffb347;
+  --hl-type:       #c9a0ff;
+  --hl-builtin:    #ff9ecb;
+  --hl-operator:   #a89060;
 }
 
 body {

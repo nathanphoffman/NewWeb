@@ -12,6 +12,13 @@
   --heading-color: #ffffff;
   --link-radius:   0;
   --font:          'Courier New', monospace;
+  --hl-comment:    #5a7a9c;
+  --hl-string:     #9fd8a0;
+  --hl-number:     #ffb454;
+  --hl-keyword:    #7dd4fc;
+  --hl-type:       #c9e4ff;
+  --hl-builtin:    #ff8fa3;
+  --hl-operator:   #a8c8e8;
 }
 
 body {

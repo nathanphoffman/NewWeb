@@ -11,6 +11,13 @@
   --bar-hover-bg: #282828;
   --link-radius:0;
   --font:       system-ui, -apple-system, sans-serif;
+  --hl-comment:   #585856;
+  --hl-string:    #202020;
+  --hl-number:    #404040;
+  --hl-keyword:   #101010;
+  --hl-type:      #303030;
+  --hl-builtin:   #505050;
+  --hl-operator:  #585856;
 }
 
 #content {

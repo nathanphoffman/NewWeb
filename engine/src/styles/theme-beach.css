@@ -10,6 +10,13 @@
   --bar-border:   #0f2a35;
   --bar-hover-bg: #1a4050;
   --font:       Georgia, serif;
+  --hl-comment:   #5a8a96;
+  --hl-string:    #2f8a5a;
+  --hl-number:    #c0392b;
+  --hl-keyword:   #d95f3b;
+  --hl-type:      #1a6b80;
+  --hl-builtin:   #7a4a9a;
+  --hl-operator:  #5a8a96;
 }
 
 body {

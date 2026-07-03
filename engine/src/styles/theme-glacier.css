@@ -11,6 +11,13 @@
   --bar-hover-bg:  #1e3850;
   --heading-color: #0a1828;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #5878a8;
+  --hl-string:     #1a8a5a;
+  --hl-number:     #c85028;
+  --hl-keyword:    #2070d8;
+  --hl-type:       #1a6ba8;
+  --hl-builtin:    #7a4ca8;
+  --hl-operator:   #5878a8;
 }
 
 #content h1, #content h2, #content h3 {

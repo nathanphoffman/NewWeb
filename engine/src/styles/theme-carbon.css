@@ -11,6 +11,13 @@
   --bar-hover-bg:  #141820;
   --heading-color: #f1f5f9;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #7c8690;
+  --hl-string:     #98c379;
+  --hl-number:     #e06c75;
+  --hl-keyword:    #61afef;
+  --hl-type:       #56b6c2;
+  --hl-builtin:    #c678dd;
+  --hl-operator:   #abb2bf;
 }
 
 #nw-bar {

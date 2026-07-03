@@ -11,6 +11,13 @@
   --bar-hover-bg:  #161824;
   --heading-color: #e0e8f8;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #5868a0;
+  --hl-string:     #7ec9a0;
+  --hl-number:     #e8a868;
+  --hl-keyword:    #6888e0;
+  --hl-type:       #8ea8e8;
+  --hl-builtin:    #b088d8;
+  --hl-operator:   #90a0c8;
 }
 
 @keyframes nw-storm-flicker {

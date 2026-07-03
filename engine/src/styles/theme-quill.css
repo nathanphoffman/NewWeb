@@ -12,6 +12,13 @@
   --heading-color: #0a0a0a;
   --link-radius:   2px;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #888888;
+  --hl-string:     #333333;
+  --hl-number:     #555555;
+  --hl-keyword:    #111111;
+  --hl-type:       #444444;
+  --hl-builtin:    #666666;
+  --hl-operator:   #777777;
 }
 
 #content h1, #content h2, #content h3 {

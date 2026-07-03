@@ -11,6 +11,13 @@
   --bar-hover-bg:  #242c3e;
   --heading-color: #eaf0f8;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #7a8fa8;
+  --hl-string:     #8ecb9e;
+  --hl-number:     #e0a868;
+  --hl-keyword:    #88b8e8;
+  --hl-type:       #7ec8d8;
+  --hl-builtin:    #b09cd8;
+  --hl-operator:   #8a9fb8;
 }
 
 #content {

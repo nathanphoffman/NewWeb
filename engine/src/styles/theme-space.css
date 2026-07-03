@@ -11,6 +11,13 @@
   --bar-hover-bg:  rgba(12,26,60,0.97);
   --heading-color: #7dd4f8;
   --font:          system-ui, sans-serif;
+  --hl-comment:    #5a8ab0;
+  --hl-string:     #7de8a0;
+  --hl-number:     #ffb74f;
+  --hl-keyword:    #4fc3f7;
+  --hl-type:       #7dd4f8;
+  --hl-builtin:    #b388ff;
+  --hl-operator:   #90caf9;
 }
 
 body {

@@ -12,6 +12,13 @@
   --heading-color: #b967ff;
   --link-radius:   20px;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #b967ff;
+  --hl-string:     #05ffa1;
+  --hl-number:     #ff71ce;
+  --hl-keyword:    #01cdfe;
+  --hl-type:       #fffb96;
+  --hl-builtin:    #ff9ecf;
+  --hl-operator:   #d9b3ff;
 }
 
 body {

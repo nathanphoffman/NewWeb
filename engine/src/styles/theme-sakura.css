@@ -12,6 +12,13 @@
   --heading-color: #1a0810;
   --link-radius:   14px;
   --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #9a5870;
+  --hl-string:     #3a8a5a;
+  --hl-number:     #c07020;
+  --hl-keyword:    #c0204a;
+  --hl-type:       #8a4a7a;
+  --hl-builtin:    #b0546e;
+  --hl-operator:   #9a5870;
 }
 
 @keyframes nw-petal-fall {

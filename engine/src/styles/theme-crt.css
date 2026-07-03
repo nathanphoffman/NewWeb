@@ -12,6 +12,13 @@
   --heading-color: #e8d050;
   --link-radius:   0;
   --font:          'Courier New', monospace;
+  --hl-comment:    #806800;
+  --hl-string:     #e0c840;
+  --hl-number:     #ffdf70;
+  --hl-keyword:    #f0e068;
+  --hl-type:       #c8a020;
+  --hl-builtin:    #d8b840;
+  --hl-operator:   #a89020;
 }
 
 @keyframes nw-crt-flicker {

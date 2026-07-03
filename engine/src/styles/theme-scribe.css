@@ -12,6 +12,13 @@
   --heading-color: #18140e;
   --link-radius:   2px;
   --font:          Georgia, serif;
+  --hl-comment:    #7a7268;
+  --hl-string:     #4a6b3a;
+  --hl-number:     #a05028;
+  --hl-keyword:    #6b4c35;
+  --hl-type:       #4a6070;
+  --hl-builtin:    #7a4a5a;
+  --hl-operator:   #7a7268;
 }
 
 body {
