@@ -23,7 +23,8 @@ If linking to sites off of your domain that use the markdown protcol you don't n
 anything special since this is new-web forward. So NatesSuperAwesomeBlog.com will load 
 great if it has a main.md and supports the new-web markdown syntax.
 
+For the Electron Version (Installed NewWeb Browser)
+------------------------
 Http/Https links work (in newweb browsers they will open an external application) in the 
 web mode they will open inside the web browser you are running it in.  However, you must 
-always specify https:// or http:// if you are loading an http resource.  google.com will 
-assume it is a markdown site, you will get a warning about this on localhost.
+always specify https:// or http:// if you are loading an http resource. 
