@@ -22,7 +22,7 @@ sync-site:
 
 # start local dev server
 serve: sync-site
-    node site/server.js
+    bun site/server.js
 
 # watch typescript for changes
 watch:
@@ -34,7 +34,7 @@ update-setup:
 
 # run the setup demo server
 serve-setup:
-    node setup/server.js
+    bun setup/server.js
 
 # ensure setup/ (the lean build electron ships) is up to date
 build-electron:

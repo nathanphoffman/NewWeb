@@ -29,6 +29,13 @@ function splitAnchor(path: string): [string, string | null] {
   return idx === -1 ? [path, null] : [path.slice(0, idx), path.slice(idx + 1)];
 }
 
+// strips a trailing .md so the address bar shows the pretty path
+function prettyUrl(mdPath: string, anchor: string | null): string {
+  const base = mdPath.endsWith('.md') ? mdPath.slice(0, -3) : mdPath;
+  const withSlash = base.startsWith('/') ? base : `/${base}`;
+  return anchor ? `${withSlash}#${anchor}` : withSlash;
+}
+
 // fetches and renders a markdown page, pushing a new browser history entry
 export async function navigateTo(path: string): Promise<void> {
   const [basePath, anchor] = splitAnchor(path);
@@ -38,8 +45,7 @@ export async function navigateTo(path: string): Promise<void> {
   applyTitleDirective(md);
   applyLogoDirective(md);
   const composed = await processIncludes(md);
-  const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
-  history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', '#' + hashUrl);
+  history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', prettyUrl(mdPath, anchor));
   renderPage(composed);
   if (anchor) scrollToAnchor(anchor);
 }
@@ -54,8 +60,7 @@ export async function navigateWithData(path: string, data: Record<string, unknow
   applyLogoDirective(raw);
   const composed = await processIncludes(raw);
   const md = await processTemplate(composed, data);
-  const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
-  history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', '#' + hashUrl);
+  history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', prettyUrl(mdPath, anchor));
   renderPage(md);
   if (anchor) scrollToAnchor(anchor);
 }
@@ -79,8 +84,7 @@ export async function renderNoData(mdPath: string): Promise<void> {
 // like navigateTo but replaces the current history entry instead of pushing a new one
 export async function replacePage(path: string, anchor: string | null = null): Promise<void> {
   const mdPath = path.endsWith('.md') ? path : `${path}.md`;
-  const hashUrl = anchor ? `${mdPath}#${anchor}` : mdPath;
-  history.replaceState({ mdUrl: mdPath, anchor }, '', '#' + hashUrl);
+  history.replaceState({ mdUrl: mdPath, anchor }, '', prettyUrl(mdPath, anchor));
   await renderNoData(mdPath);
 }
 

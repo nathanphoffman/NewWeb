@@ -1,24 +1,12 @@
 import { handleMore, handleNav, looksLikeBareUrl, navigateTo, warnBareUrl } from "../nav";
-import { scrollToAnchor } from "../ui";
 import { extractALink, extractHrefAttribute } from "../utility";
 import { handleNewWebPersonalDataLinks } from "./engineLinks";
 import { handleWASMClick } from "./wasm";
 
-// handles # links — navigates to a new page if the fragment looks like a path, otherwise scrolls to the anchor
-export function handleHashOnClick(e: MouseEvent, href: string) {
-    if (href.startsWith('#')) {
-        e.preventDefault();
-        const inner = href.slice(1);
-        const basePart = inner.split('#')[0];
-        if (basePart.includes('/') || basePart.endsWith('.md')) {
-            navigateTo(inner);
-        } else {
-            const currentPage = location.hash.slice(1).split('#')[0] || 'main.md';
-            history.replaceState({ mdUrl: currentPage, anchor: inner }, '', '#' + currentPage + '#' + inner);
-            scrollToAnchor(inner);
-        }
-        return;
-    }
+// same-page anchor links (`#section`) are left alone — the browser handles the
+// scroll and history entry natively, no JS involvement needed
+export function isSamePageAnchor(href: string): boolean {
+    return href.startsWith('#');
 }
 
 // attaches the global document click interceptor that routes all link clicks by protocol or path type
@@ -33,7 +21,7 @@ export function startOnClickListeners() {
         const isNotValidLink = !a || !href;
         if (isNotValidLink) return;
 
-        handleHashOnClick(e, href);
+        if (isSamePageAnchor(href)) return;
         handleNewWebPersonalDataLinks(e, href);
         handleWASMClick(e, a, href);
 

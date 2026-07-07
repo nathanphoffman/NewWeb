@@ -8,9 +8,14 @@ NewWeb is a markdown-first web framework. Sites are `.md` files rendered in the 
 
 Get started: `npx degit .../setup my-site`. Includes the viewer, themes, and WASM scripting.
 
-Runs with `npm start` → `http://localhost:8080`.
+Runs with `npm start` → `http://localhost:8080`. Requires [Bun](https://bun.sh) — the
+dev server uses it to rewrite pretty page URLs (e.g. `/about`) to `index.html` so
+direct navigation and refresh work without a hash.
 
-Required files for static hosting: `index.html`, `engine/build/pkg/engine_bg.wasm`, `.md` files.
+Required files: `index.html`, `engine/build/pkg/engine_bg.wasm`, `.md` files. Hosting
+anywhere other than the bundled server requires equivalent rewrite rules (serve
+`index.html` for any path whose matching `.md` file exists) for pretty URLs to survive
+a hard refresh.
 
 ---
 

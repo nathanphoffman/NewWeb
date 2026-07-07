@@ -75,9 +75,9 @@ export function startWASMEngineToPullMarkdown() {
       )
     );
 
-    const hashVal = location.hash ? location.hash.slice(1) : 'main';
-    const [initialPage, initialAnchor = null] = hashVal.split('#') as [string, string?];
-    await replacePage(initialPage, initialAnchor ?? null);
+    const initialPage = location.pathname === '/' ? 'main' : location.pathname.slice(1);
+    const initialAnchor = location.hash ? location.hash.slice(1) : null;
+    await replacePage(initialPage, initialAnchor);
     if (initialAnchor) scrollToAnchor(initialAnchor);
     document.getElementById('content')!.classList.add('nw-loaded');
   })().catch(err => {

@@ -62,6 +62,16 @@ app.whenReady().then(() => {
     const pathname = url.pathname || '/';
     const proxyPort = getProxyPort(url.hostname);
 
+    // top-level navigation to any address (local or remote, any path) always loads
+    // the local browser shell — window.location keeps the real requested URL, so the
+    // shell's own client JS reads pathname/hostname and fetches the actual page content
+    // as a follow-up (non-navigation) request. This is what makes this "only ever a
+    // markdown viewer": any address either renders as a newweb page or errors, never
+    // as a generic browser.
+    if (request.mode === 'navigate') {
+      return net.fetch('file://' + path.join(ROOT, 'index.html'));
+    }
+
     // app-chrome landing page — ships with the app itself, not with the site build in ROOT
     if (pathname === '/welcome.md') {
       return net.fetch('file://' + path.join(__dirname, 'welcome.md'));
@@ -97,28 +107,28 @@ app.whenReady().then(() => {
     },
   });
 
-  win.loadURL('newweb://localhost/#welcome');
+  win.loadURL('newweb://localhost/welcome');
 
   win.webContents.on('did-navigate', (_, url) => {
     if (url.startsWith('file://')) return;
     const parsed = new URL(url);
     const proxyPort = getProxyPort(parsed.hostname);
-    // suppress the startup welcome page from the address bar
+    // suppress the app's own default landing pages from the address bar
     if (parsed.hostname === 'localhost' && !proxyPort &&
-        (!parsed.hash || /^#welcome(\.md)?$/.test(parsed.hash))) return;
+        (parsed.pathname === '/' || parsed.pathname === '/welcome' || parsed.pathname === '/main')) return;
     // display port-encoded hostnames as localhost:PORT
     const displayHost = proxyPort ? `localhost:${proxyPort}` : parsed.hostname;
-    const displayHash = parsed.hash.replace(/^#(main|main\.md|welcome|welcome\.md)$/, '');
-    win.webContents.send('url-changed', `${displayHost}${parsed.pathname !== '/' ? parsed.pathname : ''}${displayHash}`);
+    const displayPath = parsed.pathname !== '/' ? parsed.pathname : '';
+    win.webContents.send('url-changed', `${displayHost}${displayPath}${parsed.hash}`);
   });
 
   ipcMain.on('navigate-to', (_, url) => {
     const parsed = new URL(url);
     // encode port as subdomain: localhost:3000 → 3000.localhost
     const hostname = parsed.port ? `${parsed.port}.localhost` : parsed.hostname;
-    const pathname = parsed.pathname || '/';
-    const base = `newweb://${hostname}${pathname}${parsed.search}`;
-    const target = (pathname === '/' && !parsed.hash) ? base + '#main' : base + parsed.hash;
+    // bare domain with no path — default to the site's home page
+    const pathname = (parsed.pathname === '/' || parsed.pathname === '') ? '/main' : parsed.pathname;
+    const target = `newweb://${hostname}${pathname}${parsed.search}${parsed.hash}`;
     win.loadURL(target);
   });
 

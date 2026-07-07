@@ -20,26 +20,9 @@ All representations that navigate to `test-links-target.md`.
 
 ---
 
-## Hash-prefixed path links `[](#path)`
-
-Requires either a `/` in the path or a `.md` extension — otherwise the engine
-can't distinguish it from a same-page anchor.
-
-### File only
-
-- [#-prefixed with .md extension](#test-links-target.md)
-- `[](#test-links-target)` — ambiguous (no slash, no .md), treated as same-page anchor
-
-### File + section anchor
-
-- [#-prefixed with .md + #alpha](#test-links-target.md#alpha)
-- [#-prefixed with .md + #beta](#test-links-target.md#beta)
-
----
-
 ## Same-page anchors (for contrast)
 
-These scroll within this page only.
+A leading `#` with no `/` or `.md` is always a same-page anchor — handled
+natively by the browser, no routing involved.
 
 - [jump to Bare path links](#bare-path-links-path)
-- [jump to Hash-prefixed section](#hash-prefixed-path-links-path)
