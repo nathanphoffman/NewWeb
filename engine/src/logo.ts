@@ -11,9 +11,12 @@ export function applyLogoDirective(md: string): void {
   const isWasm = href.startsWith('wasm:');
   const isExternal = href.startsWith('http://') || href.startsWith('https://');
 
+  const current = document.getElementById('nw-logo')!;
+  const isFirstLoad = current.classList.contains('nw-logo-hidden');
+
   const el = document.createElement(isWasm ? 'span' : 'a');
   el.id = 'nw-logo';
-  el.className = 'nw-logo';
+  el.className = isFirstLoad ? 'nw-logo nw-logo-hidden' : 'nw-logo';
   el.textContent = label;
   if (!isWasm) {
     (el as HTMLAnchorElement).href = href;
@@ -22,5 +25,7 @@ export function applyLogoDirective(md: string): void {
   if (isExternal) {
     el.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">🌐</span>`);
   }
-  document.getElementById('nw-logo')!.replaceWith(el);
+  current.replaceWith(el);
+  // on the very first load the bar starts blank; fade the real label in once it's known
+  if (isFirstLoad) requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('nw-logo-hidden')));
 }

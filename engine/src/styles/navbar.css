@@ -22,6 +22,11 @@
   font-size: 1.2rem;
   color: inherit;
   text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+#nw-bar .nw-logo.nw-logo-hidden {
+  opacity: 0;
 }
 
 #nw-hamburger {
