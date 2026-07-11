@@ -12,7 +12,7 @@ npm start
 
 Open `http://localhost:8080`.
 
-To pull the latest engine build (`index.html` + `engine_bg.wasm`) later, without touching your own markdown files:
+To pull the latest runtime files (`index.html`, `engine_bg.wasm`, `server.js`, `package.json`, `update.js`) later, without touching your own markdown files:
 
 ```bash
 npm run update

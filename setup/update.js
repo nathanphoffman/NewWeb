@@ -5,9 +5,13 @@ import { fileURLToPath } from 'url';
 const dir = dirname(fileURLToPath(import.meta.url));
 const BASE = 'https://raw.githubusercontent.com/nathanphoffman/NewWeb/main/setup';
 
+// runtime files only — never touches .md content or README.txt
 const FILES = [
   { url: `${BASE}/index.html`, dest: join(dir, 'index.html') },
   { url: `${BASE}/engine/build/pkg/engine_bg.wasm`, dest: join(dir, 'engine', 'build', 'pkg', 'engine_bg.wasm') },
+  { url: `${BASE}/server.js`, dest: join(dir, 'server.js') },
+  { url: `${BASE}/package.json`, dest: join(dir, 'package.json') },
+  { url: `${BASE}/update.js`, dest: join(dir, 'update.js') },
 ];
 
 async function update() {

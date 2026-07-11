@@ -7,8 +7,9 @@ then all you need to do is run "npm run start" to start the web server.
 
 Updating
 -----------------------
-To pull the latest engine build (index.html + engine_bg.wasm) from the NewWeb
-repo without touching your own markdown files, run "npm run update".
+To pull the latest runtime files (index.html, engine_bg.wasm, server.js,
+package.json, update.js) from the NewWeb repo without touching your own
+markdown files, run "npm run update".
 
 Basic Usage
 -----------------------
