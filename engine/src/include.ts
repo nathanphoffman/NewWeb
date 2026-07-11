@@ -35,7 +35,7 @@ function parseIncludeDirective(body: string): IncludeDirective {
   return { files, sortMarker, sortDir, limitTo };
 }
 
-// splits content into entries on lines matching the marker (top-level "#" headings, or any literal line prefix), pairing each with the text after the marker as its sort key. Content before the first match is dropped.
+// splits content into entries on lines matching the marker (top-level "#" headings, or any literal line prefix, ignoring an optional wrapping HTML comment), pairing each with the text after the marker as its sort key. Content before the first match is dropped.
 function splitIntoEntries(content: string, marker: string): Entry[] {
   const lines = content.split('\n');
   const isHeadingMarker = marker === '#';
@@ -45,9 +45,12 @@ function splitIntoEntries(content: string, marker: string): Entry[] {
     if (isHeadingMarker) {
       const m = line.match(/^#(?!#)\s+(.+)$/);
       if (m) boundaries.push({ index: i, key: m[1].trim() });
-    } else if (line.trim().startsWith(marker)) {
-      const key = line.trim().slice(marker.length).trim().replace(/-->\s*$/, '').trim();
-      boundaries.push({ index: i, key });
+    } else {
+      const stripped = line.trim().replace(/^<!--\s*/, '').replace(/\s*-->$/, '').trim();
+      if (stripped.startsWith(marker)) {
+        const key = stripped.slice(marker.length).trim();
+        boundaries.push({ index: i, key });
+      }
     }
   });
 
