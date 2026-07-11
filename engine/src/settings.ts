@@ -1,9 +1,9 @@
 import { applyAnimPaused } from './theme.js';
 
 const MAX_IMAGE_KB_KEY = 'nw-settings-max-image-kb';
-const DEFAULT_MAX_IMAGE_KB = 200;
+const DEFAULT_MAX_IMAGE_KB = 1024;
 
-// reads the max auto-load image size from localStorage, defaulting to 200 KB
+// reads the max auto-load image size from localStorage, defaulting to 1 MB
 export function getMaxImageKb(): number {
   const val = parseInt(localStorage.getItem(MAX_IMAGE_KB_KEY) ?? '', 10);
   return isNaN(val) || val <= 0 ? DEFAULT_MAX_IMAGE_KB : val;
