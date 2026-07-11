@@ -186,11 +186,26 @@ export function scrollToAnchor(id: string): void {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// waits for #content's opacity transition to finish (with a timeout fallback in case it never fires)
+function waitForFadeOut(content: HTMLElement): Promise<void> {
+  return new Promise(resolve => {
+    const done = () => { content.removeEventListener('transitionend', done); resolve(); };
+    content.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 260);
+  });
+}
+
 // renders markdown into #content, replacing <img> tags with placeholders, then runs heading ids, link annotation, syntax highlighting, and image loading
-export function renderPage(md: string): void {
+// fades the old content out before swapping and back in after, so navigation doesn't pop
+export async function renderPage(md: string): Promise<void> {
   closeModals();
-  window.scrollTo(0, 0);
   const content = document.getElementById('content')!;
+  const isNavigation = content.classList.contains('nw-loaded');
+  if (isNavigation) {
+    content.classList.remove('nw-loaded');
+    await waitForFadeOut(content);
+  }
+  window.scrollTo(0, 0);
   const html = window.newwebRender!(md).replace(
     /<img\b([^>]*)>/gi,
     (_, attrs) => {
@@ -204,6 +219,7 @@ export function renderPage(md: string): void {
   annotateLinks(content);
   highlightBlock(content);
   void processImages(content);
+  content.classList.add('nw-loaded');
   document.dispatchEvent(new CustomEvent('nw-page-rendered'));
 }
 

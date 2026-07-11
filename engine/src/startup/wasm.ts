@@ -79,7 +79,6 @@ export function startWASMEngineToPullMarkdown() {
     const initialAnchor = location.hash ? location.hash.slice(1) : null;
     await replacePage(initialPage, initialAnchor);
     if (initialAnchor) scrollToAnchor(initialAnchor);
-    document.getElementById('content')!.classList.add('nw-loaded');
   })().catch(err => {
     const content = document.getElementById('content')!;
     content.innerHTML = `<pre>Boot error: ${err}</pre>`;

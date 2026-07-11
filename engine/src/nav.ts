@@ -47,7 +47,7 @@ export async function navigateTo(path: string): Promise<void> {
   applyLogoDirective(md);
   const composed = await processIncludes(md);
   history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', prettyUrl(mdPath, anchor));
-  renderPage(composed);
+  await renderPage(composed);
   if (anchor) scrollToAnchor(anchor);
 }
 
@@ -62,7 +62,7 @@ export async function navigateWithData(path: string, data: Record<string, unknow
   const composed = await processIncludes(raw);
   const md = await processTemplate(composed, data);
   history.pushState({ mdUrl: mdPath, anchor: anchor ?? null }, '', prettyUrl(mdPath, anchor));
-  renderPage(md);
+  await renderPage(md);
   if (anchor) scrollToAnchor(anchor);
 }
 
@@ -76,9 +76,9 @@ export async function renderNoData(mdPath: string): Promise<void> {
   const composed = await processIncludes(raw);
   if (refreshWasm) {
     const notice = `> _This page requires data to display._ [Load now](wasm:${refreshWasm})\n\n`;
-    renderPage(await processTemplate(notice + composed, {}));
+    await renderPage(await processTemplate(notice + composed, {}));
   } else {
-    renderPage(composed);
+    await renderPage(composed);
   }
 }
 
