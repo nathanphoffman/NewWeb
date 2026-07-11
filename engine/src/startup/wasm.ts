@@ -41,7 +41,7 @@ export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: strin
 // slim bootstrap: initializes the wasm renderer and exposes the newweb host API without auth or config loading
 export function startWASMEngineToPullMarkdown() {
   (async () => {
-    await init(new URL('engine/build/pkg/engine_bg.wasm', location.href));
+    await init(new URL('/engine/build/pkg/engine_bg.wasm', location.origin));
     window.newwebRender = wasmRender;
 
     window.newweb = {
@@ -75,7 +75,7 @@ export function startWASMEngineToPullMarkdown() {
       )
     );
 
-    const initialPage = location.pathname === '/' ? 'main' : location.pathname.slice(1);
+    const initialPage = location.pathname === '/' ? 'main' : location.pathname;
     const initialAnchor = location.hash ? location.hash.slice(1) : null;
     await replacePage(initialPage, initialAnchor);
     if (initialAnchor) scrollToAnchor(initialAnchor);
