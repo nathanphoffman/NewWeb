@@ -61,8 +61,10 @@ const server = Bun.serve({
     // real file on disk (assets, or the SPA's own fetch() of a .md file) — serve as-is
     if (fileType(filePath) === 'file') return serveFile(filePath);
 
-    // pretty path with no extension — if it maps to a real page, hand back the SPA shell
-    if (fileType(filePath + '.md') === 'file') return serveFile(join(dir, 'index.html'));
+    // pretty path with no extension — only a real top-level navigation gets the SPA shell;
+    // the app's own internal fetch()es must always ask for the .md file directly, so one
+    // reaching here without it means a broken link/include, not a page to render
+    if (navigating && fileType(filePath + '.md') === 'file') return serveFile(join(dir, 'index.html'));
 
     return new Response('not found', { status: 404 });
   },

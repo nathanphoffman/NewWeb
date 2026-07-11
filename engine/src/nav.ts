@@ -4,6 +4,7 @@ import { applyTitleDirective } from './title.js';
 import { applyLogoDirective } from './logo.js';
 import { processIncludes } from './include.js';
 import { processTemplate } from './template.js';
+import { toRootRelative } from './utility.js';
 
 const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
 
@@ -14,7 +15,7 @@ export function looksLikeBareUrl(href: string): boolean {
 
 // fetches the text content of a markdown file
 export function fetchMd(url: string): Promise<string> {
-  return fetch(url).then(r => r.text());
+  return fetch(toRootRelative(url)).then(r => r.text());
 }
 
 // reads a <!-- refresh: <file> --> comment from markdown, returning the wasm file path if present
@@ -39,7 +40,7 @@ function prettyUrl(mdPath: string, anchor: string | null): string {
 // fetches and renders a markdown page, pushing a new browser history entry
 export async function navigateTo(path: string): Promise<void> {
   const [basePath, anchor] = splitAnchor(path);
-  const mdPath = basePath.endsWith('.md') ? basePath : `${basePath}.md`;
+  const mdPath = toRootRelative(basePath.endsWith('.md') ? basePath : `${basePath}.md`);
   const md = await fetchMd(mdPath);
   applyThemeSuggestion(md);
   applyTitleDirective(md);
@@ -53,7 +54,7 @@ export async function navigateTo(path: string): Promise<void> {
 // like navigateTo but runs the markdown through template processing with data before rendering
 export async function navigateWithData(path: string, data: Record<string, unknown>): Promise<void> {
   const [basePath, anchor] = splitAnchor(path);
-  const mdPath = basePath.endsWith('.md') ? basePath : `${basePath}.md`;
+  const mdPath = toRootRelative(basePath.endsWith('.md') ? basePath : `${basePath}.md`);
   const raw = await fetchMd(mdPath);
   applyThemeSuggestion(raw);
   applyTitleDirective(raw);
@@ -83,7 +84,7 @@ export async function renderNoData(mdPath: string): Promise<void> {
 
 // like navigateTo but replaces the current history entry instead of pushing a new one
 export async function replacePage(path: string, anchor: string | null = null): Promise<void> {
-  const mdPath = path.endsWith('.md') ? path : `${path}.md`;
+  const mdPath = toRootRelative(path.endsWith('.md') ? path : `${path}.md`);
   history.replaceState({ mdUrl: mdPath, anchor }, '', prettyUrl(mdPath, anchor));
   await renderNoData(mdPath);
 }

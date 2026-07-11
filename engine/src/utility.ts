@@ -10,3 +10,13 @@ export function extractHrefAttribute(e: MouseEvent, a: HTMLAnchorElement | null)
   const href = a?.getAttribute('href');
   return href;
 }
+
+// resolves a bare markdown/partial path against the site root instead of the current
+// page's (possibly pretty-URL-rewritten) location — so a link or include written as
+// "blog/coding.md" always means /blog/coding.md, no matter how deep the current page lives
+export function toRootRelative(path: string): string {
+  if (path.startsWith('/') || path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
+  }
+  return `/${path}`;
+}

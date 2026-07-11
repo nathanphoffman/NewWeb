@@ -1,3 +1,5 @@
+import { toRootRelative } from './utility.js';
+
 // replaces ${key} placeholders in text with values from the context object
 function interpolate(text: string, ctx: Record<string, unknown>): string {
   return text.replace(/\$\{([^}]+)\}/g, (_, key) => {
@@ -19,7 +21,7 @@ async function processForeach(md: string, data: Record<string, unknown>): Promis
   )];
   const partialMap = new Map<string, string>();
   await Promise.all(urls.map(async url => {
-    partialMap.set(url, await fetch(url).then(r => r.text()));
+    partialMap.set(url, await fetch(toRootRelative(url)).then(r => r.text()));
   }));
 
   return md.replace(pattern, (_, arrayKey, url) => {
@@ -42,7 +44,7 @@ async function processIf(md: string, data: Record<string, unknown>): Promise<str
   const urls = [...new Set(matches.filter(m => data[m[1]]).map(m => m[2]))];
   const partialMap = new Map<string, string>();
   await Promise.all(urls.map(async url => {
-    partialMap.set(url, await fetch(url).then(r => r.text()));
+    partialMap.set(url, await fetch(toRootRelative(url)).then(r => r.text()));
   }));
 
   return md.replace(pattern, (_, boolKey, url) => {

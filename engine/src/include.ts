@@ -1,3 +1,5 @@
+import { toRootRelative } from './utility.js';
+
 interface IncludeDirective {
   files: string[];
   sortMarker: string | null;
@@ -44,7 +46,8 @@ function splitIntoEntries(content: string, marker: string): Entry[] {
       const m = line.match(/^#(?!#)\s+(.+)$/);
       if (m) boundaries.push({ index: i, key: m[1].trim() });
     } else if (line.trim().startsWith(marker)) {
-      boundaries.push({ index: i, key: line.trim().slice(marker.length).trim() });
+      const key = line.trim().slice(marker.length).trim().replace(/-->\s*$/, '').trim();
+      boundaries.push({ index: i, key });
     }
   });
 
@@ -67,7 +70,7 @@ export async function processIncludes(raw: string, depth = 0): Promise<string> {
 
   const contentMap = new Map<string, string>();
   await Promise.all(allFiles.map(async url => {
-    let text = await fetch(url).then(r => r.text());
+    let text = await fetch(toRootRelative(url)).then(r => r.text());
     if (depth === 0 && /<!--\s*include\s*:\s*(.+?)\s*-->/.test(text)) {
       text = await processIncludes(text, depth + 1);
     }
