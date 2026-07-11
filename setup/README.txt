@@ -8,8 +8,8 @@ then all you need to do is run "npm run start" to start the web server.
 Updating
 -----------------------
 To pull the latest runtime files (index.html, engine_bg.wasm, server.js,
-package.json, update.js) from the NewWeb repo without touching your own
-markdown files, run "npm run update".
+update.js) from the NewWeb repo without touching your own markdown files
+or package.json, run "npm run update".
 
 Basic Usage
 -----------------------
