@@ -33,7 +33,7 @@ Prism.languages['deor'] = {
   },
   // keyword-fn + keywords-storage + keywords-control + keywords-other
   keyword: /\b(?:fn|const|private|raw|import|if|else|for|return|break|continue|crash|using|move|block|as|in|with|is|and|or|not|avow|of|to|where|rust|end|remove|at)\b/,
-  'builtin-type': /\b(?:int|float|bool|string|bytes|list|func|void|macro|macro_run|raw)\b/,
+  'builtin-type': /\b(?:int|float|bool|string|bytes|list|func|void|macro|macro_run|macro_block|raw)\b/,
   boolean: /\b(?:true|false|valid|empty)\b/,
   number: /\b\d[\d_]*(?:\.[\d_]+)?\b/,
   // shape-name (camelCase) then user-type (PascalCase)

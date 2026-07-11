@@ -13,11 +13,11 @@
   --link-radius:   2px;
   --font:          system-ui, -apple-system, sans-serif;
   --hl-comment:    #7a7a7a;
-  --hl-string:     #3d6b4a;
-  --hl-number:     #966233;
-  --hl-keyword:    #254a70;
-  --hl-type:       #2f6b78;
-  --hl-builtin:    #6e3d5c;
+  --hl-string:     #217839;
+  --hl-number:     #a65913;
+  --hl-keyword:    #0d4279;
+  --hl-type:       #147084;
+  --hl-builtin:    #7c205a;
   --hl-operator:   #8a8a8a;
 }
 
