@@ -12,13 +12,13 @@
   --heading-color: #0a0a0a;
   --link-radius:   2px;
   --font:          system-ui, -apple-system, sans-serif;
-  --hl-comment:    #888888;
-  --hl-string:     #333333;
-  --hl-number:     #555555;
-  --hl-keyword:    #111111;
-  --hl-type:       #444444;
-  --hl-builtin:    #666666;
-  --hl-operator:   #777777;
+  --hl-comment:    #7a7a7a;
+  --hl-string:     #3d6b4a;
+  --hl-number:     #966233;
+  --hl-keyword:    #254a70;
+  --hl-type:       #2f6b78;
+  --hl-builtin:    #6e3d5c;
+  --hl-operator:   #8a8a8a;
 }
 
 #content h1, #content h2, #content h3 {
