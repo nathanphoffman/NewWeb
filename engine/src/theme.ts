@@ -1,13 +1,15 @@
-import { addCats, removeCats } from './themes/cats';
 import { startMatrixRain, stopMatrixRain } from './themes/terminal';
 import { startPetals, stopPetals } from './themes/sakura';
 import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
 import { startCyberGleam, stopCyberGleam } from './themes/cyber';
+import { getAnimatedThemes } from "./themes/definitions"
+
+let pageSuggestions: string[] = [];
+
 
 const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
 
-let pageSuggestions: string[] = [];
 
 // reads a <!-- themes: name1, name2 --> comment from markdown and applies the suggestion
 export function applyThemeSuggestion(md: string): void {
@@ -49,12 +51,21 @@ function applyTheme(theme: string): void {
   const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
   document.documentElement.setAttribute('data-theme', theme);
   sel.value = theme;
+
+  const themes = getAnimatedThemes()
+
+  themes.forEach(({ name, startAnimation, stopAnimation })=>{
+    if(name === theme) startAnimation!()
+    else stopAnimation!()
+  })
+/*
   if (theme === 'cats') addCats(); else removeCats();
   if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
   if (theme === 'sakura') startPetals(); else stopPetals();
   if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
   if (theme === 'storm') startStormRain(); else stopStormRain();
   if (theme === 'cyber') startCyberGleam(); else stopCyberGleam();
+*/
 }
 
 // pauses or resumes all page animations, including theme-specific effects that need explicit start/stop
@@ -66,6 +77,9 @@ export function applyAnimPaused(paused: boolean): void {
     contentEl.style.setProperty('--nw-anim-state', paused ? 'paused' : 'running');
   }
   const theme = document.documentElement.getAttribute('data-theme');
+
+  
+
   if (theme === 'sakura') {
     if (paused) stopPetals();
     else startPetals();
