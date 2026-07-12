@@ -1,4 +1,4 @@
-import { renderPage, showModal, showSuspendedBar, showToast, scrollToAnchor } from './ui.js';
+import { renderPage, showModal, showSuspendedBar, showToast, scrollToAnchor } from './ui/index.js';
 import { applyThemeSuggestion, suggestTheme } from './theme.js';
 import { applyTitleDirective } from './title.js';
 import { applyLogoDirective } from './logo.js';
