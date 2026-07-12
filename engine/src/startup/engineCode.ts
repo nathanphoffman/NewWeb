@@ -1,4 +1,4 @@
-import { showModal } from "../ui";
+import { showModal } from "../ui/modals";
 
 export const store = new Map<string, string>();
 

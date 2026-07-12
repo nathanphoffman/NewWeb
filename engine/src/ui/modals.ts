@@ -1,5 +1,5 @@
-import type { FieldDef, Modal } from '../types.js';
-import { highlightBlock } from '../highlight.js';
+import type { FieldDef, Modal } from '../types';
+import { highlightBlock } from '../highlight';
 
 // removes all open <dialog> elements from the DOM
 export function closeModals(): void {

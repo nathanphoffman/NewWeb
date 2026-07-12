@@ -1,4 +1,4 @@
-import { toRootRelative } from './utility.js';
+import { toRootRelative } from './utility';
 
 // replaces ${key} placeholders in text with values from the context object
 function interpolate(text: string, ctx: Record<string, unknown>): string {

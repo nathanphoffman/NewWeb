@@ -1,4 +1,4 @@
-import type { FieldDef } from '../types.js';
+import type { FieldDef } from '../types';
 
 const KNOWN_TYPES = new Set(['text', 'email', 'password', 'number', 'tel', 'date', 'textarea']);
 

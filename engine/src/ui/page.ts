@@ -1,8 +1,8 @@
-import { closeModals } from './modals.js';
-import { addHeadingIds } from './headings.js';
-import { annotateLinks } from './wasm-links.js';
-import { processImages } from './images.js';
-import { highlightBlock } from '../highlight.js';
+import { closeModals } from './modals';
+import { addHeadingIds } from './headings';
+import { annotateLinks } from './wasm-links';
+import { processImages } from './images';
+import { highlightBlock } from '../highlight';
 
 // waits for #content's opacity transition to finish (with a timeout fallback in case it never fires)
 function waitForFadeOut(content: HTMLElement): Promise<void> {

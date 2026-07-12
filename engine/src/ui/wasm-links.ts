@@ -1,5 +1,5 @@
-import type { FieldDef } from '../types.js';
-import { parseFields } from './fields.js';
+import type { FieldDef } from '../types';
+import { parseFields } from './fields';
 
 // walks the preceding sibling HTML comments of a wasm link to extract script_reasoning, data keys, and field definitions
 function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string[]; fieldSections: FieldDef[][] } {

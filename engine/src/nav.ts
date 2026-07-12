@@ -1,10 +1,13 @@
-import { renderPage, showModal, showSuspendedBar, showToast, scrollToAnchor } from './ui/index.js';
-import { applyThemeSuggestion, suggestTheme } from './theme.js';
-import { applyTitleDirective } from './title.js';
-import { applyLogoDirective } from './logo.js';
-import { processIncludes } from './include.js';
-import { processTemplate } from './template.js';
-import { toRootRelative } from './utility.js';
+import { renderPage, scrollToAnchor } from './ui/page';
+import { showModal } from './ui/modals';
+import { showSuspendedBar } from './ui/suspended-bar';
+import { showToast } from './ui/toast';
+import { applyThemeSuggestion, suggestTheme } from './theme';
+import { applyTitleDirective } from './title';
+import { applyLogoDirective } from './logo';
+import { processIncludes } from './include';
+import { processTemplate } from './template';
+import { toRootRelative } from './utility';
 
 const COMMON_TLDS = ['.com', '.org', '.net', '.io', '.dev', '.app', '.co', '.edu', '.gov', '.uk', '.ca', '.au'];
 

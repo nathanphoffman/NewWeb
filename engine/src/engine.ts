@@ -1,10 +1,12 @@
-import './theme.js';
-import { startWASMEngineToPullMarkdown } from './startup/wasm.js';
-import { startGearButtonListener } from './startup/engineLinks.js';
-import { startOnClickListeners } from './startup/markdownLinks.js';
-import { startBackAndForwardListener } from './startup/urlListeners.js';
+import './theme';
+import { startWASMEngineToPullMarkdown } from './startup/wasm';
+import { startGearButtonListener } from './startup/engineLinks';
+import { startOnClickListeners } from './startup/markdownLinks';
+import { startBackAndForwardListener } from './startup/urlListeners';
+import { initializeNavbar } from "./ui/navbar"
 
 startGearButtonListener();
 startOnClickListeners();
+initializeNavbar();
 startBackAndForwardListener();
 startWASMEngineToPullMarkdown();

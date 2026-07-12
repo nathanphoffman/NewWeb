@@ -1,4 +1,4 @@
-import { showSpinner, hideSpinner } from './ui/index.js';
+import { showSpinner, hideSpinner } from './ui/spinner';
 
 let GoTiny: (new () => Go) | null = null;
 

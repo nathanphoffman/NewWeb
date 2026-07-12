@@ -1,6 +1,9 @@
 import { handleRedirect, navigateTo, navigateWithData, replacePage } from "../nav";
 import { FieldDef } from "../types";
-import { scrollToAnchor, showFormModal, showModal, showSpinner, hideSpinner, showToast } from "../ui";
+import { scrollToAnchor } from "../ui/page";
+import { showFormModal, showModal } from "../ui/modals";
+import { showSpinner, hideSpinner } from "../ui/spinner";
+import { showToast } from "../ui/toast";
 import { handleWasm } from "../wasm";
 import { showDataModal, store } from "./engineCode";
 import { updateViewDataBtn } from "./markdownUpdates";
@@ -60,20 +63,6 @@ export function startWASMEngineToPullMarkdown() {
       store:   (key, value) => { store.set(key, value); updateViewDataBtn(); },
       get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
     };
-
-    document.getElementById('nw-home')!.addEventListener('click', () => {
-      const barMenu = document.getElementById('nw-bar-menu');
-      const hamburger = document.getElementById('nw-hamburger');
-      barMenu?.classList.remove('open');
-      hamburger?.setAttribute('aria-expanded', 'false');
-      navigateTo('main');
-    });
-    document.getElementById('nw-settings')!.addEventListener('click', () =>
-      showSettingsModal(
-        () => [...store.entries()],
-        showDataModal,
-      )
-    );
 
     const initialPage = location.pathname === '/' ? 'main' : location.pathname;
     const initialAnchor = location.hash ? location.hash.slice(1) : null;

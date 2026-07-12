@@ -1,4 +1,4 @@
-import { getMaxImageKb } from '../settings.js';
+import { getMaxImageKb } from '../settings';
 
 // HEAD-checks an image URL and returns true if it fits within the configured max size
 async function checkSize(src: string): Promise<boolean> {

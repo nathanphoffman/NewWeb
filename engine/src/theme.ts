@@ -80,14 +80,6 @@ export function applyAnimPaused(paused: boolean): void {
   }
 }
 
-// hamburger toggle
-const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
-const barMenu   = document.getElementById('nw-bar-menu') as HTMLDivElement;
-hamburger.addEventListener('click', () => {
-  const open = barMenu.classList.toggle('open');
-  hamburger.setAttribute('aria-expanded', String(open));
-});
-
 // restore saved paused state on load
 const savedPaused = localStorage.getItem('nw-paused') === 'true';
 applyAnimPaused(savedPaused);

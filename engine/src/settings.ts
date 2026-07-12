@@ -1,4 +1,4 @@
-import { applyAnimPaused } from './theme.js';
+import { applyAnimPaused } from './theme';
 
 const MAX_IMAGE_KB_KEY = 'nw-settings-max-image-kb';
 const DEFAULT_MAX_IMAGE_KB = 1024;

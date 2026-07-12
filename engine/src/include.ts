@@ -1,4 +1,4 @@
-import { toRootRelative } from './utility.js';
+import { toRootRelative } from './utility';
 
 interface IncludeDirective {
   files: string[];

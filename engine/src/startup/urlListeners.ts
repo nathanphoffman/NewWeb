@@ -1,5 +1,5 @@
 import { renderNoData } from "../nav";
-import { scrollToAnchor } from "../ui";
+import { scrollToAnchor } from "../ui/page";
 
 // restores the correct page when the user navigates back or forward in browser history
 export function startBackAndForwardListener() {
