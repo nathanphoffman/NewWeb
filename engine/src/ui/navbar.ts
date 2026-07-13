@@ -1,6 +1,6 @@
-import { navigateTo } from '../nav';
 import { showSettingsModal } from '../settings';
 import { showDataModal, store } from '../startup/engineCode';
+import { applyAnimPaused } from '../theme';
 
 export function initializeNavbar()
 {
@@ -13,13 +13,18 @@ export function initializeNavbar()
     });
     
 
-    document.getElementById('nw-home')!.addEventListener('click', () => {
-      const barMenu = document.getElementById('nw-bar-menu');
-      const hamburger = document.getElementById('nw-hamburger');
-      barMenu?.classList.remove('open');
-      hamburger?.setAttribute('aria-expanded', 'false');
-      navigateTo('main');
-      console.log("clicked")
+    const animToggle = document.getElementById('nw-anim-toggle') as HTMLButtonElement;
+    const syncAnimToggleLabel = () => {
+      const paused = document.documentElement.classList.contains('nw-paused');
+      animToggle.textContent = paused ? 'Animations Off' : 'Animations On';
+      animToggle.setAttribute('aria-pressed', String(!paused));
+    };
+    syncAnimToggleLabel();
+    animToggle.addEventListener('click', () => {
+      const nowPaused = !document.documentElement.classList.contains('nw-paused');
+      applyAnimPaused(nowPaused);
+      localStorage.setItem('nw-paused', String(nowPaused));
+      syncAnimToggleLabel();
     });
 
     document.getElementById('nw-settings')!.addEventListener('click', () =>

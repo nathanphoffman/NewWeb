@@ -1,0 +1,50 @@
+:root {
+  --bg:            #f7f9fb;
+  --fg:            #1c2530;
+  --muted:         #6b7885;
+  --link:          #2b6cb0;
+  --border:        #dde4ea;
+  --code-bg:       #eef2f5;
+  --bar-bg:        #1c2530;
+  --bar-fg:        #dbe4ec;
+  --bar-border:    #2a3542;
+  --bar-hover-bg:  #29333f;
+  --heading-color: #12181f;
+  --link-radius:   3px;
+  --font:          system-ui, -apple-system, sans-serif;
+  --hl-comment:    #8a97a3;
+  --hl-string:     #1a7a4a;
+  --hl-number:     #b85a1a;
+  --hl-keyword:    #2b6cb0;
+  --hl-type:       #1a7a8a;
+  --hl-builtin:    #6a3a9a;
+  --hl-operator:   #6b7885;
+}
+
+#content h1, #content h2, #content h3 {
+  letter-spacing: -0.015em;
+}
+
+#content h2 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+#content a:hover {
+  box-shadow: 0 0 0 3px rgba(43,108,176,0.14);
+}
+
+#content blockquote {
+  border-left-color: #b8cad8;
+  font-style: italic;
+}
+
+dialog {
+  box-shadow: 0 4px 32px rgba(10,20,35,0.08);
+}
+
+.nw-image-frame {
+  border-color: #cdd9e2;
+  box-shadow: 0 2px 12px rgba(10,20,35,0.06);
+  border-radius: 4px;
+}

@@ -1,5 +1,5 @@
 const DEFAULT_LABEL = 'A New Web Project';
-const DEFAULT_HREF = 'https://newwebproject.dev';
+const DEFAULT_HREF = 'main';
 
 // reads a <!-- [Label](target) --> comment from markdown and re-points the nav-bar logo,
 // falling back to the site default if the page doesn't declare one. wasm: links aren't
@@ -20,7 +20,6 @@ export function applyLogoDirective(md: string): void {
   el.textContent = label;
   if (!isWasm) {
     (el as HTMLAnchorElement).href = href;
-    if (!match) (el as HTMLAnchorElement).target = '_new';
   }
   if (isExternal) {
     el.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">🌐</span>`);

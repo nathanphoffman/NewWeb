@@ -3,12 +3,12 @@ import { startPetals, stopPetals } from './themes/sakura';
 import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
 import { startCyberGleam, stopCyberGleam } from './themes/cyber';
-import { getAnimatedThemes } from "./themes/definitions"
+import { getAnimatedThemes, getThemeDefinition } from "./themes/definitions"
 
 let pageSuggestions: string[] = [];
 
 
-const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
+//const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
 
 
 // reads a <!-- themes: name1, name2 --> comment from markdown and applies the suggestion
@@ -20,9 +20,9 @@ export function applyThemeSuggestion(md: string): void {
 // returns the first valid theme that matches a page suggestion prefix, or null if none match
 function getSuggestedTheme(): string | null {
   for (const name of pageSuggestions) {
-    const q = name.trim().toLowerCase();
-    const match = VALID_THEMES.find(t => t.startsWith(q));
-    if (match) return match;
+    const themeName = name.trim().toLowerCase();
+    const match = getThemeDefinition(themeName);
+    if (match) return match.name;
   }
   return null;
 }

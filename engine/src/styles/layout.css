@@ -40,7 +40,7 @@ body {
 #content {
   max-width: 960px;
   margin: 0 auto;
-  padding: 1rem 2rem 2rem;
+  padding: 0rem 1.9rem 1.9rem;
   border-left:   1px solid var(--border);
   border-right:  1px solid var(--border);
   border-bottom: 1px solid var(--border);

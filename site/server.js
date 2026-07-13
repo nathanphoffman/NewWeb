@@ -2,7 +2,7 @@ import { statSync } from 'fs';
 import { extname, join, normalize } from 'path';
 
 const dir = import.meta.dir;
-const PORT = 8080;
+const PORT = Number(process.env.PORT) || 8080;
 
 const MIME = {
   '.html': 'text/html',
@@ -47,6 +47,7 @@ function serveFile(path) {
 
 const server = Bun.serve({
   port: PORT,
+  hostname: '0.0.0.0',
   fetch(req) {
     const url = new URL(req.url);
     let pathname = decodeURIComponent(url.pathname);
