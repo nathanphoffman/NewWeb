@@ -3,8 +3,6 @@ engine/lib/
 node_modules/
 electron/dist/
 shared/
-/site/index.html
-/site/engine
 site/src/*.wasm
 engine-rs/target/
 *.deb
