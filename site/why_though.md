@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Why would anyone want to go back to 90s?
 First, **humans tend to like going to earlier simpler times** when technology advances sufficiently (think Vinyl after Streaming, film photography after cell phone cameras).  Often times the simpler forms display the pure essence. The 90s internet wasn't about SEO, clickbait, and 3 hour meetings about the size of a button. It was about expressing yourself with themes, goofiness, and more importantly -- content. It was about the content, the fan site, the cool crazy ideas that some random person had. That is what markdown and the New Web tries to express -- content over UI, goofiness over seriousness.  I can think of no other time than the present where web technology has gotten both so complex and yet streamlined with AI tooling and modern JS Frameworks, making it fertile ground as the next Vinyl or Film.
 

@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 <!-- title: The New Web Project -->
 
 # Welcome to the New Web Project

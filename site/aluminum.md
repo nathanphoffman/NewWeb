@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Aluminum (Al)
 
 **Atomic number:** 13

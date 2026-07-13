@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Deor Language Highlight Test
 
 A sample of the **deor** language with syntax highlighting:

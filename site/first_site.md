@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Creating your First Site
 To get started with new web, you will need node/npm.  You can download them.
 

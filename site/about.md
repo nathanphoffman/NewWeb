@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # About NewWeb
 
 You navigated here from `main.md` — the link was intercepted by the engine and the WASM renderer rendered this file in place.

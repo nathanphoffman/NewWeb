@@ -1,4 +1,5 @@
 date posted: 2025-08-11
+<!-- themes: cats -->
 # First Impressions: A Field Watch
 Picked up a simple manual-wind field watch to see what the fuss is about. No date window, no chronograph, just hands and a dial. It's surprisingly easy to read at a glance compared to my usual watch.
 

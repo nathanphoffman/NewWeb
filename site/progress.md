@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Progress
 As of June 26th, 2026 New Web has all of the major features needed for release.
 

@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Target Page
 
 You navigated here successfully.

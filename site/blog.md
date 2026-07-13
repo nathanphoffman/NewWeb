@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # The Coding Astronomer
 The blog of [Nathan Hoffman](http://nathanhoffman.me)
 

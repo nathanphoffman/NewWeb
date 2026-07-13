@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Link & Anchor Test
 
 All representations that navigate to `test-links-target.md`.

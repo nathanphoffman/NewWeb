@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 <!-- refresh: src/menu.wasm -->
 
 # ${restaurantName}

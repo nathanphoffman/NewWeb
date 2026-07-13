@@ -1,4 +1,5 @@
 date posted: 2025-03-22
+<!-- themes: cats -->
 # Catching the Green Comet
 Set an alarm for 4am and drove out past the streetlights to catch it before dawn. Small and faint through binoculars, but unmistakably there — a little smudge of green light that won't come back this way for thousands of years.
 

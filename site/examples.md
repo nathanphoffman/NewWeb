@@ -1,4 +1,4 @@
-<!-- themes: cat -->
+<!-- themes: cats -->
 # Hello from NewWeb
 
 This page is rendered from `main.md` via **Go WASM + goldmark**.

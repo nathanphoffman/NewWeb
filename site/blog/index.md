@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Blog
 
 Posts from every category, newest first.

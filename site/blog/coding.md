@@ -1,4 +1,5 @@
 date posted: 2025-11-02
+<!-- themes: cats -->
 # Why I Switched My Build Pipeline to esbuild
 I spent a weekend ripping out an old webpack config and replacing it with esbuild. The build went from twenty seconds to under a second, and the config file shrank from two hundred lines to about fifteen. Sometimes the boring tool really is the better tool.
 

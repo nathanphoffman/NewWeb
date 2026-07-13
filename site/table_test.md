@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # Table CSS Test
 
 ## Basic table
