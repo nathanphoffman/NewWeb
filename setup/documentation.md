@@ -1,3 +1,4 @@
+<!-- themes: cats -->
 # NewWeb Documentation
 
 NewWeb is a markdown-first web framework. Sites are `.md` files rendered in the browser via a Rust WASM engine. No build step required for content — just write markdown.
