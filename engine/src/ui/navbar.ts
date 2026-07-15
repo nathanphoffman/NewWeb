@@ -10,6 +10,7 @@ export function initializeNavbar()
     // hamburger toggle
     const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
     const barMenu   = document.getElementById('nw-bar-menu') as HTMLDivElement;
+    const bar       = document.getElementById('nw-bar') as HTMLDivElement;
 
     function toggleHamburger() {
       const open = barMenu.classList.toggle('open');
@@ -24,12 +25,11 @@ export function initializeNavbar()
     document.body.addEventListener('click', (e)=>{
 
         if((e.target as HTMLElement)?.id === "nw-hamburger") toggleHamburger();
-        // if it is on the newbar it could be on the hamburger button
-        else if((e.target as HTMLElement)?.id === "nw-bar") return;
-        else if((e.target as HTMLElement)?.id === "nw-bar-menu") return;
+        // if the click is anywhere inside the navbar (including the theme select), leave it alone
+        else if(e.target instanceof Node && bar.contains(e.target)) return;
 
         // allow closing the hamburger on any click outside the navbar if it is open
-        else if(barMenu.classList.contains('open')) toggleHamburger();        
+        else if(barMenu.classList.contains('open')) toggleHamburger();
     });
     
 
