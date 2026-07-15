@@ -1,4 +1,5 @@
 import { showSpinner, hideSpinner } from './ui/spinner';
+import { toRootRelative } from './utility';
 
 let GoTiny: (new () => Go) | null = null;
 
@@ -7,7 +8,9 @@ async function loadTinyRuntime(): Promise<void> {
   if (GoTiny) return;
   await new Promise<void>((resolve, reject) => {
     const s = document.createElement('script');
-    s.src = 'engine/lib/wasm_exec_tiny.js';
+    // a relative <script src> resolves against the *current page's* URL, which is wrong
+    // once the SPA has navigated into a subdirectory — this asset always lives at site root
+    s.src = new URL('/engine/lib/wasm_exec_tiny.js', location.origin).toString();
     s.onload = () => { GoTiny = Go; resolve(); };
     s.onerror = reject;
     document.head.appendChild(s);
@@ -17,7 +20,10 @@ async function loadTinyRuntime(): Promise<void> {
 // fetches a wasm binary and runs it using the TinyGo runtime
 export async function loadAndExecute(file: string): Promise<void> {
   await loadTinyRuntime();
-  const bytes = await fetch(file).then(r => r.arrayBuffer());
+  // wasm: links are authored root-relative (e.g. "src/order.wasm" means /src/order.wasm),
+  // same convention as markdown links — fetch() would otherwise resolve it against
+  // whatever pretty path the SPA has currently navigated to
+  const bytes = await fetch(toRootRelative(file)).then(r => r.arrayBuffer());
   const go = new GoTiny!();
   const module = await WebAssembly.instantiate(bytes, go.importObject);
   await go.run(module.instance);

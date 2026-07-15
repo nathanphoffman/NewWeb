@@ -1,3 +1,5 @@
+import { toRootRelative } from './utility';
+
 const DEFAULT_LABEL = 'A New Web Project';
 const DEFAULT_HREF = 'main';
 
@@ -19,7 +21,10 @@ export function applyLogoDirective(md: string): void {
   el.className = isFirstLoad ? 'nw-logo nw-logo-hidden' : 'nw-logo';
   el.textContent = label;
   if (!isWasm) {
-    (el as HTMLAnchorElement).href = href;
+    // written as-is into the DOM (not just read by our click handler), so it must already
+    // be root-relative for a raw browser navigation — new tab, view-source, no-JS — to land
+    // on the right page regardless of how deep the current page is nested
+    (el as HTMLAnchorElement).href = isExternal ? href : toRootRelative(href);
   }
   if (isExternal) {
     el.insertAdjacentHTML('beforeend', `<span class="nw-link-icon" aria-hidden="true">🌐</span>`);

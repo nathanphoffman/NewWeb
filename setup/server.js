@@ -32,8 +32,15 @@ function fileType(path) {
 
 function serveFile(path) {
   return new Response(Bun.file(path), {
-    headers: { 'Content-Type': MIME[extname(path)] || 'application/octet-stream' },
+    headers: {
+      'Content-Type': MIME[extname(path)] || 'application/octet-stream',
+      'Cache-Control': 'no-store',
+    },
   });
+}
+
+function notFound() {
+  return new Response('not found', { status: 404, headers: { 'Cache-Control': 'no-store' } });
 }
 
 const server = Bun.serve({
@@ -46,16 +53,22 @@ const server = Bun.serve({
     // resolve within `dir` only — reject any path that escapes it (e.g. "..")
     const filePath = normalize(join(dir, pathname));
     if (filePath !== dir && !filePath.startsWith(dir + '/')) {
-      return new Response('not found', { status: 404 });
+      return notFound();
     }
 
     if (pathname === '/') return serveFile(join(dir, 'index.html'));
 
     const navigating = isNavigationRequest(req);
 
-    // direct navigation to a raw .md file — redirect to the pretty, extension-less path
+    // direct navigation to a raw .md file — redirect to the pretty, extension-less path.
+    // Cache-Control is required here: browsers cache a bare 301 indefinitely, and since this
+    // URL is also fetched internally (non-navigating) for page content, a cached redirect would
+    // silently hijack that fetch too and permanently break the page until the cache is cleared.
     if (pathname.endsWith('.md') && navigating) {
-      return Response.redirect(pathname.slice(0, -3), 301);
+      return new Response(null, {
+        status: 301,
+        headers: { Location: pathname.slice(0, -3), 'Cache-Control': 'no-store' },
+      });
     }
 
     // real file on disk (assets, or the SPA's own fetch() of a .md file) — serve as-is
@@ -66,7 +79,7 @@ const server = Bun.serve({
     // reaching here without it means a broken link/include, not a page to render
     if (navigating && fileType(filePath + '.md') === 'file') return serveFile(join(dir, 'index.html'));
 
-    return new Response('not found', { status: 404 });
+    return notFound();
   },
 });
 
