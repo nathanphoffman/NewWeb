@@ -5,7 +5,6 @@ import { startPetals, stopPetals } from './sakura';
 import { startCRTFlicker, stopCRTFlicker } from './crt';
 import { startStormRain, stopStormRain } from './storm';
 import { startCyberGleam, stopCyberGleam } from './cyber';
-import { startBubbles, stopBubbles } from './bubblegum';
 import { startJellyfish, stopJellyfish } from './abyss';
 
 
@@ -55,8 +54,6 @@ const THEME_DEFINITIONS: ThemeDefinitions = [
         ThemeObject("obsidian", "Obsidian"),
         ThemeObject("scriptorium", "Scriptorium"),
         ThemeObject("voidcore", "Voidcore"),
-        ThemeObject("porcelain", "Porcelain"),
-        ThemeObject("bubblegum", "Bubblegum", startBubbles, stopBubbles),
         ThemeObject("abyss", "Abyss", startJellyfish, stopJellyfish)
 ]
 
