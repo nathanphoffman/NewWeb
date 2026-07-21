@@ -60,24 +60,15 @@ const server = Bun.serve({
 
     const navigating = isNavigationRequest(req);
 
-    // direct navigation to a raw .md file — redirect to the pretty, extension-less path.
-    // Cache-Control is required here: browsers cache a bare 301 indefinitely, and since this
-    // URL is also fetched internally (non-navigating) for page content, a cached redirect would
-    // silently hijack that fetch too and permanently break the page until the cache is cleared.
-    if (pathname.endsWith('.md') && navigating) {
-      return new Response(null, {
-        status: 301,
-        headers: { Location: pathname.slice(0, -3), 'Cache-Control': 'no-store' },
-      });
-    }
+    // a top-level navigation to a markdown page — whether the URL has the .md extension
+    // or not — always gets the SPA shell, never the raw file or an HTTP redirect. The
+    // client's own router rewrites the address bar to the extension-less form via
+    // history.replaceState, so there's no redirect for a browser/CDN to cache wrong.
+    const mdExists = pathname.endsWith('.md') ? fileType(filePath) === 'file' : fileType(filePath + '.md') === 'file';
+    if (navigating && mdExists) return serveFile(join(dir, 'index.html'));
 
     // real file on disk (assets, or the SPA's own fetch() of a .md file) — serve as-is
     if (fileType(filePath) === 'file') return serveFile(filePath);
-
-    // pretty path with no extension — only a real top-level navigation gets the SPA shell;
-    // the app's own internal fetch()es must always ask for the .md file directly, so one
-    // reaching here without it means a broken link/include, not a page to render
-    if (navigating && fileType(filePath + '.md') === 'file') return serveFile(join(dir, 'index.html'));
 
     return notFound();
   },
