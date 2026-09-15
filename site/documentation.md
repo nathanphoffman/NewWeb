@@ -18,6 +18,18 @@ anywhere other than the bundled server requires equivalent rewrite rules (serve
 `index.html` for any path whose matching `.md` file exists) for pretty URLs to survive
 a hard refresh.
 
+### Static generation
+
+`npm run build` pre-renders every `.md` file to a real `.html` file (e.g. `blog/post.md`
+→ `blog/post.html`, `main.md` → `index.html`) in a self-contained `static/` folder —
+assets, `.md` files, and the WASM engine included. No rewrite rules needed: each page is
+real content on first load, readable with JavaScript off. Point any static host or web
+server at `static/` if you want this; nothing else changes if you don't — the folder is
+optional output, not wired into `server.js` or any deploy path.
+
+Client-side navigation after the first load is unaffected either way — it still fetches
+and renders `.md` files directly, exactly as without a build step.
+
 ---
 
 ## Content

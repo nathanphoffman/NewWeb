@@ -36,6 +36,10 @@ update-setup:
 serve-setup:
     bun setup/server.js
 
+# generate the static build for site/ and serve it
+serve-static: sync-site
+    cd site && node build-static.js && cd static && bun server.js
+
 # ensure setup/ (the lean build electron ships) is up to date
 build-electron:
     node sync-setup.js

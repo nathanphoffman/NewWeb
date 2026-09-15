@@ -11,6 +11,12 @@ To pull the latest runtime files (index.html, engine_bg.wasm, server.js,
 update.js) from the NewWeb repo without touching your own markdown files
 or package.json, run "npm run update".
 
+Static Build (optional)
+-----------------------
+Run "npm run build" to pre-render every .md file to a real .html file in a
+self-contained "static" folder, ready to drop on any static host. Nothing
+else changes if you don't use it.
+
 Basic Usage
 -----------------------
 The markdown that is your homepage is 'main.md'  If you create other markdown files 

@@ -2,14 +2,20 @@ import { statSync } from 'fs';
 import { extname, join, normalize } from 'path';
 
 const dir = import.meta.dir;
-const PORT = 8080;
+const PORT = Number(process.env.PORT) || 8080;
 
 const MIME = {
   '.html': 'text/html',
   '.js':   'application/javascript',
   '.wasm': 'application/wasm',
   '.md':   'text/plain',
+  '.css':  'text/css',
   '.svg':  'image/svg+xml',
+  '.png':  'image/png',
+  '.jpg':  'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif':  'image/gif',
+  '.webp': 'image/webp',
 };
 
 // true for a real top-level browser navigation (address bar, link click, refresh) —
@@ -45,6 +51,7 @@ function notFound() {
 
 const server = Bun.serve({
   port: PORT,
+  hostname: '0.0.0.0',
   fetch(req) {
     const url = new URL(req.url);
     let pathname = decodeURIComponent(url.pathname);
@@ -59,6 +66,14 @@ const server = Bun.serve({
     if (pathname === '/') return serveFile(join(dir, 'index.html'));
 
     const navigating = isNavigationRequest(req);
+
+    // a pretty path with a matching pre-rendered page (see build-static.js) — serve that
+    // directly so the URL and its content always match, rather than falling through to
+    // the generic shell below (which, once a static build exists, is really just the
+    // homepage's own pre-rendered content, not a blank shell anymore)
+    if (navigating && !pathname.endsWith('.md') && fileType(filePath + '.html') === 'file') {
+      return serveFile(filePath + '.html');
+    }
 
     // a top-level navigation to a markdown page — whether the URL has the .md extension
     // or not — always gets the SPA shell, never the raw file or an HTTP redirect. The

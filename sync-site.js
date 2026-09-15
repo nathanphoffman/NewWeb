@@ -18,6 +18,7 @@ const libDir = join(dir, 'site', 'engine', 'lib');
 mkdirSync(pkgDir, { recursive: true });
 mkdirSync(libDir, { recursive: true });
 copyFileSync(join(engine, 'build', 'pkg', 'engine_bg.wasm'), join(pkgDir, 'engine_bg.wasm'));
+copyFileSync(join(engine, 'build', 'pkg', 'engine.js'), join(pkgDir, 'engine.js'));
 copyFileSync(join(engine, 'lib', 'wasm_exec_tiny.js'), join(libDir, 'wasm_exec_tiny.js'));
 copyFileSync(join(engine, 'build', 'index.html'), join(dir, 'site', 'index.html'));
 console.log('✓ site/ synced');

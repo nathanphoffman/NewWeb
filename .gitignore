@@ -6,4 +6,5 @@ shared/
 site/src/*.wasm
 engine-rs/target/
 *.deb
+static/
 

@@ -14,7 +14,10 @@ mkdirSync(pkgDir, { recursive: true });
 mkdirSync(libDir, { recursive: true });
 copyFileSync(join(dir, 'site', 'index.html'), join(dir, 'setup', 'index.html'));
 copyFileSync(join(dir, 'site', 'engine', 'build', 'pkg', 'engine_bg.wasm'), join(pkgDir, 'engine_bg.wasm'));
+copyFileSync(join(dir, 'site', 'engine', 'build', 'pkg', 'engine.js'), join(pkgDir, 'engine.js'));
 copyFileSync(join(dir, 'site', 'engine', 'lib', 'wasm_exec_tiny.js'), join(libDir, 'wasm_exec_tiny.js'));
+copyFileSync(join(dir, 'site', 'build-static.js'), join(dir, 'setup', 'build-static.js'));
+copyFileSync(join(dir, 'site', 'server.js'), join(dir, 'setup', 'server.js'));
 console.log('✓ setup/ synced');
 
 console.log('→ copying documentation...');

@@ -1,6 +1,7 @@
 import { handleRedirect, navigateTo, navigateWithData, replacePage } from "../nav";
 import { FieldDef } from "../types";
-import { scrollToAnchor } from "../ui/page";
+import { hydrateExistingContent, scrollToAnchor } from "../ui/page";
+import { toRootRelative } from "../utility";
 import { showFormModal, showModal } from "../ui/modals";
 import { showSpinner, hideSpinner } from "../ui/spinner";
 import { showToast } from "../ui/toast";
@@ -64,10 +65,30 @@ export function startWASMEngineToPullMarkdown() {
       get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
     };
 
-    const initialPage = location.pathname === '/' ? 'main' : location.pathname;
+    // build-static.js writes real ".html" files (e.g. "about.html", "blog/post.html") so the
+    // output works on static hosts with no pretty-URL rewriting; normalize a raw file path
+    // back to the pretty form so it matches how the SPA's own links/history always look
+    const path = location.pathname === '/index.html' ? '/'
+      : location.pathname.endsWith('.html') ? location.pathname.slice(0, -'.html'.length)
+      : location.pathname;
+    const initialPage = path === '/' ? 'main' : path;
     const initialAnchor = location.hash ? location.hash.slice(1) : null;
-    await replacePage(initialPage, initialAnchor);
-    if (initialAnchor) scrollToAnchor(initialAnchor);
+
+    // build-static.js stamps statically pre-rendered pages with the pretty path they were
+    // generated for; when it matches the URL we landed on, the markup is already correct
+    // and we just wire up interactivity instead of re-fetching and re-rendering it
+    const content = document.getElementById('content')!;
+    if (content.dataset.nwSsgPath === path) {
+      // stand in for the replaceState replacePage() would have done, so back/forward and
+      // in-app navigation see the same pretty URL + history shape as any other page load
+      const mdUrl = toRootRelative(initialPage.endsWith('.md') ? initialPage : `${initialPage}.md`);
+      history.replaceState({ mdUrl, anchor: initialAnchor }, '', path + (location.hash || ''));
+      hydrateExistingContent(content);
+      if (initialAnchor) scrollToAnchor(initialAnchor);
+    } else {
+      await replacePage(initialPage, initialAnchor);
+      if (initialAnchor) scrollToAnchor(initialAnchor);
+    }
   })().catch(err => {
     const content = document.getElementById('content')!;
     content.innerHTML = `<pre>Boot error: ${err}</pre>`;

@@ -67,6 +67,14 @@ const server = Bun.serve({
 
     const navigating = isNavigationRequest(req);
 
+    // a pretty path with a matching pre-rendered page (see build-static.js) — serve that
+    // directly so the URL and its content always match, rather than falling through to
+    // the generic shell below (which, once a static build exists, is really just the
+    // homepage's own pre-rendered content, not a blank shell anymore)
+    if (navigating && !pathname.endsWith('.md') && fileType(filePath + '.html') === 'file') {
+      return serveFile(filePath + '.html');
+    }
+
     // a top-level navigation to a markdown page — whether the URL has the .md extension
     // or not — always gets the SPA shell, never the raw file or an HTTP redirect. The
     // client's own router rewrites the address bar to the extension-less form via

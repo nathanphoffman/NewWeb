@@ -19,6 +19,26 @@ export function scrollToAnchor(id: string): void {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// runs heading ids, link annotation, syntax highlighting, and image loading against
+// already-present markup — shared by a fresh render and by hydrating pre-rendered
+// (statically generated) content that doesn't need to be re-rendered from markdown
+function postProcessContent(content: HTMLElement): void {
+  addHeadingIds(content);
+  annotateLinks(content);
+  highlightBlock(content);
+  void processImages(content);
+  content.classList.add('nw-loaded');
+  document.dispatchEvent(new CustomEvent('nw-page-rendered'));
+}
+
+// wires up an #content element whose markup was already produced by the static build
+// (see build-static.js) instead of being rendered client-side — skips the fetch/wasm-render/
+// fade cycle entirely since the markup is already correct, and just runs the same
+// post-processing a fresh render would
+export function hydrateExistingContent(content: HTMLElement): void {
+  postProcessContent(content);
+}
+
 // renders markdown into #content, replacing <img> tags with placeholders, then runs heading ids, link annotation, syntax highlighting, and image loading
 // fades the old content out before swapping and back in after, so navigation doesn't pop
 export async function renderPage(md: string): Promise<void> {
@@ -39,10 +59,5 @@ export async function renderPage(md: string): Promise<void> {
     }
   );
   content.innerHTML = html;
-  addHeadingIds(content);
-  annotateLinks(content);
-  highlightBlock(content);
-  void processImages(content);
-  content.classList.add('nw-loaded');
-  document.dispatchEvent(new CustomEvent('nw-page-rendered'));
+  postProcessContent(content);
 }

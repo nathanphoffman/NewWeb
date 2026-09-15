@@ -40,6 +40,11 @@ Requires:
 - `engine/build/pkg/engine_bg.wasm`
 - your `.md` files
 
+Run `npm run build` to pre-render every page to a real `.html` file in `static/` instead
+— a self-contained, drop-anywhere copy of the site with actual content on first load
+(readable with JS off, no pretty-URL rewrite rules needed). Optional; everything above
+still works without it.
+
 ## Updating the setup build
 
 After changing engine source, run the sync script to rebuild and update `setup/`:

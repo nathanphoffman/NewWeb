@@ -9,8 +9,10 @@ const BASE = 'https://raw.githubusercontent.com/nathanphoffman/NewWeb/main/setup
 const FILES = [
   { url: `${BASE}/index.html`, dest: join(dir, 'index.html') },
   { url: `${BASE}/engine/build/pkg/engine_bg.wasm`, dest: join(dir, 'engine', 'build', 'pkg', 'engine_bg.wasm') },
+  { url: `${BASE}/engine/build/pkg/engine.js`, dest: join(dir, 'engine', 'build', 'pkg', 'engine.js') },
   { url: `${BASE}/server.js`, dest: join(dir, 'server.js') },
   { url: `${BASE}/update.js`, dest: join(dir, 'update.js') },
+  { url: `${BASE}/build-static.js`, dest: join(dir, 'build-static.js') },
 ];
 
 async function update() {

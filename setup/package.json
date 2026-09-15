@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "bun server.js",
-    "update": "node update.js"
+    "update": "node update.js",
+    "build": "node build-static.js"
   }
 }
