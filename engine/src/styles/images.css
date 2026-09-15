@@ -11,6 +11,31 @@
   cursor: pointer;
 }
 
+/* collapsed to 0fr until the image loads, then eased open so surrounding
+   content is pushed down smoothly instead of jumping when the image pops in */
+.nw-image-frame__reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.4s ease;
+}
+
+.nw-image-frame--loaded .nw-image-frame__reveal {
+  grid-template-rows: 1fr;
+}
+
+.nw-image-frame__inner {
+  min-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.35s ease 0.08s, transform 0.35s ease 0.08s;
+}
+
+.nw-image-frame--loaded .nw-image-frame__inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .nw-image-frame__img {
   display: block;
   max-width: 320px;
@@ -51,7 +76,11 @@
 
 /* ── lightbox ─────────────────────────────────────────── */
 .nw-lightbox {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
   max-width: 85vw;
   max-height: 94vh;
   width: fit-content;

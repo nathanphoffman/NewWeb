@@ -37,21 +37,37 @@ function showLightbox(src: string, alt: string): void {
   dlg.showModal();
 }
 
-// wraps an image in a <figure> with optional caption; clicking opens the lightbox
+// wraps an image in a <figure> with optional caption; clicking opens the lightbox.
+// The frame stays collapsed until the image actually loads, then eases open
+// (see .nw-image-frame__reveal in images.css) instead of popping in and shoving
+// the rest of the page down instantly.
 function buildFrame(src: string, alt: string): HTMLElement {
   const fig = document.createElement('figure');
   fig.className = 'nw-image-frame';
+
+  const reveal = document.createElement('div');
+  reveal.className = 'nw-image-frame__reveal';
+  const inner = document.createElement('div');
+  inner.className = 'nw-image-frame__inner';
+
   const img = document.createElement('img');
-  img.src = src;
   img.alt = alt;
   img.className = 'nw-image-frame__img';
-  fig.appendChild(img);
+  const onReady = () => fig.classList.add('nw-image-frame--loaded');
+  img.addEventListener('load', onReady, { once: true });
+  img.addEventListener('error', onReady, { once: true });
+  img.src = src;
+  inner.appendChild(img);
+
   if (alt) {
     const cap = document.createElement('figcaption');
     cap.className = 'nw-image-frame__caption';
     cap.textContent = alt;
-    fig.appendChild(cap);
+    inner.appendChild(cap);
   }
+
+  reveal.appendChild(inner);
+  fig.appendChild(reveal);
   fig.addEventListener('click', () => showLightbox(src, alt));
   return fig;
 }
