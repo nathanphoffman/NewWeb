@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go version *)",
+      "Bash(go env *)",
+      "Bash(ls \"$\\(go env GOROOT\\)/misc/wasm/\")",
+      "Bash(ls \"$\\(go env GOROOT\\)/lib/wasm/\")",
+      "Bash(just --list)",
+      "Bash(npm run *)",
+      "Bash(just build-engine *)",
+      "Bash(just build-electron *)",
+      "WebSearch",
+      "Bash(grep -E '\\\\.\\(js|ts|html|css|md\\)$')",
+      "Bash(npm install *)",
+      "Skill(run)",
+      "Bash(node server.js)",
+      "Bash(node site/server.js)",
+      "Bash(curl -s http://localhost:8080)",
+      "Bash(pkill -f \"node server.js\")",
+      "Bash(pkill -f \"node site/server.js\")",
+      "Bash(fuser -k 8080/tcp)",
+      "Bash(node engine/scripts/build-html.js)",
+      "Bash(tinygo build *)",
+      "Bash(rm -rf /tmp/claude-1000/-home-nate-Code-NewWeb/de4bd5e7-5d3b-4024-a132-d5bfebc0f4d8/scratchpad/repro3)",
+      "Bash(bash engine-rs/build.sh)"
+    ]
+  }
+}
