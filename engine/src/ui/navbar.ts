@@ -9,20 +9,20 @@ const HAMBURGER_ID = 'nw-hamburger';
 function initializeHamburger(): void {
   const hamburger = document.getElementById(HAMBURGER_ID) as HTMLButtonElement;
   const barMenu = document.getElementById('nw-bar-menu') as HTMLDivElement;
-  const bar = document.getElementById('nw-bar') as HTMLDivElement;
+  const navBar = document.getElementById('nw-bar') as HTMLDivElement;
 
   const toggleHamburger = (): void => {
     const open = barMenu.classList.toggle('open');
     hamburger.setAttribute('aria-expanded', String(open));
   };
 
-  document.body.addEventListener('click', (e) => {
-    const clicked = e.target as Node;
+  document.body.addEventListener('click', (event) => {
+    const clicked = event.target as Node;
 
     if ((clicked as HTMLElement).id === HAMBURGER_ID) toggleHamburger();
 
     // a click anywhere inside the navbar (including the theme select) leaves the menu alone
-    else if (bar.contains(clicked)) return;
+    else if (navBar.contains(clicked)) return;
     else if (barMenu.classList.contains('open')) toggleHamburger();
   });
 }

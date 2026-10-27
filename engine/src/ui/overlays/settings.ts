@@ -8,14 +8,14 @@ const MAX_IMAGE_KB_LIMIT = 10240;
 
 // reads the max auto-load image size from localStorage, defaulting to 1 MB
 export function getMaxImageKb(): number {
-  const val = parseInt(localStorage.getItem(MAX_IMAGE_KB_KEY) ?? '', DECIMAL_RADIX);
+  const value = parseInt(localStorage.getItem(MAX_IMAGE_KB_KEY) ?? '', DECIMAL_RADIX);
 
-  return Number.isNaN(val) || val <= 0 ? DEFAULT_MAX_IMAGE_KB : val;
+  return Number.isNaN(value) || value <= 0 ? DEFAULT_MAX_IMAGE_KB : value;
 }
 
 // persists the max image KB setting to localStorage
-function setMaxImageKb(kb: number): void {
-  localStorage.setItem(MAX_IMAGE_KB_KEY, String(kb));
+function setMaxImageKb(kilobytes: number): void {
+  localStorage.setItem(MAX_IMAGE_KB_KEY, String(kilobytes));
 }
 
 // creates a styled settings section container element
@@ -27,17 +27,17 @@ function makeSection(): HTMLElement {
 function buildImageSection(): { section: HTMLElement; input: HTMLInputElement } {
   const section = makeSection();
 
-  const row = makeElement('label', 'nw-settings-row');
+  const rowElement = makeElement('label', 'nw-settings-row');
   const input = makeElement('input');
   input.type = 'number';
   input.id = 'nw-setting-max-img-kb';
   input.min = '1';
   input.max = String(MAX_IMAGE_KB_LIMIT);
   input.value = String(getMaxImageKb());
-  row.append(makeElement('span', '', 'Max auto-load size (KB)'), input);
+  rowElement.append(makeElement('span', '', 'Max auto-load size (KB)'), input);
 
   const hint = makeElement('p', 'nw-settings-hint', 'Images larger than this require a manual click to load.');
-  section.append(row, hint);
+  section.append(rowElement, hint);
 
   return { section, input };
 }
@@ -45,7 +45,7 @@ function buildImageSection(): { section: HTMLElement; input: HTMLInputElement } 
 // builds the row with the button that stops or resumes page animations
 function buildAnimationSection(): HTMLElement {
   const section = makeSection();
-  const row = makeElement('div', 'nw-settings-row');
+  const rowElement = makeElement('div', 'nw-settings-row');
   const isPaused = localStorage.getItem(PAUSED_STORAGE_KEY) === 'true';
 
   const button = makeElement('button', 'nw-settings-anim-btn', isPaused ? 'Resume' : 'Stop');
@@ -56,8 +56,8 @@ function buildAnimationSection(): HTMLElement {
     button.textContent = nowPaused ? 'Resume' : 'Stop';
   });
 
-  row.append(makeElement('span', '', 'Page animations'), button);
-  section.appendChild(row);
+  rowElement.append(makeElement('span', '', 'Page animations'), button);
+  section.appendChild(rowElement);
 
   return section;
 }
@@ -66,15 +66,15 @@ function buildAnimationSection(): HTMLElement {
 function buildDataSection(entryCount: number, onViewData: () => void): HTMLElement {
   const hasData = entryCount > 0;
   const section = makeSection();
-  const row = makeElement('div', 'nw-settings-row');
+  const rowElement = makeElement('div', 'nw-settings-row');
 
   const button = makeElement('button', 'nw-settings-data-btn', 'View Data');
   button.disabled = !hasData;
   button.classList.toggle('nw-settings-data-btn--empty', !hasData);
   button.addEventListener('click', onViewData);
 
-  row.append(makeElement('span', '', 'Session data'), button);
-  section.appendChild(row);
+  rowElement.append(makeElement('span', '', 'Session data'), button);
+  section.appendChild(rowElement);
 
   if (!hasData) section.appendChild(makeElement('p', 'nw-settings-hint', 'No data is currently stored.'));
 
@@ -99,31 +99,31 @@ export function showSettingsModal(
   getEntries: () => [string, string][],
   onViewData: () => void,
 ): void {
-  document.querySelectorAll('dialog').forEach(d => d.remove());
+  document.querySelectorAll('dialog').forEach(item => item.remove());
 
-  const dlg = makeElement('dialog', 'nw-settings-modal');
+  const dialog = makeElement('dialog', 'nw-settings-modal');
   const images = buildImageSection();
 
   const save = () => {
-    const val = parseInt(images.input.value, DECIMAL_RADIX);
+    const value = parseInt(images.input.value, DECIMAL_RADIX);
 
-    if (!Number.isNaN(val) && val > 0) setMaxImageKb(val);
-    dlg.remove();
+    if (!Number.isNaN(value) && value > 0) setMaxImageKb(value);
+    dialog.remove();
   };
 
   const viewData = () => {
-    dlg.remove();
+    dialog.remove();
     onViewData();
   };
 
-  dlg.append(
+  dialog.append(
     makeElement('h2', '', 'Settings'),
     images.section,
     buildAnimationSection(),
     buildDataSection(getEntries().length, viewData),
-    buildActions(save, () => dlg.remove()),
+    buildActions(save, () => dialog.remove()),
   );
 
-  document.body.appendChild(dlg);
-  dlg.showModal();
+  document.body.appendChild(dialog);
+  dialog.showModal();
 }

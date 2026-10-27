@@ -3,18 +3,18 @@ import { showDataModal, store } from "./engineCode";
 // shows the "View Data" menu button when the store has entries, removes it when empty
 export function updateViewDataBtn(): void {
   const menu = document.getElementById('nw-bar-menu')!;
-  let btn = document.getElementById('nw-view-data') as HTMLButtonElement | null;
+  let button = document.getElementById('nw-view-data') as HTMLButtonElement | null;
 
   if (store.size > 0) {
-    if (!btn) {
-      btn = document.createElement('button');
-      btn.id = 'nw-view-data';
-      btn.textContent = 'View Data';
-      btn.addEventListener('click', showDataModal);
+    if (!button) {
+      button = document.createElement('button');
+      button.id = 'nw-view-data';
+      button.textContent = 'View Data';
+      button.addEventListener('click', showDataModal);
       const settings = document.getElementById('nw-settings')!;
-      menu.insertBefore(btn, settings);
+      menu.insertBefore(button, settings);
     }
   } else {
-    btn?.remove();
+    button?.remove();
   }
 }

@@ -20,11 +20,11 @@ function parseKeys(attribute: string | undefined): string[] {
 }
 
 // runs the wasm for a link, then locks key access again once it finishes
-function runWasmLink(a: HTMLAnchorElement, keys: string[], formKeys: string[] = []): void {
+function runWasmLink(anchor: HTMLAnchorElement, keys: string[], formKeys: string[] = []): void {
   allowedKeys = new Set([...keys, ...formKeys]);
 
-  handleWasm(a).finally(() => {
-    for (const key of formKeys) store.delete(key);
+  handleWasm(anchor).finally(() => {
+    for (const entryKey of formKeys) store.delete(entryKey);
     allowedKeys = new Set();
 
     if (formKeys.length > 0) updateViewDataBtn();
@@ -32,46 +32,46 @@ function runWasmLink(a: HTMLAnchorElement, keys: string[], formKeys: string[] = 
 }
 
 // saves the submitted form values to the store and runs the wasm with access to them
-function submitWasmForm(a: HTMLAnchorElement, values: Record<string, string>): void {
-  for (const [key, value] of Object.entries(values)) store.set(key, value);
-  runWasmLink(a, parseKeys(a.dataset.keys), Object.keys(values));
+function submitWasmForm(anchor: HTMLAnchorElement, values: Record<string, string>): void {
+  for (const [entryKey, value] of Object.entries(values)) store.set(entryKey, value);
+  runWasmLink(anchor, parseKeys(anchor.dataset.keys), Object.keys(values));
 }
 
 // intercepts wasm: link clicks — shows a form if fields are declared, then executes the wasm with scoped key access
-export function handleWASMClick(e: MouseEvent, a: HTMLAnchorElement, href: string) {
+export function handleWASMClick(event: MouseEvent, anchor: HTMLAnchorElement, href: string) {
   if (!href.startsWith('wasm:')) return;
 
-  e.preventDefault();
-  const fieldsJson = a.dataset.fields;
+  event.preventDefault();
+  const fieldsJson = anchor.dataset.fields;
 
   if (!fieldsJson) {
-    runWasmLink(a, parseKeys(a.dataset.keys));
+    runWasmLink(anchor, parseKeys(anchor.dataset.keys));
 
     return;
   }
 
   const fieldSections = JSON.parse(fieldsJson) as FieldDef[][];
-  const linkText = a.textContent?.trim() ?? 'Submit';
-  showFormModal(linkText, fieldSections, values => submitWasmForm(a, values));
+  const linkText = anchor.textContent?.trim() ?? 'Submit';
+  showFormModal(linkText, fieldSections, values => submitWasmForm(anchor, values));
 }
 
 // sends http(s) urls through the redirect countdown and everything else through in-app navigation
-function redirectOrNavigate(url: string, reason?: string): void {
-  if (url.startsWith('http://') || url.startsWith('https://')) handleRedirect(url, reason);
-  else navigateTo(url);
+function redirectOrNavigate(address: string, reason?: string): void {
+  if (address.startsWith('http://') || address.startsWith('https://')) handleRedirect(address, reason);
+  else navigateTo(address);
 }
 
 // exposes the host API that wasm modules call on window.newweb
 function installHostApi(): void {
   window.newweb = {
     redirect: redirectOrNavigate,
-    replace: (url) => replacePage(url),
-    info:    (md) => showToast(md, 'info'),
-    error:   (md) => showToast(md, 'error'),
-    more:    (md) => showMarkdownModal(md),
-    load:    (url, data) => navigateWithData(url, data),
-    store:   (key, value) => { store.set(key, value); updateViewDataBtn(); },
-    get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',
+    replace: (address) => replacePage(address),
+    info:    (markdown) => showToast(markdown, 'info'),
+    error:   (markdown) => showToast(markdown, 'error'),
+    more:    (markdown) => showMarkdownModal(markdown),
+    load:    (address, data) => navigateWithData(address, data),
+    store:   (entryKey, value) => { store.set(entryKey, value); updateViewDataBtn(); },
+    get:     (entryKey) => allowedKeys.has(entryKey) ? (store.get(entryKey) ?? '') : '',
   };
 }
 
@@ -108,9 +108,9 @@ async function showInitialPage(): Promise<void> {
 }
 
 // shows the boot error in place of the page so a failed start is visible
-function showBootError(err: unknown): void {
+function showBootError(error: unknown): void {
   const content = document.getElementById('content')!;
-  content.replaceChildren(makeElement('pre', '', `Boot error: ${err}`));
+  content.replaceChildren(makeElement('pre', '', `Boot error: ${error}`));
   content.classList.add('nw-loaded');
 }
 

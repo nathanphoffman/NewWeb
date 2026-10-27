@@ -1,15 +1,15 @@
 // shows the loading spinner, resetting its animation
 export function showSpinner(): void {
-  const s = document.getElementById('nw-spinner')!;
-  s.style.animation = 'none';
-  s.style.display = 'flex';
-  void s.offsetHeight; // force reflow so animation resets before we remove the override
-  s.style.animation = '';
+  const text = document.getElementById('nw-spinner')!;
+  text.style.animation = 'none';
+  text.style.display = 'flex';
+  void text.offsetHeight; // force reflow so animation resets before we remove the override
+  text.style.animation = '';
 }
 
 // hides the loading spinner
 export function hideSpinner(): void {
-  const s = document.getElementById('nw-spinner');
+  const text = document.getElementById('nw-spinner');
 
-  if (s) s.style.display = 'none';
+  if (text) text.style.display = 'none';
 }

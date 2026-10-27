@@ -18,7 +18,7 @@ function resizeDrops(drops: number[], width: number): void {
 }
 
 // draws one digit for a column and moves its drop down, sometimes restarting it after it leaves the screen
-function drawColumn(ctx: CanvasRenderingContext2D, drops: number[], column: number, height: number): void {
+function drawColumn(context: CanvasRenderingContext2D, drops: number[], column: number, height: number): void {
   if (drops[column] < 0) {
     drops[column]++;
 
@@ -26,8 +26,8 @@ function drawColumn(ctx: CanvasRenderingContext2D, drops: number[], column: numb
   }
 
   const digit = String(Math.floor(Math.random() * 10));
-  ctx.fillStyle = drops[column] <= 1 ? HEAD_COLOR : BODY_COLOR;
-  ctx.fillText(digit, column * FONT_SIZE, drops[column] * FONT_SIZE);
+  context.fillStyle = drops[column] <= 1 ? HEAD_COLOR : BODY_COLOR;
+  context.fillText(digit, column * FONT_SIZE, drops[column] * FONT_SIZE);
 
   const offScreen = drops[column] * FONT_SIZE > height;
 

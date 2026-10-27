@@ -13,16 +13,16 @@ type Point = { x: number; y: number };
 
 // finds the point d pixels along the outline of rect, walking clockwise from the top-left corner
 function pointOnPerimeter(distance: number, perimeter: number, rect: DOMRect): Point {
-  const d = ((distance % perimeter) + perimeter) % perimeter;
+  const item = ((distance % perimeter) + perimeter) % perimeter;
   const { left, right, top, bottom, width, height } = rect;
 
-  if (d < width) return { x: left + d, y: top };
+  if (item < width) return { x: left + item, y: top };
 
-  if (d < width + height) return { x: right + 1, y: top + (d - width) };
+  if (item < width + height) return { x: right + 1, y: top + (item - width) };
 
-  if (d < 2 * width + height) return { x: right - (d - width - height), y: bottom };
+  if (item < 2 * width + height) return { x: right - (item - width - height), y: bottom };
 
-  return { x: left, y: bottom - (d - 2 * width - height) };
+  return { x: left, y: bottom - (item - 2 * width - height) };
 }
 
 // Pink (#ff71ce) at leading edge, white-pink at center, purple (#b967ff) trailing.
@@ -35,19 +35,19 @@ function segmentColor(f: number, bell: number): string {
 }
 
 // strokes one straight piece of the gleam with its own width, color and glow
-function strokeSegment(ctx: CanvasRenderingContext2D, from: Point, to: Point, style: { width: number; color: string; glow: string; blur: number }): void {
-  ctx.lineWidth = style.width;
-  ctx.strokeStyle = style.color;
-  ctx.shadowColor = style.glow;
-  ctx.shadowBlur = style.blur;
-  ctx.beginPath();
-  ctx.moveTo(from.x, from.y);
-  ctx.lineTo(to.x, to.y);
-  ctx.stroke();
+function strokeSegment(context: CanvasRenderingContext2D, from: Point, to: Point, style: { width: number; color: string; glow: string; blur: number }): void {
+  context.lineWidth = style.width;
+  context.strokeStyle = style.color;
+  context.shadowColor = style.glow;
+  context.shadowBlur = style.blur;
+  context.beginPath();
+  context.moveTo(from.x, from.y);
+  context.lineTo(to.x, to.y);
+  context.stroke();
 }
 
 // draws the streak as many small segments, each with a wide faint glow under a bright core
-function drawStreak(ctx: CanvasRenderingContext2D, rect: DOMRect, position: number): void {
+function drawStreak(context: CanvasRenderingContext2D, rect: DOMRect, position: number): void {
   const perimeter = 2 * (rect.width + rect.height);
   const segmentLength = STREAK_LENGTH / SEGMENT_COUNT;
 
@@ -58,14 +58,14 @@ function drawStreak(ctx: CanvasRenderingContext2D, rect: DOMRect, position: numb
     const to = pointOnPerimeter(position - STREAK_LENGTH / 2 + (i + 1) * segmentLength, perimeter, rect);
     const rgb = segmentColor(f, bell);
 
-    strokeSegment(ctx, from, to, {
+    strokeSegment(context, from, to, {
       width: GLOW_WIDTH,
       color: `rgba(${rgb},${(bell * 0.12).toFixed(2)})`,
       glow: `rgba(255,80,200,${(bell * 0.6).toFixed(2)})`,
       blur: GLOW_BLUR,
     });
 
-    strokeSegment(ctx, from, to, {
+    strokeSegment(context, from, to, {
       width: CORE_WIDTH,
       color: `rgba(${rgb},${(bell * 0.95).toFixed(2)})`,
       glow: `rgba(255,100,220,${(bell * 0.9).toFixed(2)})`,

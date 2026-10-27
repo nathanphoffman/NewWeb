@@ -25,14 +25,14 @@ const JELLY_GLOW_PX = 6;
 function randomJellyLook(): SpriteLook {
   const size     = randomBetween(JELLY_SIZE_PX.min, JELLY_SIZE_PX.max);
   const startX   = randomBetween(JELLY_START_X_VW.min, JELLY_START_X_VW.max);
-  const dur      = randomBetween(JELLY_RISE_SECONDS.min, JELLY_RISE_SECONDS.max);
+  const duration      = randomBetween(JELLY_RISE_SECONDS.min, JELLY_RISE_SECONDS.max);
   const drift    = randomBetween(JELLY_DRIFT_PX.min, JELLY_DRIFT_PX.max).toFixed(0);
   const opacity  = randomBetween(JELLY_OPACITY.min, JELLY_OPACITY.max).toFixed(2);
   const color    = JELLY_COLORS[Math.floor(Math.random() * JELLY_COLORS.length)];
   const pulseDur = randomBetween(JELLY_PULSE_SECONDS.min, JELLY_PULSE_SECONDS.max).toFixed(2);
 
   return {
-    lifetimeSeconds: dur,
+    lifetimeSeconds: duration,
     wrapperCss:
       `position:fixed;left:${startX}vw;top:108vh;` +
       `width:${size}px;height:${size * SPRITE_HEIGHT_TO_WIDTH}px;` +
@@ -40,7 +40,7 @@ function randomJellyLook(): SpriteLook {
       `will-change:transform;color:${color};` +
       `--nw-jelly-drift:${drift}px;` +
       `filter:drop-shadow(0 0 ${JELLY_GLOW_PX}px ${color});` +
-      `animation:nw-jelly-drift ${dur}s linear forwards;`,
+      `animation:nw-jelly-drift ${duration}s linear forwards;`,
     svgCss:
       `width:100%;height:100%;display:block;` +
       `animation:nw-jelly-pulse ${pulseDur}s ease-in-out infinite;`,

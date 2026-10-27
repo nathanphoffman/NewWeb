@@ -17,9 +17,9 @@ function waitForFadeOut(content: HTMLElement): Promise<void> {
 
 // smoothly scrolls to the element with the given id
 export function scrollToAnchor(id: string): void {
-  const el = document.getElementById(id);
+  const element = document.getElementById(id);
 
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // runs heading ids, link annotation, syntax highlighting, and image loading against
@@ -44,7 +44,7 @@ export function hydrateExistingContent(content: HTMLElement): void {
 
 // renders markdown into #content, replacing <img> tags with placeholders, then runs heading ids, link annotation, syntax highlighting, and image loading
 // fades the old content out before swapping and back in after, so navigation doesn't pop
-export async function renderPage(md: string): Promise<void> {
+export async function renderPage(markdown: string): Promise<void> {
   closeModals();
   const content = document.getElementById('content')!;
   const isNavigation = content.classList.contains('nw-loaded');
@@ -55,14 +55,14 @@ export async function renderPage(md: string): Promise<void> {
   }
 
   window.scrollTo(0, 0);
-  const html = window.newwebRender!(md).replace(
+  const html = window.newwebRender!(markdown).replace(
     // matches every <img> tag and captures its attributes so src and alt can be pulled out
     /<img\b([^>]*)>/gi,
     (_, attrs) => {
-      const src = (attrs.match(/src="([^"]*)"/) ?? [])[1] ?? '';
-      const alt = (attrs.match(/alt="([^"]*)"/) ?? [])[1] ?? '';
+      const source = (attrs.match(/src="([^"]*)"/) ?? [])[1] ?? '';
+      const altText = (attrs.match(/alt="([^"]*)"/) ?? [])[1] ?? '';
 
-      return `<span class="nw-img-placeholder" data-src="${src}" data-alt="${alt}"></span>`;
+      return `<span class="nw-img-placeholder" data-src="${source}" data-alt="${altText}"></span>`;
     }
   );
 

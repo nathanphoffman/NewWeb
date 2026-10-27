@@ -15,28 +15,28 @@ function isSamePageAnchor(href: string): boolean {
 export function startOnClickListeners() {
 
     // link interception — dispatch by protocol or treat bare paths as markdown
-    document.addEventListener('click', (e: MouseEvent) => {
+    document.addEventListener('click', (event: MouseEvent) => {
 
-        const a = extractALink(e);
-        const href = extractHrefAttribute(e, a);
+        const anchor = extractALink(event);
+        const href = extractHrefAttribute(event, anchor);
 
-        const isNotValidLink = !a || !href;
+        const isNotValidLink = !anchor || !href;
 
         if (isNotValidLink) return;
 
         if (isSamePageAnchor(href)) return;
-        handleNewWebPersonalDataLinks(e, href);
-        handleWASMClick(e, a, href);
+        handleNewWebPersonalDataLinks(event, href);
+        handleWASMClick(event, anchor, href);
 
-        if (href.startsWith('more:')) { e.preventDefault(); handleMore(a); return; }
+        if (href.startsWith('more:')) { event.preventDefault(); handleMore(anchor); return; }
 
-        if (href.startsWith('custom://')) { e.preventDefault(); navigateTo(href); return; }
+        if (href.startsWith('custom://')) { event.preventDefault(); navigateTo(href); return; }
 
         // external links with explicit scheme — let browser handle
         if (href.startsWith('http://') || href.startsWith('https://')) return;
 
         // bare path — warn on localhost if it looks like a URL missing https://
-        e.preventDefault();
+        event.preventDefault();
 
         if (window.location.hostname === 'localhost' && looksLikeBareUrl(href)) {
             warnBareUrl(href);

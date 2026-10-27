@@ -7,14 +7,14 @@ let GoTiny: (new () => Go) | null = null;
 async function loadTinyRuntime(): Promise<void> {
   if (GoTiny) return;
   await new Promise<void>((resolve, reject) => {
-    const s = document.createElement('script');
+    const text = document.createElement('script');
 
     // a relative <script src> resolves against the *current page's* URL, which is wrong
     // once the SPA has navigated into a subdirectory — this asset always lives at site root
-    s.src = new URL('/engine/lib/wasm_exec_tiny.js', location.origin).toString();
-    s.onload = () => { GoTiny = Go; resolve(); };
-    s.onerror = reject;
-    document.head.appendChild(s);
+    text.src = new URL('/engine/lib/wasm_exec_tiny.js', location.origin).toString();
+    text.onload = () => { GoTiny = Go; resolve(); };
+    text.onerror = reject;
+    document.head.appendChild(text);
   });
 }
 
@@ -25,7 +25,7 @@ async function loadAndExecute(file: string): Promise<void> {
   // wasm: links are authored root-relative (e.g. "src/order.wasm" means /src/order.wasm),
   // same convention as markdown links — fetch() would otherwise resolve it against
   // whatever pretty path the SPA has currently navigated to
-  const bytes = await fetch(toRootRelative(file)).then(r => r.arrayBuffer());
+  const bytes = await fetch(toRootRelative(file)).then(response => response.arrayBuffer());
 
   const go = new GoTiny!();
   const module = await WebAssembly.instantiate(bytes, go.importObject);
@@ -33,25 +33,25 @@ async function loadAndExecute(file: string): Promise<void> {
 }
 
 // handles a click on a wasm: link — shows spinner, loads and executes the wasm file, then hides spinner
-export async function handleWasm(a: HTMLAnchorElement): Promise<void> {
-  if (a.dataset.pending) return;
-  a.dataset.pending = 'true';
+export async function handleWasm(anchor: HTMLAnchorElement): Promise<void> {
+  if (anchor.dataset.pending) return;
+  anchor.dataset.pending = 'true';
   showSpinner();
 
-  const { file } = parseWasmUrl(a.getAttribute('href')!);
+  const { file } = parseWasmUrl(anchor.getAttribute('href')!);
   await loadAndExecute(file);
 
-  delete a.dataset.pending;
+  delete anchor.dataset.pending;
   hideSpinner();
 }
 
 // parses a "wasm:file.wasm?key=val" href into a file path and query params object
 function parseWasmUrl(href: string): { file: string; params: Record<string, string> } {
   const withoutProtocol = href.replace('wasm:', '');
-  const [file, qs] = withoutProtocol.split('?');
+  const [file, queryString] = withoutProtocol.split('?');
   const params: Record<string, string> = {};
 
-  if (qs) qs.split('&').forEach(p => {
+  if (queryString) queryString.split('&').forEach(p => {
     const [k, v] = p.split('=');
     params[k] = v;
   });

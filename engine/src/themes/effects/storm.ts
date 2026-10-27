@@ -26,9 +26,9 @@ function makeDrops(canvas: HTMLCanvasElement): Drop[] {
 }
 
 // moves a drop along the rain direction and sends it back above the screen once it falls off the bottom
-function advanceDrop(drop: Drop, canvas: HTMLCanvasElement, dx: number, dy: number): void {
-  drop.x += drop.speed * dx;
-  drop.y += drop.speed * dy;
+function advanceDrop(drop: Drop, canvas: HTMLCanvasElement, deltaX: number, deltaY: number): void {
+  drop.x += drop.speed * deltaX;
+  drop.y += drop.speed * deltaY;
 
   if (drop.y <= canvas.height + drop.len) return;
 
@@ -37,28 +37,28 @@ function advanceDrop(drop: Drop, canvas: HTMLCanvasElement, dx: number, dy: numb
 }
 
 // draws one drop as a short slanted line
-function drawDrop(ctx: CanvasRenderingContext2D, drop: Drop, dx: number, dy: number): void {
-  ctx.beginPath();
-  ctx.moveTo(drop.x, drop.y);
-  ctx.lineTo(drop.x + drop.len * dx, drop.y + drop.len * dy);
-  ctx.strokeStyle = `rgba(${RAIN_COLOR},${drop.alpha})`;
-  ctx.lineWidth = 1;
-  ctx.stroke();
+function drawDrop(context: CanvasRenderingContext2D, drop: Drop, deltaX: number, deltaY: number): void {
+  context.beginPath();
+  context.moveTo(drop.x, drop.y);
+  context.lineTo(drop.x + drop.len * deltaX, drop.y + drop.len * deltaY);
+  context.strokeStyle = `rgba(${RAIN_COLOR},${drop.alpha})`;
+  context.lineWidth = 1;
+  context.stroke();
 }
 
 // starts the rain and returns the function that tears it down
 function setUpStormRain(): () => void {
   let drops: Drop[] = [];
   const layer = createCanvasLayer('z-index:2;opacity:0.38;', canvas => { drops = makeDrops(canvas); });
-  const dx = Math.sin(LEAN_RADIANS);
-  const dy = Math.cos(LEAN_RADIANS);
+  const deltaX = Math.sin(LEAN_RADIANS);
+  const deltaY = Math.cos(LEAN_RADIANS);
 
   const stopLoop = startFrameLoop(() => {
     layer.ctx.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
 
     for (const drop of drops) {
-      drawDrop(layer.ctx, drop, dx, dy);
-      advanceDrop(drop, layer.canvas, dx, dy);
+      drawDrop(layer.ctx, drop, deltaX, deltaY);
+      advanceDrop(drop, layer.canvas, deltaX, deltaY);
     }
   }, MIN_FRAME_MS);
 

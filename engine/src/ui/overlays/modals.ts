@@ -4,25 +4,25 @@ import { makeElement } from '../dom';
 
 // removes all open <dialog> elements from the DOM
 export function closeModals(): void {
-  document.querySelectorAll('dialog').forEach(d => d.remove());
+  document.querySelectorAll('dialog').forEach(item => item.remove());
 }
 
 // opens a <dialog> modal with rendered markdown content and a close button; onClose runs when the button is clicked
-export function showMarkdownModal(md: string, closeLabel = 'Close', onClose?: () => void): Modal {
+export function showMarkdownModal(markdown: string, closeLabel = 'Close', onClose?: () => void): Modal {
   closeModals();
-  const dlg = document.createElement('dialog') as Modal;
-  dlg.innerHTML = `<div class="nw-modal-body">${window.newwebRender ? window.newwebRender(md) : md}</div>
+  const dialog = document.createElement('dialog') as Modal;
+  dialog.innerHTML = `<div class="nw-modal-body">${window.newwebRender ? window.newwebRender(markdown) : markdown}</div>
     <button class="nw-modal-close" autofocus>${closeLabel}</button>`;
-  dlg.querySelector('.nw-modal-close')!.addEventListener('click', () => {
+  dialog.querySelector('.nw-modal-close')!.addEventListener('click', () => {
     onClose?.();
-    dlg.remove();
+    dialog.remove();
   });
 
-  document.body.appendChild(dlg);
-  highlightBlock(dlg);
-  dlg.showModal();
+  document.body.appendChild(dialog);
+  highlightBlock(dialog);
+  dialog.showModal();
 
-  return dlg;
+  return dialog;
 }
 
 // builds the <select> control for a dropdown field, starting on a disabled placeholder
@@ -103,12 +103,12 @@ function buildField(field: FieldDef): HTMLElement {
 }
 
 // builds the Cancel / submit buttons at the bottom of a form
-function buildFormActions(linkText: string, dlg: HTMLElement): HTMLElement {
+function buildFormActions(linkText: string, dialog: HTMLElement): HTMLElement {
   const actions = makeElement('div', 'nw-form-actions');
 
   const cancelBtn = makeElement('button', 'nw-modal-close', 'Cancel');
   cancelBtn.type = 'button';
-  cancelBtn.addEventListener('click', () => dlg.remove());
+  cancelBtn.addEventListener('click', () => dialog.remove());
 
   const submitBtn = makeElement('button', 'nw-form-submit', linkText);
   submitBtn.type = 'submit';
@@ -138,7 +138,7 @@ export function showFormModal(
   onSubmit: (values: Record<string, string>) => void
 ): void {
   closeModals();
-  const dlg = makeElement('dialog', 'nw-form-modal');
+  const dialog = makeElement('dialog', 'nw-form-modal');
   const form = makeElement('form');
   form.noValidate = false;
 
@@ -148,17 +148,17 @@ export function showFormModal(
     form.appendChild(section);
   }
 
-  form.appendChild(buildFormActions(linkText, dlg));
+  form.appendChild(buildFormActions(linkText, dialog));
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+  form.addEventListener('submit', event => {
+    event.preventDefault();
     const values = readFormValues(form, fieldSections.flat());
-    dlg.remove();
+    dialog.remove();
     onSubmit(values);
   });
 
-  dlg.append(makeElement('h3', 'nw-form-title', `Input Required for '${linkText}'`), form);
-  document.body.appendChild(dlg);
-  dlg.showModal();
+  dialog.append(makeElement('h3', 'nw-form-title', `Input Required for '${linkText}'`), form);
+  document.body.appendChild(dialog);
+  dialog.showModal();
   (form.elements[0] as HTMLElement | undefined)?.focus();
 }

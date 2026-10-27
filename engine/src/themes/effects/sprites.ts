@@ -29,9 +29,9 @@ export function createSpriteSpawner(options: SpriteSpawnerOptions): { start: () 
     const wrapper = document.createElement('div');
     wrapper.classList.add(options.className);
     wrapper.style.cssText = look.wrapperCss;
-    const svg = template.cloneNode(true) as SVGSVGElement;
-    svg.style.cssText = look.svgCss;
-    wrapper.appendChild(svg);
+    const svgElement = template.cloneNode(true) as SVGSVGElement;
+    svgElement.style.cssText = look.svgCss;
+    wrapper.appendChild(svgElement);
     document.body.appendChild(wrapper);
     setTimeout(() => wrapper.remove(), (look.lifetimeSeconds + REMOVE_GRACE_SECONDS) * MS_PER_SECOND);
   }
@@ -40,7 +40,7 @@ export function createSpriteSpawner(options: SpriteSpawnerOptions): { start: () 
     active = false;
 
     if (timer !== null) { clearInterval(timer); timer = null; }
-    document.querySelectorAll(`.${options.className}`).forEach(el => el.remove());
+    document.querySelectorAll(`.${options.className}`).forEach(element => element.remove());
   }
 
   function start(): void {

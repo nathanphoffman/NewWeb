@@ -49,16 +49,16 @@ function splitIntoEntries(content: string, marker: string): Entry[] {
   lines.forEach((line, i) => {
     if (isHeadingMarker) {
       // matches a top-level '# Heading' line only: the (?!#) rejects '##' subheadings, and the heading text is captured
-      const m = line.match(/^#(?!#)\s+(.+)$/);
+      const match = line.match(/^#(?!#)\s+(.+)$/);
 
-      if (m) boundaries.push({ index: i, key: m[1].trim() });
+      if (match) boundaries.push({ index: i, key: match[1].trim() });
     } else {
       // strips an optional wrapping <!-- --> from the line so markers can be written as HTML comments
       const stripped = line.trim().replace(/^<!--\s*/, '').replace(/\s*-->$/, '').trim();
 
       if (stripped.startsWith(marker)) {
-        const key = stripped.slice(marker.length).trim();
-        boundaries.push({ index: i, key });
+        const entryKey = stripped.slice(marker.length).trim();
+        boundaries.push({ index: i, key: entryKey });
       }
     }
   });
@@ -73,31 +73,31 @@ function splitIntoEntries(content: string, marker: string): Entry[] {
 // expands <!-- include: file1.md, file2.md, sort: #, sort_dir: desc, limit_to: N --> directives, either
 // concatenating the referenced files in order, or (with "sort:") splitting each into entries and merging
 // them into one sorted, optionally truncated listing. Resolves exactly one level of nested include directives.
-export async function processIncludes(raw: string, depth = 0): Promise<string> {
+export async function processIncludes(rawText: string, depth = 0): Promise<string> {
   // matches <!-- include: files... --> and captures everything after the colon
   const pattern = /<!--\s*include\s*:\s*(.+?)\s*-->/g;
-  const matches = [...raw.matchAll(pattern)];
+  const matches = [...rawText.matchAll(pattern)];
 
-  if (matches.length === 0) return raw;
+  if (matches.length === 0) return rawText;
 
-  const directives = matches.map(m => parseIncludeDirective(m[1]));
-  const allFiles = [...new Set(directives.flatMap(d => d.files))];
+  const directives = matches.map(match => parseIncludeDirective(match[1]));
+  const allFiles = [...new Set(directives.flatMap(item => item.files))];
 
   const contentMap = new Map<string, string>();
-  await Promise.all(allFiles.map(async url => {
-    let text = await fetch(toRootRelative(url)).then(r => r.text());
+  await Promise.all(allFiles.map(async address => {
+    let text = await fetch(toRootRelative(address)).then(response => response.text());
 
     // only expands includes found inside an included file once, so circular includes can't loop forever
     if (depth === 0 && /<!--\s*include\s*:\s*(.+?)\s*-->/.test(text)) {
       text = await processIncludes(text, depth + 1);
     }
 
-    contentMap.set(url, text);
+    contentMap.set(address, text);
   }));
 
   let i = 0;
 
-  return raw.replace(pattern, () => {
+  return rawText.replace(pattern, () => {
     const directive = directives[i++];
     const fileContents = directive.files.map(f => contentMap.get(f) ?? '');
 
@@ -106,11 +106,11 @@ export async function processIncludes(raw: string, depth = 0): Promise<string> {
     }
 
     const entries = fileContents.flatMap(content => splitIntoEntries(content, directive.sortMarker!));
-    entries.sort((a, b) => a.key.localeCompare(b.key));
+    entries.sort((first, b) => first.key.localeCompare(b.key));
 
     if (directive.sortDir === 'desc') entries.reverse();
     const limited = directive.limitTo != null ? entries.slice(0, directive.limitTo) : entries;
 
-    return limited.map(e => e.text).join('\n\n');
+    return limited.map(event => event.text).join('\n\n');
   });
 }

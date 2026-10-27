@@ -18,19 +18,19 @@ const OFFSCREEN_MARGIN_PX = 10;
 function randomPetalLook(): SpriteLook {
   const size    = randomBetween(PETAL_SIZE_PX.min, PETAL_SIZE_PX.max);
   const startX  = randomBetween(PETAL_START_X_VW.min, PETAL_START_X_VW.max);
-  const dur     = randomBetween(PETAL_FALL_SECONDS.min, PETAL_FALL_SECONDS.max);
+  const duration     = randomBetween(PETAL_FALL_SECONDS.min, PETAL_FALL_SECONDS.max);
   const opacity = randomBetween(PETAL_OPACITY.min, PETAL_OPACITY.max).toFixed(2);
   const angle   = Math.floor(Math.random() * FULL_TURN_DEGREES);
   const color   = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
 
   return {
-    lifetimeSeconds: dur,
+    lifetimeSeconds: duration,
     wrapperCss:
       `position:fixed;left:${startX}vw;top:-${size + OFFSCREEN_MARGIN_PX}px;` +
       `width:${size}px;height:${size * SPRITE_HEIGHT_TO_WIDTH}px;` +
       `opacity:${opacity};z-index:2;pointer-events:none;` +
       `will-change:transform;` +
-      `animation:nw-petal-fall ${dur}s linear forwards;`,
+      `animation:nw-petal-fall ${duration}s linear forwards;`,
     svgCss:
       `width:100%;height:100%;display:block;color:${color};` +
       `transform:rotate(${angle}deg);`,

@@ -3,8 +3,8 @@ import type { FieldDef } from '../shared/types';
 import { parseFields } from './fields';
 
 // walks the preceding sibling HTML comments of a wasm link to extract script_reasoning, data keys, and field definitions
-function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string[]; fieldSections: FieldDef[][] } {
-  let node: Node | null = a.parentElement;
+function parseWasmDirectives(anchor: HTMLAnchorElement): { desc: string; keys: string[]; fieldSections: FieldDef[][] } {
+  let node: Node | null = anchor.parentElement;
   let desc = '';
   const keys: string[] = [];
   const fieldSections: FieldDef[][] = [];
@@ -26,7 +26,7 @@ function parseWasmDirectives(a: HTMLAnchorElement): { desc: string; keys: string
 
     if (reasonMatch) desc = reasonMatch[1].trim();
 
-    if (dataMatch)   keys.push(...dataMatch[1].split(',').map(s => s.trim()).filter(Boolean));
+    if (dataMatch)   keys.push(...dataMatch[1].split(',').map(text => text.trim()).filter(Boolean));
 
     if (fieldsMatch) fieldSections.unshift(parseFields(fieldsMatch[1].trim()));
   }
@@ -49,19 +49,19 @@ function buildInfoButton(href: string, desc: string, keys: string[]): HTMLElemen
 
 // adds a globe icon to external links and a gear info button next to wasm: links
 export function annotateLinks(container: Element): void {
-  container.querySelectorAll('a[href]').forEach(el => {
-    const a = el as HTMLAnchorElement;
-    const href = a.getAttribute('href')!;
+  container.querySelectorAll('a[href]').forEach(element => {
+    const anchor = element as HTMLAnchorElement;
+    const href = anchor.getAttribute('href')!;
 
     if (href.startsWith('http://') || href.startsWith('https://')) {
-      a.appendChild(makeLinkIcon());
+      anchor.appendChild(makeLinkIcon());
     } else if (href.startsWith('wasm:')) {
-      const { desc, keys, fieldSections } = parseWasmDirectives(a);
-      a.dataset.desc = desc;
-      a.dataset.keys = keys.join(',');
+      const { desc, keys, fieldSections } = parseWasmDirectives(anchor);
+      anchor.dataset.desc = desc;
+      anchor.dataset.keys = keys.join(',');
 
-      if (fieldSections.length) a.dataset.fields = JSON.stringify(fieldSections);
-      a.after(buildInfoButton(href, desc, keys));
+      if (fieldSections.length) anchor.dataset.fields = JSON.stringify(fieldSections);
+      anchor.after(buildInfoButton(href, desc, keys));
     }
   });
 }

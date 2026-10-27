@@ -11,10 +11,10 @@ export async function replacePage(path: string, anchor: string | null = null): P
 }
 
 // fetches markdown from a "more:" link and displays it in a modal
-export async function handleMore(a: HTMLAnchorElement): Promise<void> {
-  const url = a.getAttribute('href')!.replace('more:', '');
-  const md = await fetchMd(url);
-  showMarkdownModal(md);
+export async function handleMore(anchor: HTMLAnchorElement): Promise<void> {
+  const address = anchor.getAttribute('href')!.replace('more:', '');
+  const markdown = await fetchMd(address);
+  showMarkdownModal(markdown);
 }
 
 // shows an error toast suggesting the user add https:// to a link that looks like a bare URL

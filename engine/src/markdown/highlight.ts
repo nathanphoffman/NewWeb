@@ -73,7 +73,7 @@ Prism.languages.deor = {
 
 // applies Prism syntax highlighting to all language-tagged code blocks within a container
 export function highlightBlock(container: Element): void {
-  container.querySelectorAll<HTMLElement>('code[class*="language-"]').forEach(el => {
-    Prism.highlightElement(el);
+  container.querySelectorAll<HTMLElement>('code[class*="language-"]').forEach(element => {
+    Prism.highlightElement(element);
   });
 }

@@ -16,24 +16,24 @@ const CAT_DEFS = [
 
 export function addCats(): void {
   removeCats();
-  CAT_DEFS.forEach(d => {
-    const el = parseSvg(CAT_SVG);
-    el.classList.add('nw-spinning-cat');
+  CAT_DEFS.forEach(item => {
+    const element = parseSvg(CAT_SVG);
+    element.classList.add('nw-spinning-cat');
 
     // start invisible so the browser sets up compositing layers before we show them
-    el.style.cssText = `left:${d.x};top:${d.y};width:${d.size}px;height:${d.size}px;` +
-      `animation-duration:${d.dur}s;animation-delay:${d.delay}s;` +
+    element.style.cssText = `left:${item.x};top:${item.y};width:${item.size}px;height:${item.size}px;` +
+      `animation-duration:${item.dur}s;animation-delay:${item.delay}s;` +
       `opacity:0;transition:opacity 0.25s`;
-    document.body.appendChild(el);
+    document.body.appendChild(element);
   });
 
   // double-rAF: let the browser paint one frame with the new layers, then fade in
   requestAnimationFrame(() => requestAnimationFrame(() => {
     document.querySelectorAll<SVGSVGElement>('.nw-spinning-cat')
-      .forEach(el => { el.style.opacity = '0.6'; });
+      .forEach(element => { element.style.opacity = '0.6'; });
   }));
 }
 
 export function removeCats(): void {
-  document.querySelectorAll('.nw-spinning-cat').forEach(el => el.remove());
+  document.querySelectorAll('.nw-spinning-cat').forEach(element => element.remove());
 }

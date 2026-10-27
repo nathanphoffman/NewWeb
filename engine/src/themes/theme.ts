@@ -7,9 +7,9 @@ import { getAnimatedThemes, getThemeDefinition } from "./definitions"
 let pageSuggestions: string[] = [];
 
 // reads a <!-- themes: name1, name2 --> comment from markdown and applies the suggestion
-export function applyThemeSuggestion(md: string): void {
+export function applyThemeSuggestion(markdown: string): void {
   // matches <!-- theme: a, b --> and captures the comma separated names (anything up to the closing --> that isn't a dash)
-  const match = md.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
+  const match = markdown.match(/<!--\s*themes?\s*:\s*([^-]+?)-->/i);
 
   if (match) suggestTheme(match[1].split(','));
 }
@@ -29,10 +29,10 @@ function getSuggestedTheme(): string | null {
 
 // appends "(site default)" to the suggested theme's option in the theme picker dropdown
 function annotateSuggestion(suggested: string | null): void {
-  const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
-  Array.from(sel.options).forEach(opt => {
-    const base = opt.text.replace(' (site default)', '');
-    opt.text = opt.value === suggested ? `${base} (site default)` : base;
+  const select = document.getElementById('nw-theme-select') as HTMLSelectElement;
+  Array.from(select.options).forEach(option => {
+    const base = option.text.replace(' (site default)', '');
+    option.text = option.value === suggested ? `${base} (site default)` : base;
   });
 }
 
@@ -49,9 +49,9 @@ function suggestTheme(names: string[]): void {
 
 // sets the data-theme attribute and starts/stops any theme-specific visual effects (matrix rain, petals, etc.)
 function applyTheme(theme: string): void {
-  const sel = document.getElementById('nw-theme-select') as HTMLSelectElement;
+  const select = document.getElementById('nw-theme-select') as HTMLSelectElement;
   document.documentElement.setAttribute('data-theme', theme);
-  sel.value = theme;
+  select.value = theme;
 
   const themes = getAnimatedThemes()
 
@@ -101,13 +101,13 @@ if (savedTheme) {
 } else {
   const systemDefault = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'carbon' : 'quill';
   applyTheme(systemDefault);
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (!localStorage.getItem(THEME_STORAGE_KEY)) applyTheme(e.matches ? 'carbon' : 'quill');
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    if (!localStorage.getItem(THEME_STORAGE_KEY)) applyTheme(event.matches ? 'carbon' : 'quill');
   });
 }
 
-document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event) => {
-  const value = (e.target as HTMLSelectElement).value;
+document.getElementById('nw-theme-select')!.addEventListener('change', (event: Event) => {
+  const value = (event.target as HTMLSelectElement).value;
   applyTheme(value);
   localStorage.setItem(THEME_STORAGE_KEY, value);
 });

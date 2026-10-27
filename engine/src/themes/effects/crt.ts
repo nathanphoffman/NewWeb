@@ -68,5 +68,5 @@ export function startCRTFlicker(): void {
 
 export function stopCRTFlicker(): void {
   if (crtFlickerTimer !== null) { clearTimeout(crtFlickerTimer); crtFlickerTimer = null; }
-  document.querySelectorAll('.nw-crt-flash').forEach(el => el.remove());
+  document.querySelectorAll('.nw-crt-flash').forEach(element => element.remove());
 }

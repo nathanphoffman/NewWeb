@@ -8,21 +8,21 @@ import { toRootRelative } from '../shared/utility';
 import { extractRefreshWasm, prettyUrl, splitAnchor, toMarkdownPath } from './navPaths';
 
 // fetches the text content of a markdown file
-export function fetchMd(url: string): Promise<string> {
-  return fetch(toRootRelative(url)).then(r => r.text());
+export function fetchMd(address: string): Promise<string> {
+  return fetch(toRootRelative(address)).then(response => response.text());
 }
 
 // resolves a path to its markdown url, fetches it, applies its page directives and expands includes
 async function loadPageMarkdown(path: string): Promise<{ mdPath: string; anchor: string | null; composed: string }> {
   const [basePath, anchor] = splitAnchor(path);
   const mdPath = toMarkdownPath(basePath);
-  const raw = await fetchMd(mdPath);
+  const rawText = await fetchMd(mdPath);
 
-  applyThemeSuggestion(raw);
-  applyTitleDirective(raw);
-  applyLogoDirective(raw);
+  applyThemeSuggestion(rawText);
+  applyTitleDirective(rawText);
+  applyLogoDirective(rawText);
 
-  return { mdPath, anchor, composed: await processIncludes(raw) };
+  return { mdPath, anchor, composed: await processIncludes(rawText) };
 }
 
 // pushes a browser history entry so back/forward return to this page
@@ -42,22 +42,22 @@ export async function navigateTo(path: string): Promise<void> {
 // like navigateTo but runs the markdown through template processing with data before rendering
 export async function navigateWithData(path: string, data: Record<string, unknown>): Promise<void> {
   const { mdPath, anchor, composed } = await loadPageMarkdown(path);
-  const md = await processTemplate(composed, data);
+  const markdown = await processTemplate(composed, data);
 
   pushHistory(mdPath, anchor);
-  await renderPage(md);
+  await renderPage(markdown);
 
   if (anchor) scrollToAnchor(anchor);
 }
 
 // renders a page without wasm data; prepends a "load now" prompt if the page declares a wasm dependency
 export async function renderNoData(mdPath: string): Promise<void> {
-  const raw = await fetchMd(mdPath);
-  applyThemeSuggestion(raw);
-  applyTitleDirective(raw);
-  applyLogoDirective(raw);
-  const refreshWasm = extractRefreshWasm(raw);
-  const composed = await processIncludes(raw);
+  const rawText = await fetchMd(mdPath);
+  applyThemeSuggestion(rawText);
+  applyTitleDirective(rawText);
+  applyLogoDirective(rawText);
+  const refreshWasm = extractRefreshWasm(rawText);
+  const composed = await processIncludes(rawText);
 
   if (refreshWasm) {
     const notice = `> _This page requires data to display._ [Load now](wasm:${refreshWasm})\n\n`;
