@@ -1,5 +1,7 @@
-import { handleMore, handleNav, looksLikeBareUrl, navigateTo, warnBareUrl } from "../nav";
-import { extractALink, extractHrefAttribute } from "../utility";
+import { navigateTo } from "../navigation/nav";
+import { handleMore, warnBareUrl } from "../navigation/navLinks";
+import { looksLikeBareUrl } from "../navigation/navPaths";
+import { extractALink, extractHrefAttribute } from "../shared/utility";
 import { handleNewWebPersonalDataLinks } from "./engineLinks";
 import { handleWASMClick } from "./wasm";
 
@@ -19,6 +21,7 @@ export function startOnClickListeners() {
         const href = extractHrefAttribute(e, a);
 
         const isNotValidLink = !a || !href;
+
         if (isNotValidLink) return;
 
         if (isSamePageAnchor(href)) return;
@@ -26,17 +29,21 @@ export function startOnClickListeners() {
         handleWASMClick(e, a, href);
 
         if (href.startsWith('more:')) { e.preventDefault(); handleMore(a); return; }
-        if (href.startsWith('custom://')) { e.preventDefault(); handleNav(a); return; }
+
+        if (href.startsWith('custom://')) { e.preventDefault(); navigateTo(href); return; }
 
         // external links with explicit scheme — let browser handle
         if (href.startsWith('http://') || href.startsWith('https://')) return;
 
         // bare path — warn on localhost if it looks like a URL missing https://
         e.preventDefault();
+
         if (window.location.hostname === 'localhost' && looksLikeBareUrl(href)) {
             warnBareUrl(href);
+
             return;
         }
+
         navigateTo(href);
     });
 

@@ -35,7 +35,7 @@ if (!existsSync(shellPath)) {
 const shell = readFileSync(shellPath, 'utf8');
 const defaultTitle = (shell.match(/<title>([^<]*)<\/title>/) ?? [, 'NewWeb'])[1];
 
-// ---- markdown pipeline (mirrors engine/src/include.ts + the wasm render step; the
+// ---- markdown pipeline (mirrors engine/src/markdown/include.ts + the wasm render step; the
 // directive/rewrite rules here must stay in sync with those files by hand, since this
 // script runs outside the browser and can't import browser-targeted TS directly) ----
 

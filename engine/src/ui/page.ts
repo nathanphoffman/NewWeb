@@ -1,21 +1,24 @@
-import { closeModals } from './modals';
+import { closeModals } from './overlays/modals';
 import { addHeadingIds } from './headings';
 import { annotateLinks } from './wasm-links';
 import { processImages } from './images';
-import { highlightBlock } from '../highlight';
+import { highlightBlock } from '../markdown/highlight';
+import { getMaxImageKb } from './overlays/settings';
+import { BYTES_PER_KB, FADE_OUT_TIMEOUT_MS } from '../shared/constants';
 
 // waits for #content's opacity transition to finish (with a timeout fallback in case it never fires)
 function waitForFadeOut(content: HTMLElement): Promise<void> {
   return new Promise(resolve => {
     const done = () => { content.removeEventListener('transitionend', done); resolve(); };
     content.addEventListener('transitionend', done, { once: true });
-    setTimeout(done, 260);
+    setTimeout(done, FADE_OUT_TIMEOUT_MS);
   });
 }
 
 // smoothly scrolls to the element with the given id
 export function scrollToAnchor(id: string): void {
   const el = document.getElementById(id);
+
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -26,7 +29,7 @@ function postProcessContent(content: HTMLElement): void {
   addHeadingIds(content);
   annotateLinks(content);
   highlightBlock(content);
-  void processImages(content);
+  void processImages(content, getMaxImageKb() * BYTES_PER_KB);
   content.classList.add('nw-loaded');
   document.dispatchEvent(new CustomEvent('nw-page-rendered'));
 }
@@ -45,19 +48,24 @@ export async function renderPage(md: string): Promise<void> {
   closeModals();
   const content = document.getElementById('content')!;
   const isNavigation = content.classList.contains('nw-loaded');
+
   if (isNavigation) {
     content.classList.remove('nw-loaded');
     await waitForFadeOut(content);
   }
+
   window.scrollTo(0, 0);
   const html = window.newwebRender!(md).replace(
+    // matches every <img> tag and captures its attributes so src and alt can be pulled out
     /<img\b([^>]*)>/gi,
     (_, attrs) => {
       const src = (attrs.match(/src="([^"]*)"/) ?? [])[1] ?? '';
       const alt = (attrs.match(/alt="([^"]*)"/) ?? [])[1] ?? '';
+
       return `<span class="nw-img-placeholder" data-src="${src}" data-alt="${alt}"></span>`;
     }
   );
+
   content.innerHTML = html;
   postProcessContent(content);
 }

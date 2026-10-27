@@ -24,5 +24,6 @@ pub fn markdown_options() -> Options {
         | Options::ENABLE_OLD_FOOTNOTES
         | Options::ENABLE_DEFINITION_LIST
         | Options::ENABLE_MATH;
+
     (Options::all() - excluded) | Options::ENABLE_FOOTNOTES
 }

@@ -1,15 +1,16 @@
 
-import { addCats, removeCats } from './cats';
-import { startMatrixRain, stopMatrixRain } from './terminal';
-import { startPetals, stopPetals } from './sakura';
-import { startCRTFlicker, stopCRTFlicker } from './crt';
-import { startStormRain, stopStormRain } from './storm';
-import { startCyberGleam, stopCyberGleam } from './cyber';
-import { startJellyfish, stopJellyfish } from './abyss';
+import { addCats, removeCats } from './effects/cats';
+import { startMatrixRain, stopMatrixRain } from './effects/terminal';
+import { startPetals, stopPetals } from './effects/sakura';
+import { startCRTFlicker, stopCRTFlicker } from './effects/crt';
+import { startStormRain, stopStormRain } from './effects/storm';
+import { startCyberGleam, stopCyberGleam } from './effects/cyber';
+import { startJellyfish, stopJellyfish } from './effects/abyss';
 
-type ThemeAnimator = ()=>void
+// an animator starts or stops a theme's visual effect
+type ThemeAnimator = () => void
 
-type ThemeObject = {
+export type ThemeObject = {
     name: string,
     displayName: string,
     startAnimation?: ThemeAnimator,
@@ -18,42 +19,33 @@ type ThemeObject = {
 
 type ThemeDefinitions = ThemeObject[]
 
-const ThemeObject = (name: string, displayName: string, startAnimation?: ThemeAnimator, stopAnimation?: ThemeAnimator): ThemeObject =>{
-    return {
-        name,
-        displayName,
-        startAnimation,
-        stopAnimation
-    }
-}
-
 const THEME_DEFINITIONS: ThemeDefinitions = [
-        ThemeObject("glacier", "Glacier"),
-        ThemeObject("carbon", "Carbon"),
-        ThemeObject("terminal", "Terminal", startMatrixRain, stopMatrixRain),
-        ThemeObject("beach", "Beach"),
-        ThemeObject("space", "Space"),
-        ThemeObject("aurora", "Aurora"),
-        ThemeObject("cyber", "Cyber", startCyberGleam, stopCyberGleam),
-        ThemeObject("cats", "Cats", addCats, removeCats),
-        ThemeObject("dusk", "Dusk"),
-        ThemeObject("slate", "Slate"),
-        ThemeObject("sakura", "Sakura", startPetals, stopPetals),
-        ThemeObject("crt", "CRT", startCRTFlicker, stopCRTFlicker),
-        ThemeObject("blueprint", "Blueprint"),
-        ThemeObject("moss", "Moss"),
-        ThemeObject("scribe", "Scribe"),
-        ThemeObject("storm", "Storm", startStormRain, stopStormRain),
-        ThemeObject("alchemical", "Alchemical"),
-        ThemeObject("blackboard", "Blackboard"),
-        ThemeObject("chromatic", "Chromatic"),
-        ThemeObject("daguerreotype", "Daguerreotype"),
-        ThemeObject("ember", "Ember"),
-        ThemeObject("quill", "Quill"),
-        ThemeObject("obsidian", "Obsidian"),
-        ThemeObject("scriptorium", "Scriptorium"),
-        ThemeObject("voidcore", "Voidcore"),
-        ThemeObject("abyss", "Abyss", startJellyfish, stopJellyfish)
+        { name: "glacier", displayName: "Glacier" },
+        { name: "carbon", displayName: "Carbon" },
+        { name: "terminal", displayName: "Terminal", startAnimation: startMatrixRain, stopAnimation: stopMatrixRain },
+        { name: "beach", displayName: "Beach" },
+        { name: "space", displayName: "Space" },
+        { name: "aurora", displayName: "Aurora" },
+        { name: "cyber", displayName: "Cyber", startAnimation: startCyberGleam, stopAnimation: stopCyberGleam },
+        { name: "cats", displayName: "Cats", startAnimation: addCats, stopAnimation: removeCats },
+        { name: "dusk", displayName: "Dusk" },
+        { name: "slate", displayName: "Slate" },
+        { name: "sakura", displayName: "Sakura", startAnimation: startPetals, stopAnimation: stopPetals },
+        { name: "crt", displayName: "CRT", startAnimation: startCRTFlicker, stopAnimation: stopCRTFlicker },
+        { name: "blueprint", displayName: "Blueprint" },
+        { name: "moss", displayName: "Moss" },
+        { name: "scribe", displayName: "Scribe" },
+        { name: "storm", displayName: "Storm", startAnimation: startStormRain, stopAnimation: stopStormRain },
+        { name: "alchemical", displayName: "Alchemical" },
+        { name: "blackboard", displayName: "Blackboard" },
+        { name: "chromatic", displayName: "Chromatic" },
+        { name: "daguerreotype", displayName: "Daguerreotype" },
+        { name: "ember", displayName: "Ember" },
+        { name: "quill", displayName: "Quill" },
+        { name: "obsidian", displayName: "Obsidian" },
+        { name: "scriptorium", displayName: "Scriptorium" },
+        { name: "voidcore", displayName: "Voidcore" },
+        { name: "abyss", displayName: "Abyss", startAnimation: startJellyfish, stopAnimation: stopJellyfish }
 ]
 
 export function getThemeDefinition(name: string): ThemeObject | undefined {

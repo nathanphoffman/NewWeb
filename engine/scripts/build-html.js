@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, readdirSync, rmSync, existsSync } from 'fs';
 import { transformSync } from 'esbuild';
-import { join, dirname } from 'path';
+import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 
 // The entire point of this script is to build 1 large index.html
@@ -68,15 +68,22 @@ const bundledCss = existsSync(bundledCssPath)
   : '';
 if (existsSync(bundledCssPath)) rmSync(bundledCssPath);
 
-const rawCss = bundledCss + '\n' + readdirSync(stylesDir)
-  .filter(f => f.endsWith('.css'))
-  // guarantees order of inclusion is the same across OS platforms
-  // in theory sort here matters little, but two builds could output different
-  // html builds that are identical causing delta flip-flops if deployed
-  .sort()
-  .map(f => {
-    const css = readFileSync(join(stylesDir, f), 'utf8');
-    const themeMatch = f.match(/^theme-(.+)\.css$/);
+// lists every .css file under dir (including subfolders), sorted so core styles come before theme styles
+function listCssFiles(dir) {
+  return readdirSync(dir, { withFileTypes: true })
+    .flatMap(entry => entry.isDirectory()
+      ? listCssFiles(join(dir, entry.name))
+      : entry.name.endsWith('.css') ? [join(dir, entry.name)] : [])
+    // guarantees order of inclusion is the same across OS platforms
+    // in theory sort here matters little, but two builds could output different
+    // html builds that are identical causing delta flip-flops if deployed
+    .sort((a, b) => basename(a).localeCompare(basename(b), 'en'));
+}
+
+const rawCss = bundledCss + '\n' + listCssFiles(stylesDir)
+  .map(file => {
+    const css = readFileSync(file, 'utf8');
+    const themeMatch = basename(file).match(/^theme-(.+)\.css$/);
     if (themeMatch) return prefixThemeCSS(css, themeMatch[1]);
     return css;
   })

@@ -19,11 +19,13 @@ pub struct SwappedMarkdown {
 pub fn swap_letters_for_numbers(md: &str) -> SwappedMarkdown {
     let mut text = String::with_capacity(md.len());
     let mut swapped_at = HashSet::new();
+
     // the fence (``` or ~~~) of the code block we're inside, if any. Code is left untouched.
     let mut open_fence: Option<&str> = None;
 
     for line in md.split_inclusive('\n') {
         let trimmed = line.trim_start();
+
         if let Some(fence) = open_fence {
             if trimmed.starts_with(fence) {
                 open_fence = None;
@@ -35,8 +37,10 @@ pub fn swap_letters_for_numbers(md: &str) -> SwappedMarkdown {
             text.push_str(&line[..letter_pos]);
             text.push('1');
             text.push_str(&line[letter_pos + 1..]);
+
             continue;
         }
+
         text.push_str(line);
     }
 
@@ -49,14 +53,18 @@ pub fn swap_letters_for_numbers(md: &str) -> SwappedMarkdown {
 fn find_letter_marker(line: &str) -> Option<usize> {
     let indent = line.len() - line.trim_start_matches(' ').len();
     let rest = &line.as_bytes()[indent..];
+
     if rest.len() < 3 || !rest[0].is_ascii_alphabetic() || !matches!(rest[1], b')' | b'.') {
         return None;
     }
+
     let letter = rest[0];
     let punctuation = rest[1];
+
     let spaces_needed = if letter.is_ascii_uppercase() && punctuation == b'.' { 2 } else { 1 };
     let spaces = rest[2..].iter().take_while(|&&b| b == b' ').count();
     let has_content = rest.len() > 2 + spaces;
+
     if spaces >= spaces_needed && has_content {
         Some(indent)
     } else {
@@ -71,6 +79,7 @@ pub fn lettered_list_tag(letter: u8) -> String {
     } else {
         ("a", letter - b'a' + 1)
     };
+
     if start == 1 {
         format!("<ol type=\"{list_type}\">\n")
     } else {

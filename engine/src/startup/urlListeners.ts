@@ -1,4 +1,4 @@
-import { renderNoData } from "../nav";
+import { renderNoData } from "../navigation/nav";
 import { scrollToAnchor } from "../ui/page";
 
 // restores the correct page when the user navigates back or forward in browser history
@@ -9,6 +9,7 @@ export function startBackAndForwardListener() {
     const url = state?.mdUrl ?? (location.pathname === '/' ? 'main.md' : `${location.pathname}.md`);
     await renderNoData(url);
     const anchor = state?.anchor ?? (location.hash ? location.hash.slice(1) : null);
+
     if (anchor) scrollToAnchor(anchor);
   });
 }

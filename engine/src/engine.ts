@@ -1,4 +1,4 @@
-import './theme';
+import './themes/theme';
 import { startWASMEngineToPullMarkdown } from './startup/wasm';
 import { startGearButtonListener } from './startup/engineLinks';
 import { startOnClickListeners } from './startup/markdownLinks';

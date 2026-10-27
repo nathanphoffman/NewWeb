@@ -31,6 +31,7 @@ fn has_scheme(url: &str) -> bool {
         None => false,
         Some(colon) => {
             let scheme = &url[..colon];
+
             !scheme.is_empty()
                 && scheme.starts_with(|c: char| c.is_ascii_alphabetic())
                 && scheme.chars().all(|c| c.is_ascii_alphanumeric() || matches!(c, '+' | '-' | '.'))

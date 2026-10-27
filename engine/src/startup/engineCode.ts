@@ -1,4 +1,4 @@
-import { showMarkdownModal } from "../ui/modals";
+import { showMarkdownModal } from "../ui/overlays/modals";
 
 export const store = new Map<string, string>();
 
@@ -6,8 +6,9 @@ export const store = new Map<string, string>();
 export function dataModalMd(): string {
     const entries = [...store.entries()];
     const dataBlock = entries.length
-        ? '```\n' + JSON.stringify(Object.fromEntries(entries), null, 2) + '\n```'
+        ? `\`\`\`\n${JSON.stringify(Object.fromEntries(entries), null, 2)}\n\`\`\``
         : '_No data stored yet._';
+
     return `### Your Session Data\n\nThis data exists only for your current browser session — it is cleared when you leave or refresh the page. Sites use session data for logins, personalization, and data access.\n\n---\n\n${dataBlock}\n\n[Clear all data](nw:cleardata)`;
 }
 
@@ -24,5 +25,6 @@ export function buildInfoMd(desc: string, keys: string[]): string {
     const dataSection = keys.length
         ? `\n\n### Data requested\nThis script will access: ${keys.map(k => `\`${k}\``).join(', ')}\n\nThese values will be read from your session.`
         : '';
-    return reasonSection + dataSection + `\n\n[View your session data](nw:viewdata)`;
+
+    return `${reasonSection + dataSection}\n\n[View your session data](nw:viewdata)`;
 }

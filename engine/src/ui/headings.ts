@@ -1,5 +1,6 @@
 // converts heading text to a lowercase URL-safe id slug
 function slugify(text: string): string {
+  // lowercases, drops punctuation, turns runs of spaces/underscores into one dash, then trims leading and trailing dashes
   return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
@@ -9,6 +10,7 @@ export function addHeadingIds(container: Element): void {
   container.querySelectorAll<HTMLElement>('h1,h2,h3,h4,h5,h6').forEach(h => {
     if (h.id) return;
     const base = slugify(h.textContent ?? '');
+
     if (!base) return;
     const n = seen.get(base) ?? 0;
     seen.set(base, n + 1);

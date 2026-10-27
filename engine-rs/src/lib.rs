@@ -7,8 +7,11 @@
 // - tests.rs:        tests (run with `cargo test`)
 
 mod letter_lists;
+
 mod links;
+
 mod options;
+
 #[cfg(test)]
 mod tests;
 
@@ -34,6 +37,7 @@ pub fn render(md: &str) -> String {
 
     let mut output = String::new();
     html::push_html(&mut output, events);
+
     output
 }
 
@@ -43,18 +47,22 @@ fn adjust_event<'a>(event: Event<'a>, position: Range<usize>, original: &str, sw
         // a numbered list that was really a lettered one: swap its `<ol>` for `<ol type="a">`
         Event::Start(Tag::List(Some(_))) => {
             let marker = first_marker_position(&swapped.text, position);
+
             if swapped.swapped_at.contains(&marker) {
                 Event::Html(CowStr::from(lettered_list_tag(original.as_bytes()[marker])))
             } else {
                 event
             }
         }
+
         Event::Start(Tag::Link { link_type, dest_url, title, id }) => {
             Event::Start(Tag::Link { link_type, dest_url: make_root_relative(dest_url), title, id })
         }
+
         Event::Start(Tag::Image { link_type, dest_url, title, id }) => {
             Event::Start(Tag::Image { link_type, dest_url: make_root_relative(dest_url), title, id })
         }
+
         other => other,
     }
 }
@@ -62,5 +70,6 @@ fn adjust_event<'a>(event: Event<'a>, position: Range<usize>, original: &str, sw
 // A list's position can include leading indentation; this skips past it to the first marker.
 fn first_marker_position(text: &str, position: Range<usize>) -> usize {
     let list_text = &text[position.clone()];
+
     position.start + list_text.len() - list_text.trim_start().len()
 }

@@ -1,17 +1,20 @@
-import { BYTES_PER_KB } from '../constants';
-import { getMaxImageKb } from '../settings';
+import { DECIMAL_RADIX } from '../shared/constants';
 
 // HEAD-checks an image URL and returns true if it fits within the configured max size
-async function checkSize(src: string): Promise<boolean> {
+async function checkSize(src: string, maxBytes: number): Promise<boolean> {
   if (src.startsWith('data:')) return true;
+
   try {
     const res = await fetch(src, { method: 'HEAD' });
     const cl = res.headers.get('content-length');
+
     if (cl === null) return true;
-    return parseInt(cl, 10) <= getMaxImageKb() * BYTES_PER_KB;
+
+    return parseInt(cl, DECIMAL_RADIX) <= maxBytes;
   } catch (err) {
     // a failed size check shouldn't block the image, so allow it
     console.warn(`Could not check size of ${src}:`, err);
+
     return true;
   }
 }
@@ -29,12 +32,14 @@ function showLightbox(src: string, alt: string): void {
   img.alt = alt;
   dlg.appendChild(close);
   dlg.appendChild(img);
+
   if (alt) {
     const cap = document.createElement('figcaption');
     cap.className = 'nw-lightbox__caption';
     cap.textContent = alt;
     dlg.appendChild(cap);
   }
+
   dlg.addEventListener('click', () => dlg.remove());
   document.body.appendChild(dlg);
   dlg.showModal();
@@ -56,6 +61,7 @@ function buildFrame(src: string, alt: string, onOpen: (src: string, alt: string)
   const img = document.createElement('img');
   img.alt = alt;
   img.className = 'nw-image-frame__img';
+
   const onReady = () => fig.classList.add('nw-image-frame--loaded');
   img.addEventListener('load', onReady, { once: true });
   img.addEventListener('error', onReady, { once: true });
@@ -72,6 +78,7 @@ function buildFrame(src: string, alt: string, onOpen: (src: string, alt: string)
   reveal.appendChild(inner);
   fig.appendChild(reveal);
   fig.addEventListener('click', () => onOpen(src, alt));
+
   return fig;
 }
 
@@ -83,18 +90,21 @@ function buildFallback(alt: string, loadFrame: () => HTMLElement): HTMLElement {
   btn.className = 'nw-img-load-btn';
   btn.textContent = alt ? `${alt} — ${text}` : text;
   btn.addEventListener('click', () => btn.replaceWith(loadFrame()));
+
   return btn;
 }
 
 // replaces nw-img-placeholder spans with framed images or fallback buttons based on size
-export async function processImages(container: Element): Promise<void> {
+export async function processImages(container: Element, maxBytes: number): Promise<void> {
   const placeholders = Array.from(
     container.querySelectorAll<HTMLElement>('span.nw-img-placeholder')
   );
+
   await Promise.all(placeholders.map(async span => {
     const src = span.dataset.src ?? '';
     const alt = span.dataset.alt ?? '';
-    const allowed = await checkSize(src);
+    const allowed = await checkSize(src, maxBytes);
+
     // the lightbox and frame builder are passed in so the call chain stays shallow
     const frame = () => buildFrame(src, alt, showLightbox);
     span.replaceWith(allowed ? frame() : buildFallback(alt, frame));

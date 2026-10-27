@@ -1,51 +1,61 @@
-import { PAUSED_CLASS, PAUSED_STORAGE_KEY } from '../constants';
-import { showSettingsModal } from '../settings';
+import { PAUSED_CLASS, PAUSED_STORAGE_KEY } from '../shared/constants';
+import { showSettingsModal } from './overlays/settings';
 import { showDataModal, store } from '../startup/engineCode';
-import { applyAnimPaused } from '../theme';
+import { applyAnimPaused } from '../themes/theme';
 
-export function initializeNavbar()
-{
+const HAMBURGER_ID = 'nw-hamburger';
 
-    // hamburger toggle
-    const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
-    const barMenu   = document.getElementById('nw-bar-menu') as HTMLDivElement;
-    const bar       = document.getElementById('nw-bar') as HTMLDivElement;
+// wires the hamburger button, and closes the menu when the user clicks anywhere outside the navbar
+function initializeHamburger(): void {
+  const hamburger = document.getElementById(HAMBURGER_ID) as HTMLButtonElement;
+  const barMenu = document.getElementById('nw-bar-menu') as HTMLDivElement;
+  const bar = document.getElementById('nw-bar') as HTMLDivElement;
 
-    function toggleHamburger() {
-      const open = barMenu.classList.toggle('open');
-      hamburger.setAttribute('aria-expanded', String(open));
-    }
+  const toggleHamburger = (): void => {
+    const open = barMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', String(open));
+  };
 
-    document.body.addEventListener('click', (e)=>{
+  document.body.addEventListener('click', (e) => {
+    const clicked = e.target as Node;
 
-        if((e.target as HTMLElement)?.id === "nw-hamburger") toggleHamburger();
-        // if the click is anywhere inside the navbar (including the theme select), leave it alone
-        else if(e.target instanceof Node && bar.contains(e.target)) return;
+    if ((clicked as HTMLElement).id === HAMBURGER_ID) toggleHamburger();
 
-        // allow closing the hamburger on any click outside the navbar if it is open
-        else if(barMenu.classList.contains('open')) toggleHamburger();
-    });
-    
+    // a click anywhere inside the navbar (including the theme select) leaves the menu alone
+    else if (bar.contains(clicked)) return;
+    else if (barMenu.classList.contains('open')) toggleHamburger();
+  });
+}
 
-    const animToggle = document.getElementById('nw-anim-toggle') as HTMLButtonElement;
-    const syncAnimToggleLabel = () => {
-      const paused = document.documentElement.classList.contains(PAUSED_CLASS);
-      animToggle.textContent = paused ? 'Animations Off' : 'Animations On';
-      animToggle.setAttribute('aria-pressed', String(!paused));
-    };
-    syncAnimToggleLabel();
-    animToggle.addEventListener('click', () => {
-      const nowPaused = !document.documentElement.classList.contains(PAUSED_CLASS);
-      applyAnimPaused(nowPaused);
-      localStorage.setItem(PAUSED_STORAGE_KEY, String(nowPaused));
-      syncAnimToggleLabel();
-    });
+// wires the animations on/off button and keeps its label in step with the paused state
+function initializeAnimationToggle(): void {
+  const animToggle = document.getElementById('nw-anim-toggle') as HTMLButtonElement;
 
-    document.getElementById('nw-settings')!.addEventListener('click', () =>
-      showSettingsModal(
-        () => [...store.entries()],
-        showDataModal,
-      )
-    );
-   
+  const syncLabel = (): void => {
+    const paused = document.documentElement.classList.contains(PAUSED_CLASS);
+    animToggle.textContent = paused ? 'Animations Off' : 'Animations On';
+    animToggle.setAttribute('aria-pressed', String(!paused));
+  };
+
+  syncLabel();
+  animToggle.addEventListener('click', () => {
+    const nowPaused = !document.documentElement.classList.contains(PAUSED_CLASS);
+    applyAnimPaused(nowPaused);
+    localStorage.setItem(PAUSED_STORAGE_KEY, String(nowPaused));
+    syncLabel();
+  });
+}
+
+// wires the navbar settings button to open the settings dialog
+function initializeSettingsButton(): void {
+  document.getElementById('nw-settings')!.addEventListener('click', () =>
+    showSettingsModal(() => [...store.entries()], showDataModal),
+  );
+}
+
+// sets up every interactive part of the navbar
+export function initializeNavbar(): void {
+  initializeHamburger();
+  initializeAnimationToggle();
+  initializeSettingsButton();
 }

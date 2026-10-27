@@ -8,9 +8,12 @@
     "build:js": "esbuild src/engine.ts --bundle --minify --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js",
     "build:html": "node scripts/build-html.js src/index.html build/index.html build/engine.bundle.js",
     "build": "npm run typecheck && npm run build:js && npm run build:html",
-    "watch": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js --watch"
+    "watch": "esbuild src/engine.ts --bundle --format=esm --loader:.woff2=dataurl --loader:.woff=dataurl --outfile=build/engine.bundle.js --watch",
+    "test": "esbuild tests/*.test.ts --bundle --platform=node --format=esm --outdir=build/tests --out-extension:.js=.mjs && node --test build/tests/*.test.mjs",
+    "lint": "biome lint --config-path=.. src tests"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.6.3",
     "@types/prismjs": "^1.26.6",
     "esbuild": "^0.25.0",
     "prismjs": "^1.30.0",
