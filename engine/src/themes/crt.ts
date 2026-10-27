@@ -1,7 +1,8 @@
+import { PAUSED_CLASS } from '../constants';
 let crtFlickerTimer: ReturnType<typeof setTimeout> | null = null;
 
 function fireCRTFlash(): void {
-  if (document.documentElement.classList.contains('nw-paused')) return;
+  if (document.documentElement.classList.contains(PAUSED_CLASS)) return;
   const el = document.createElement('div');
   el.className = 'nw-crt-flash';
   const heightPct = 20 + Math.random() * 50;

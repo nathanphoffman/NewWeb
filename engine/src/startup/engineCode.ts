@@ -1,4 +1,4 @@
-import { showModal } from "../ui/modals";
+import { showMarkdownModal } from "../ui/modals";
 
 export const store = new Map<string, string>();
 
@@ -13,7 +13,7 @@ export function dataModalMd(): string {
 
 // opens the session data modal
 export function showDataModal(): void {
-    showModal(dataModalMd());
+    showMarkdownModal(dataModalMd());
 }
 
 // builds markdown for the wasm script info modal, showing the description and which session keys it will access

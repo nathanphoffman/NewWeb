@@ -1,9 +1,10 @@
+import { PAUSED_CLASS } from '../constants';
 let stormRainActive = false;
 let stormRainCanvas: HTMLCanvasElement | null = null;
 let stormRainResizer: (() => void) | null = null;
 
 export function startStormRain(): void {
-  if (document.documentElement.classList.contains('nw-paused')) return;
+  if (document.documentElement.classList.contains(PAUSED_CLASS)) return;
   stopStormRain();
   stormRainActive = true;
 

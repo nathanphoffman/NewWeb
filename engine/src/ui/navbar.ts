@@ -1,11 +1,10 @@
+import { PAUSED_CLASS, PAUSED_STORAGE_KEY } from '../constants';
 import { showSettingsModal } from '../settings';
 import { showDataModal, store } from '../startup/engineCode';
 import { applyAnimPaused } from '../theme';
 
 export function initializeNavbar()
 {
-
-
 
     // hamburger toggle
     const hamburger = document.getElementById('nw-hamburger') as HTMLButtonElement;
@@ -16,11 +15,6 @@ export function initializeNavbar()
       const open = barMenu.classList.toggle('open');
       hamburger.setAttribute('aria-expanded', String(open));
     }
-
-
-    // hamburger.addEventListener('click', () => {
-        // toggleHamburger()
-    // });
 
     document.body.addEventListener('click', (e)=>{
 
@@ -35,15 +29,15 @@ export function initializeNavbar()
 
     const animToggle = document.getElementById('nw-anim-toggle') as HTMLButtonElement;
     const syncAnimToggleLabel = () => {
-      const paused = document.documentElement.classList.contains('nw-paused');
+      const paused = document.documentElement.classList.contains(PAUSED_CLASS);
       animToggle.textContent = paused ? 'Animations Off' : 'Animations On';
       animToggle.setAttribute('aria-pressed', String(!paused));
     };
     syncAnimToggleLabel();
     animToggle.addEventListener('click', () => {
-      const nowPaused = !document.documentElement.classList.contains('nw-paused');
+      const nowPaused = !document.documentElement.classList.contains(PAUSED_CLASS);
       applyAnimPaused(nowPaused);
-      localStorage.setItem('nw-paused', String(nowPaused));
+      localStorage.setItem(PAUSED_STORAGE_KEY, String(nowPaused));
       syncAnimToggleLabel();
     });
 

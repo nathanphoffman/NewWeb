@@ -1,6 +1,6 @@
 import { updateViewDataBtn } from "./markdownUpdates";
 import { buildInfoMd, dataModalMd, showDataModal, store } from "./engineCode";
-import { showModal } from "../ui/modals";
+import { showMarkdownModal } from "../ui/modals";
 
 // attaches a document click listener for wasm gear buttons, showing the script info modal on click
 export function startGearButtonListener() {
@@ -12,7 +12,7 @@ export function startGearButtonListener() {
         e.stopPropagation();
         const desc = btn.dataset.desc ?? '';
         const keys = btn.dataset.keys ? btn.dataset.keys.split(',').filter(Boolean) : [];
-        showModal(buildInfoMd(desc, keys));
+        showMarkdownModal(buildInfoMd(desc, keys));
     });
 }
 

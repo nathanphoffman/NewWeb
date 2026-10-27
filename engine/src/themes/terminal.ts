@@ -1,8 +1,9 @@
+import { PAUSED_CLASS } from '../constants';
 let matrixAnim: number | null = null;
 let matrixResizer: (() => void) | null = null;
 
 export function startMatrixRain(): void {
-  if (document.documentElement.classList.contains('nw-paused')) return;
+  if (document.documentElement.classList.contains(PAUSED_CLASS)) return;
   stopMatrixRain();
 
   const canvas = document.createElement('canvas');
@@ -28,7 +29,7 @@ export function startMatrixRain(): void {
   let last = 0;
   const draw = (ts: number): void => {
     matrixAnim = requestAnimationFrame(draw);
-    if (document.documentElement.classList.contains('nw-paused')) return;
+    if (document.documentElement.classList.contains(PAUSED_CLASS)) return;
     if (ts - last < 55) return; // ~18 fps — feels rain-like without hammering the GPU
     last = ts;
 

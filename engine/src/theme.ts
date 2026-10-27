@@ -1,15 +1,10 @@
-import { startMatrixRain, stopMatrixRain } from './themes/terminal';
+import { PAUSED_CLASS, PAUSED_STORAGE_KEY, THEME_STORAGE_KEY } from './constants';
 import { startPetals, stopPetals } from './themes/sakura';
-import { startCRTFlicker, stopCRTFlicker } from './themes/crt';
 import { startStormRain, stopStormRain } from './themes/storm';
 import { startCyberGleam, stopCyberGleam } from './themes/cyber';
 import { getAnimatedThemes, getThemeDefinition } from "./themes/definitions"
 
 let pageSuggestions: string[] = [];
-
-
-//const VALID_THEMES = ['glacier', 'carbon', 'terminal', 'beach', 'space', 'aurora', 'cyber', 'cats', 'dusk', 'slate', 'sakura', 'crt', 'blueprint', 'moss', 'scribe', 'storm', 'alchemical', 'blackboard', 'chromatic', 'daguerreotype', 'ember', 'quill', 'obsidian', 'scriptorium', 'voidcore'];
-
 
 // reads a <!-- themes: name1, name2 --> comment from markdown and applies the suggestion
 export function applyThemeSuggestion(md: string): void {
@@ -37,11 +32,11 @@ function annotateSuggestion(suggested: string | null): void {
 }
 
 // records page theme suggestions and applies the best match if the user has no saved preference
-export function suggestTheme(names: string[]): void {
+function suggestTheme(names: string[]): void {
   pageSuggestions = names;
   const suggested = getSuggestedTheme();
   annotateSuggestion(suggested);
-  if (suggested && !localStorage.getItem('nw-theme')) {
+  if (suggested && !localStorage.getItem(THEME_STORAGE_KEY)) {
     applyTheme(suggested);
   }
 }
@@ -58,27 +53,17 @@ function applyTheme(theme: string): void {
     if(name === theme) startAnimation!()
     else stopAnimation!()
   })
-/*
-  if (theme === 'cats') addCats(); else removeCats();
-  if (theme === 'terminal') startMatrixRain(); else stopMatrixRain();
-  if (theme === 'sakura') startPetals(); else stopPetals();
-  if (theme === 'crt') startCRTFlicker(); else stopCRTFlicker();
-  if (theme === 'storm') startStormRain(); else stopStormRain();
-  if (theme === 'cyber') startCyberGleam(); else stopCyberGleam();
-*/
 }
 
 // pauses or resumes all page animations, including theme-specific effects that need explicit start/stop
 export function applyAnimPaused(paused: boolean): void {
-  document.documentElement.classList.toggle('nw-paused', paused);
+  document.documentElement.classList.toggle(PAUSED_CLASS, paused);
   const contentEl = document.getElementById('content');
   if (contentEl) {
     contentEl.style.animationPlayState = paused ? 'paused' : '';
     contentEl.style.setProperty('--nw-anim-state', paused ? 'paused' : 'running');
   }
   const theme = document.documentElement.getAttribute('data-theme');
-
-  
 
   if (theme === 'sakura') {
     if (paused) stopPetals();
@@ -95,22 +80,22 @@ export function applyAnimPaused(paused: boolean): void {
 }
 
 // restore saved paused state on load
-const savedPaused = localStorage.getItem('nw-paused') === 'true';
+const savedPaused = localStorage.getItem(PAUSED_STORAGE_KEY) === 'true';
 applyAnimPaused(savedPaused);
 
 // theme picker — saved > page suggestion > system preference
-const savedTheme = localStorage.getItem('nw-theme');
+const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
 if (savedTheme) {
   applyTheme(savedTheme);
 } else {
   const systemDefault = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'carbon' : 'quill';
   applyTheme(systemDefault);
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (!localStorage.getItem('nw-theme')) applyTheme(e.matches ? 'carbon' : 'quill');
+    if (!localStorage.getItem(THEME_STORAGE_KEY)) applyTheme(e.matches ? 'carbon' : 'quill');
   });
 }
 document.getElementById('nw-theme-select')!.addEventListener('change', (e: Event) => {
   const value = (e.target as HTMLSelectElement).value;
   applyTheme(value);
-  localStorage.setItem('nw-theme', value);
+  localStorage.setItem(THEME_STORAGE_KEY, value);
 });

@@ -5,7 +5,7 @@ import { handleWASMClick } from "./wasm";
 
 // same-page anchor links (`#section`) are left alone — the browser handles the
 // scroll and history entry natively, no JS involvement needed
-export function isSamePageAnchor(href: string): boolean {
+function isSamePageAnchor(href: string): boolean {
     return href.startsWith('#');
 }
 

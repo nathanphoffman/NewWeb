@@ -2,14 +2,12 @@ import { handleRedirect, navigateTo, navigateWithData, replacePage } from "../na
 import { FieldDef } from "../types";
 import { hydrateExistingContent, scrollToAnchor } from "../ui/page";
 import { toRootRelative } from "../utility";
-import { showFormModal, showModal } from "../ui/modals";
-import { showSpinner, hideSpinner } from "../ui/spinner";
+import { showFormModal, showMarkdownModal } from "../ui/modals";
 import { showToast } from "../ui/toast";
 import { handleWasm } from "../wasm";
-import { showDataModal, store } from "./engineCode";
+import { store } from "./engineCode";
 import { updateViewDataBtn } from "./markdownUpdates";
 import init, { render as wasmRender } from '../../build/pkg/engine.js';
-import { showSettingsModal } from "../settings";
 
 let allowedKeys = new Set<string>();
 
@@ -59,7 +57,7 @@ export function startWASMEngineToPullMarkdown() {
       replace: (url) => replacePage(url),
       info:    (md) => showToast(md, 'info'),
       error:   (md) => showToast(md, 'error'),
-      more:    (md) => showModal(md),
+      more:    (md) => showMarkdownModal(md),
       load:    (url, data) => navigateWithData(url, data),
       store:   (key, value) => { store.set(key, value); updateViewDataBtn(); },
       get:     (key) => allowedKeys.has(key) ? (store.get(key) ?? '') : '',

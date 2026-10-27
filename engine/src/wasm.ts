@@ -18,7 +18,7 @@ async function loadTinyRuntime(): Promise<void> {
 }
 
 // fetches a wasm binary and runs it using the TinyGo runtime
-export async function loadAndExecute(file: string): Promise<void> {
+async function loadAndExecute(file: string): Promise<void> {
   await loadTinyRuntime();
   // wasm: links are authored root-relative (e.g. "src/order.wasm" means /src/order.wasm),
   // same convention as markdown links — fetch() would otherwise resolve it against
@@ -43,7 +43,7 @@ export async function handleWasm(a: HTMLAnchorElement): Promise<void> {
 }
 
 // parses a "wasm:file.wasm?key=val" href into a file path and query params object
-export function parseWasmUrl(href: string): { file: string; params: Record<string, string> } {
+function parseWasmUrl(href: string): { file: string; params: Record<string, string> } {
   const withoutProtocol = href.replace('wasm:', '');
   const [file, qs] = withoutProtocol.split('?');
   const params: Record<string, string> = {};

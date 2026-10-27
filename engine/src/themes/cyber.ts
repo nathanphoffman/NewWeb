@@ -1,3 +1,4 @@
+import { PAUSED_CLASS } from '../constants';
 let cyberActive = false;
 let cyberCanvas: HTMLCanvasElement | null = null;
 let cyberRafId: number | null = null;
@@ -17,7 +18,7 @@ function ptAt(d: number, P: number, rect: DOMRect): { x: number; y: number } {
 }
 
 export function startCyberGleam(): void {
-  if (document.documentElement.classList.contains('nw-paused')) return;
+  if (document.documentElement.classList.contains(PAUSED_CLASS)) return;
   stopCyberGleam();
   cyberActive = true;
 

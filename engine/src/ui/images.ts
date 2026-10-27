@@ -1,3 +1,4 @@
+import { BYTES_PER_KB } from '../constants';
 import { getMaxImageKb } from '../settings';
 
 // HEAD-checks an image URL and returns true if it fits within the configured max size
@@ -7,8 +8,10 @@ async function checkSize(src: string): Promise<boolean> {
     const res = await fetch(src, { method: 'HEAD' });
     const cl = res.headers.get('content-length');
     if (cl === null) return true;
-    return parseInt(cl, 10) <= getMaxImageKb() * 1024;
-  } catch {
+    return parseInt(cl, 10) <= getMaxImageKb() * BYTES_PER_KB;
+  } catch (err) {
+    // a failed size check shouldn't block the image, so allow it
+    console.warn(`Could not check size of ${src}:`, err);
     return true;
   }
 }
@@ -41,7 +44,7 @@ function showLightbox(src: string, alt: string): void {
 // The frame stays collapsed until the image actually loads, then eases open
 // (see .nw-image-frame__reveal in images.css) instead of popping in and shoving
 // the rest of the page down instantly.
-function buildFrame(src: string, alt: string): HTMLElement {
+function buildFrame(src: string, alt: string, onOpen: (src: string, alt: string) => void): HTMLElement {
   const fig = document.createElement('figure');
   fig.className = 'nw-image-frame';
 
@@ -68,19 +71,18 @@ function buildFrame(src: string, alt: string): HTMLElement {
 
   reveal.appendChild(inner);
   fig.appendChild(reveal);
-  fig.addEventListener('click', () => showLightbox(src, alt));
+  fig.addEventListener('click', () => onOpen(src, alt));
   return fig;
 }
 
 // creates a button that loads an oversized image on demand instead of auto-loading it
-function buildFallback(src: string, alt: string): HTMLElement {
+function buildFallback(alt: string, loadFrame: () => HTMLElement): HTMLElement {
   const btn = document.createElement('button');
   const text = "Image size is beyond set limit, click to load it anyway.";
 
-
   btn.className = 'nw-img-load-btn';
   btn.textContent = alt ? `${alt} — ${text}` : text;
-  btn.addEventListener('click', () => btn.replaceWith(buildFrame(src, alt)));
+  btn.addEventListener('click', () => btn.replaceWith(loadFrame()));
   return btn;
 }
 
@@ -93,6 +95,8 @@ export async function processImages(container: Element): Promise<void> {
     const src = span.dataset.src ?? '';
     const alt = span.dataset.alt ?? '';
     const allowed = await checkSize(src);
-    span.replaceWith(allowed ? buildFrame(src, alt) : buildFallback(src, alt));
+    // the lightbox and frame builder are passed in so the call chain stays shallow
+    const frame = () => buildFrame(src, alt, showLightbox);
+    span.replaceWith(allowed ? frame() : buildFallback(alt, frame));
   }));
 }

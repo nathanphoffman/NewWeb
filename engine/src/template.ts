@@ -8,6 +8,15 @@ function interpolate(text: string, ctx: Record<string, unknown>): string {
   });
 }
 
+// fetches each partial once and returns them keyed by url
+async function fetchPartials(urls: string[]): Promise<Map<string, string>> {
+  const partialMap = new Map<string, string>();
+  await Promise.all(urls.map(async url => {
+    partialMap.set(url, await fetch(toRootRelative(url)).then(r => r.text()));
+  }));
+  return partialMap;
+}
+
 // expands <!-- foreach: array use partial.md --> directives by fetching the partial and repeating it for each array item
 async function processForeach(md: string, data: Record<string, unknown>): Promise<string> {
   const pattern = /<!--\s*foreach:\s+(\S+)\s+use\s+(\S+)\s*-->/g;
@@ -19,10 +28,7 @@ async function processForeach(md: string, data: Record<string, unknown>): Promis
       .filter(m => Array.isArray(data[m[1]]) && (data[m[1]] as unknown[]).length > 0)
       .map(m => m[2])
   )];
-  const partialMap = new Map<string, string>();
-  await Promise.all(urls.map(async url => {
-    partialMap.set(url, await fetch(toRootRelative(url)).then(r => r.text()));
-  }));
+  const partialMap = await fetchPartials(urls);
 
   return md.replace(pattern, (_, arrayKey, url) => {
     const arr = data[arrayKey];
@@ -42,10 +48,7 @@ async function processIf(md: string, data: Record<string, unknown>): Promise<str
   if (matches.length === 0) return md;
 
   const urls = [...new Set(matches.filter(m => data[m[1]]).map(m => m[2]))];
-  const partialMap = new Map<string, string>();
-  await Promise.all(urls.map(async url => {
-    partialMap.set(url, await fetch(toRootRelative(url)).then(r => r.text()));
-  }));
+  const partialMap = await fetchPartials(urls);
 
   return md.replace(pattern, (_, boolKey, url) => {
     if (!data[boolKey]) return '';

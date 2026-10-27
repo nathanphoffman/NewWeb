@@ -7,7 +7,6 @@ import { startStormRain, stopStormRain } from './storm';
 import { startCyberGleam, stopCyberGleam } from './cyber';
 import { startJellyfish, stopJellyfish } from './abyss';
 
-
 type ThemeAnimator = ()=>void
 
 type ThemeObject = {
@@ -56,7 +55,6 @@ const THEME_DEFINITIONS: ThemeDefinitions = [
         ThemeObject("voidcore", "Voidcore"),
         ThemeObject("abyss", "Abyss", startJellyfish, stopJellyfish)
 ]
-
 
 export function getThemeDefinition(name: string): ThemeObject | undefined {
     return THEME_DEFINITIONS.find(x=>x.name === name) 
