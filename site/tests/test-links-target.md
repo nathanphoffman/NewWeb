@@ -11,4 +11,4 @@ This is the Alpha section.
 
 This is the Beta section.
 
-[Back to link test](test-links.md)
+[Back to link test](tests/test-links.md)

@@ -30,3 +30,9 @@ export function makeLinkIcon(): HTMLElement {
 
   return icon;
 }
+
+// adds a dialog to the page and opens it as a modal
+export function openDialog(dialog: HTMLDialogElement): void {
+  document.body.appendChild(dialog);
+  dialog.showModal();
+}

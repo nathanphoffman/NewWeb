@@ -20,7 +20,7 @@ npm run update
 
 ## Documentation
 
-Full feature reference is in [`documentation.md`](site/documentation.md). It covers links, themes, WASM scripting, templates, the session store API, images, settings, and build scripts. A copy is included in every project created from `setup/` for local AI and user reference.
+Full feature reference is in [`documentation.md`](site/docs/documentation.md). It covers links, themes, WASM scripting, templates, the session store API, images, settings, and build scripts. A copy is included in every project created from `setup/` for local AI and user reference.
 
 ## Adding content
 
@@ -50,7 +50,7 @@ still works without it.
 After changing engine source, run the sync script to rebuild and update `setup/`:
 
 ```bash
-node sync-setup.js
+node scripts/sync-setup.js
 ```
 
 This rebuilds the JS bundle and copies all artifacts into `setup/`.

@@ -18,7 +18,7 @@ build-go:
 
 # build the engine and copy its wasm + index.html into site/
 sync-site:
-    node sync-site.js
+    node scripts/sync-site.js
 
 # start local dev server
 serve: sync-site
@@ -30,7 +30,7 @@ watch:
 
 # copy latest build artifacts + docs into setup/ (runs sync-site internally)
 update-setup:
-    node sync-setup.js
+    node scripts/sync-setup.js
 
 # run the setup demo server
 serve-setup:
@@ -42,7 +42,7 @@ serve-static: sync-site
 
 # ensure setup/ (the lean build electron ships) is up to date
 build-electron:
-    node sync-setup.js
+    node scripts/sync-setup.js
 
 # build electron engine then start the app
 electron: build-electron

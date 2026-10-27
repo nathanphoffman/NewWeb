@@ -1,31 +1,33 @@
 import { BUTTON_TAG, CLICK_EVENT, DIALOG_TAG } from '../../shared/constants';
 import type { FieldDef } from '../../shared/types';
-import { makeElement } from '../dom';
+import { makeElement, openDialog } from '../dom';
 import { closeModals } from './modals';
+
+// builds an <option> with the same text as its value
+function buildOption(text: string): HTMLOptionElement {
+  const option = makeElement('option', '', text);
+  option.value = text;
+
+  return option;
+}
+
+// builds the disabled, pre-selected first option that asks the user to choose
+function buildPlaceholderOption(label: string): HTMLOptionElement {
+  const placeholder = buildOption('');
+  placeholder.textContent = `Choose ${label}…`;
+  placeholder.disabled = true;
+  placeholder.selected = true;
+
+  return placeholder;
+}
 
 // builds the <select> control for a dropdown field, starting on a disabled placeholder
 function buildSelect(field: FieldDef): HTMLSelectElement {
   const select = makeElement('select');
-
   select.id = field.key;
-
   select.name = field.key;
-
   select.required = true;
-
-  const blank = makeElement('option', '', `Choose ${field.label}…`);
-  blank.value = '';
-  blank.disabled = true;
-  blank.selected = true;
-
-  select.appendChild(blank);
-
-  for (const optionText of field.options!) {
-    const option = makeElement('option', '', optionText);
-    option.value = optionText;
-
-    select.appendChild(option);
-  }
+  select.append(buildPlaceholderOption(field.label), ...field.options!.map(buildOption));
 
   return select;
 }
@@ -109,14 +111,8 @@ function readFormValues(form: HTMLFormElement, fields: FieldDef[]): Record<strin
   return values;
 }
 
-// builds and opens a form dialog for collecting user input before running a wasm script
-export function showFormModal(
-  linkText: string,
-  fieldSections: FieldDef[][],
-  onSubmit: (values: Record<string, string>) => void
-): void {
-  closeModals();
-  const dialog = makeElement(DIALOG_TAG, 'nw-form-modal');
+// builds the form: one section per group of fields, then the Cancel / submit buttons
+function buildForm(linkText: string, fieldSections: FieldDef[][], dialog: HTMLElement): HTMLFormElement {
   const form = makeElement('form');
   form.noValidate = false;
 
@@ -128,6 +124,19 @@ export function showFormModal(
 
   form.appendChild(buildFormActions(linkText, dialog));
 
+  return form;
+}
+
+// builds and opens a form dialog for collecting user input before running a wasm script
+export function showFormModal(
+  linkText: string,
+  fieldSections: FieldDef[][],
+  onSubmit: (values: Record<string, string>) => void
+): void {
+  closeModals();
+  const dialog = makeElement(DIALOG_TAG, 'nw-form-modal');
+  const form = buildForm(linkText, fieldSections, dialog);
+
   form.addEventListener('submit', event => {
     event.preventDefault();
     const values = readFormValues(form, fieldSections.flat());
@@ -136,7 +145,6 @@ export function showFormModal(
   });
 
   dialog.append(makeElement('h3', 'nw-form-title', `Input Required for '${linkText}'`), form);
-  document.body.appendChild(dialog);
-  dialog.showModal();
+  openDialog(dialog);
   (form.elements[0] as HTMLElement | undefined)?.focus();
 }

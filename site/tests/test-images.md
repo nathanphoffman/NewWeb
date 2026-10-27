@@ -7,7 +7,7 @@ This page exists to visually check two things: **opening a lightbox shouldn't ju
 
 Scroll down so this image is roughly in the middle of your viewport, then click it to open the lightbox, then close it (click outside the image or the × ). Your scroll position should not change at all.
 
-![a small test photo](684448-small.jpg)
+![a small test photo](images/684448-small.jpg)
 
 ## Padding so there's real scroll distance
 
@@ -27,4 +27,4 @@ Reload this page (hard refresh, or throttle your network in devtools to "Slow 3G
 
 This one is intentionally over the default 200KB auto-load limit, so it should show a "click to load it anyway" button instead of loading automatically. Click the button and the same ease-in behavior should apply once it loads.
 
-![a much larger photo, over the size limit](684448.jpg)
+![a much larger photo, over the size limit](images/684448.jpg)

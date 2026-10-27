@@ -48,31 +48,37 @@ function strokeSegment(context: CanvasRenderingContext2D, from: Point, to: Point
   context.stroke();
 }
 
+// strokes one segment twice: a wide faint glow underneath, then a bright thin core on top
+function strokeGlowAndCore(context: CanvasRenderingContext2D, from: Point, to: Point, f: number, bell: number): void {
+  const rgb = segmentColor(f, bell);
+
+  strokeSegment(context, from, to, {
+    width: GLOW_WIDTH,
+    color: `rgba(${rgb},${(bell * 0.12).toFixed(2)})`,
+    glow: `rgba(255,80,200,${(bell * 0.6).toFixed(2)})`,
+    blur: GLOW_BLUR,
+  });
+  strokeSegment(context, from, to, {
+    width: CORE_WIDTH,
+    color: `rgba(${rgb},${(bell * 0.95).toFixed(2)})`,
+    glow: `rgba(255,100,220,${(bell * 0.9).toFixed(2)})`,
+    blur: CORE_BASE_BLUR + bell * CORE_EXTRA_BLUR,
+  });
+}
+
 // draws the streak as many small segments, each with a wide faint glow under a bright core
 function drawStreak(context: CanvasRenderingContext2D, rect: DOMRect, position: number): void {
   const perimeter = 2 * (rect.width + rect.height);
   const segmentLength = STREAK_LENGTH / SEGMENT_COUNT;
+  const streakStart = position - STREAK_LENGTH / 2;
 
   for (let i = 0; i < SEGMENT_COUNT; i++) {
     const f = i / (SEGMENT_COUNT - 1);       // 0 → 1 along the streak
     const bell = Math.sin(f * Math.PI);      // 0 at edges, 1 at center
-    const from = pointOnPerimeter(position - STREAK_LENGTH / 2 + i * segmentLength, perimeter, rect);
-    const to = pointOnPerimeter(position - STREAK_LENGTH / 2 + (i + 1) * segmentLength, perimeter, rect);
-    const rgb = segmentColor(f, bell);
+    const from = pointOnPerimeter(streakStart + i * segmentLength, perimeter, rect);
+    const to = pointOnPerimeter(streakStart + (i + 1) * segmentLength, perimeter, rect);
 
-    strokeSegment(context, from, to, {
-      width: GLOW_WIDTH,
-      color: `rgba(${rgb},${(bell * 0.12).toFixed(2)})`,
-      glow: `rgba(255,80,200,${(bell * 0.6).toFixed(2)})`,
-      blur: GLOW_BLUR,
-    });
-
-    strokeSegment(context, from, to, {
-      width: CORE_WIDTH,
-      color: `rgba(${rgb},${(bell * 0.95).toFixed(2)})`,
-      glow: `rgba(255,100,220,${(bell * 0.9).toFixed(2)})`,
-      blur: CORE_BASE_BLUR + bell * CORE_EXTRA_BLUR,
-    });
+    strokeGlowAndCore(context, from, to, f, bell);
   }
 }
 

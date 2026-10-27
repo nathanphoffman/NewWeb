@@ -16,6 +16,25 @@ pub struct SwappedMarkdown {
     pub swapped_at: HashSet<usize>,
 }
 
+// Works out whether `trimmed` (a line with its leading spaces removed) belongs to a fenced code block.
+// Returns the fence that is open after this line, and whether this line is code.
+fn fence_after<'a>(open_fence: Option<&'a str>, trimmed: &'a str) -> (Option<&'a str>, bool) {
+    match open_fence {
+        Some(fence) if trimmed.starts_with(fence) => (None, true),
+        Some(_) => (open_fence, true),
+        None if trimmed.starts_with("```") || trimmed.starts_with("~~~") => (Some(&trimmed[..3]), true),
+        None => (None, false),
+    }
+}
+
+// Copies `line` into `text` with the letter at `letter_pos` replaced by `1`, and records where the letter was.
+fn push_swapped(text: &mut String, swapped_at: &mut HashSet<usize>, line: &str, letter_pos: usize) {
+    swapped_at.insert(text.len() + letter_pos);
+    text.push_str(&line[..letter_pos]);
+    text.push('1');
+    text.push_str(&line[letter_pos + 1..]);
+}
+
 pub fn swap_letters_for_numbers(md: &str) -> SwappedMarkdown {
     let mut text = String::with_capacity(md.len());
     let mut swapped_at = HashSet::new();
@@ -24,24 +43,13 @@ pub fn swap_letters_for_numbers(md: &str) -> SwappedMarkdown {
     let mut open_fence: Option<&str> = None;
 
     for line in md.split_inclusive('\n') {
-        let trimmed = line.trim_start();
+        let (fence, is_code) = fence_after(open_fence, line.trim_start());
+        open_fence = fence;
 
-        if let Some(fence) = open_fence {
-            if trimmed.starts_with(fence) {
-                open_fence = None;
-            }
-        } else if trimmed.starts_with("```") || trimmed.starts_with("~~~") {
-            open_fence = Some(&trimmed[..3]);
-        } else if let Some(letter_pos) = find_letter_marker(line) {
-            swapped_at.insert(text.len() + letter_pos);
-            text.push_str(&line[..letter_pos]);
-            text.push('1');
-            text.push_str(&line[letter_pos + 1..]);
-
-            continue;
+        match find_letter_marker(line).filter(|_| !is_code) {
+            Some(letter_pos) => push_swapped(&mut text, &mut swapped_at, line, letter_pos),
+            None => text.push_str(line),
         }
-
-        text.push_str(line);
     }
 
     SwappedMarkdown { text, swapped_at }
@@ -58,18 +66,15 @@ fn find_letter_marker(line: &str) -> Option<usize> {
         return None;
     }
 
-    let letter = rest[0];
-    let punctuation = rest[1];
-
-    let spaces_needed = if letter.is_ascii_uppercase() && punctuation == b'.' { 2 } else { 1 };
     let spaces = rest[2..].iter().take_while(|&&b| b == b' ').count();
     let has_content = rest.len() > 2 + spaces;
 
-    if spaces >= spaces_needed && has_content {
-        Some(indent)
-    } else {
-        None
-    }
+    (spaces >= spaces_needed_after(rest[0], rest[1]) && has_content).then_some(indent)
+}
+
+// How many spaces must follow the marker: two for a capital letter with a period, otherwise one.
+fn spaces_needed_after(letter: u8, punctuation: u8) -> usize {
+    if letter.is_ascii_uppercase() && punctuation == b'.' { 2 } else { 1 }
 }
 
 // The opening `<ol>` tag for a lettered list, e.g. `c)` gives `<ol type="a" start="3">`.

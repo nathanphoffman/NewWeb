@@ -3,7 +3,8 @@ import { copyFileSync, mkdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-const dir = dirname(fileURLToPath(import.meta.url));
+// scripts/ sits one level below the project root
+const dir = join(dirname(fileURLToPath(import.meta.url)), '..');
 const engine = join(dir, 'engine');
 
 // only refresh the TinyGo runtime when tinygo is installed; otherwise keep the copy already in lib/

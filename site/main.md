@@ -2,13 +2,13 @@
 <!-- title: The New Web Project -->
 
 # Welcome to the New Web Project
-To get started right away, learn how to [Set Up Your First Site](first_site)
+To get started right away, learn how to [Set Up Your First Site](docs/first_site)
 
 The New Web project was created by [Nathan Hoffman](https://nathanhoffman.me) from a thought experiment "What would the 90s web look like if we could redo it in 2026?"
 
-To see the current progress check out [Progress](progress)
+To see the current progress check out [Progress](docs/progress)
 
-To understand why I think this might take off, see: [Why Though?](why_though)
+To understand why I think this might take off, see: [Why Though?](docs/why_though)
 
 New Web embraces the **core philosophy**:
 - **Anyone should be able to create** a webpage in seconds

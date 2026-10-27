@@ -21,6 +21,24 @@ async function fetchPartials(urls: string[]): Promise<Map<string, string>> {
   return partialMap;
 }
 
+// the partials needed by foreach directives whose array exists and has items
+function foreachPartialAddresses(matches: RegExpMatchArray[], data: Record<string, unknown>): string[] {
+  const needed = matches
+    .filter(match => Array.isArray(data[match[1]]) && (data[match[1]] as unknown[]).length > 0)
+    .map(match => match[2]);
+
+  return [...new Set(needed)];
+}
+
+// fills the partial once per array item, using each item's own fields as the template context
+function repeatPartial(partial: string, items: unknown[]): string {
+  return items.map(item => {
+    const context = typeof item === 'object' && item !== null ? item as Record<string, unknown> : {};
+
+    return interpolate(partial, context);
+  }).join('\n');
+}
+
 // expands <!-- foreach: array use partial.md --> directives by fetching the partial and repeating it for each array item
 async function processForeach(markdown: string, data: Record<string, unknown>): Promise<string> {
   // matches <!-- foreach: array use partial.md --> and captures the array key and partial path
@@ -29,26 +47,13 @@ async function processForeach(markdown: string, data: Record<string, unknown>): 
 
   if (matches.length === 0) return markdown;
 
-  const urls = [...new Set(
-    matches
-      .filter(match => Array.isArray(data[match[1]]) && (data[match[1]] as unknown[]).length > 0)
-      .map(match => match[2])
-  )];
-
-  const partialMap = await fetchPartials(urls);
+  const partialMap = await fetchPartials(foreachPartialAddresses(matches, data));
 
   // each directive is replaced by its partial repeated once per array item
   return markdown.replace(pattern, (_, arrayKey, address) => {
     const items = data[arrayKey];
 
-    if (!Array.isArray(items)) return '';
-    const partial = partialMap.get(address)!;
-
-    return items.map(item => {
-      const context = typeof item === 'object' && item !== null ? item as Record<string, unknown> : {};
-
-      return interpolate(partial, context);
-    }).join('\n');
+    return Array.isArray(items) ? repeatPartial(partialMap.get(address)!, items) : '';
   });
 }
 

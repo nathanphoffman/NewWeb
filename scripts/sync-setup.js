@@ -3,9 +3,10 @@ import { copyFileSync, mkdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-const dir = dirname(fileURLToPath(import.meta.url));
+// scripts/ sits one level below the project root
+const dir = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-execFileSync(process.execPath, [join(dir, 'sync-site.js')], { stdio: 'inherit' });
+execFileSync(process.execPath, [join(dir, 'scripts', 'sync-site.js')], { stdio: 'inherit' });
 
 console.log('→ syncing → setup/...');
 const pkgDir = join(dir, 'setup', 'engine', 'build', 'pkg');
@@ -21,5 +22,5 @@ copyFileSync(join(dir, 'site', 'server.js'), join(dir, 'setup', 'server.js'));
 console.log('✓ setup/ synced');
 
 console.log('→ copying documentation...');
-copyFileSync(join(dir, 'site', 'documentation.md'), join(dir, 'setup', 'documentation.md'));
+copyFileSync(join(dir, 'site', 'docs', 'documentation.md'), join(dir, 'setup', 'documentation.md'));
 console.log('✓ documentation.md copied to setup/');

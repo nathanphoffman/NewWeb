@@ -9,15 +9,15 @@ All representations that navigate to `test-links-target.md`.
 
 ### File only
 
-- [with .md extension](test-links-target.md)
-- [without .md extension](test-links-target)
+- [with .md extension](tests/test-links-target.md)
+- [without .md extension](tests/test-links-target)
 
 ### File + section anchor
 
-- [with .md + #alpha](test-links-target.md#alpha)
-- [with .md + #beta](test-links-target.md#beta)
-- [without .md + #alpha](test-links-target#alpha)
-- [without .md + #beta](test-links-target#beta)
+- [with .md + #alpha](tests/test-links-target.md#alpha)
+- [with .md + #beta](tests/test-links-target.md#beta)
+- [without .md + #alpha](tests/test-links-target#alpha)
+- [without .md + #beta](tests/test-links-target#beta)
 
 ---
 

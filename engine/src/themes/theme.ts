@@ -61,32 +61,33 @@ function applyTheme(theme: string): void {
   })
 }
 
+// theme effects that must be started and stopped explicitly when animations are paused or resumed
+const PAUSABLE_EFFECTS: Record<string, { start: () => void; stop: () => void }> = {
+  sakura: { start: startPetals, stop: stopPetals },
+  storm: { start: startStormRain, stop: stopStormRain },
+  cyber: { start: startCyberGleam, stop: stopCyberGleam },
+};
+
+// pauses or resumes the css animations on the page content
+function setContentAnimationState(paused: boolean): void {
+  const contentEl = document.getElementById(CONTENT_ID);
+
+  if (!contentEl) return;
+
+  contentEl.style.animationPlayState = paused ? 'paused' : '';
+  contentEl.style.setProperty('--nw-anim-state', paused ? 'paused' : 'running');
+}
+
 // pauses or resumes all page animations, including theme-specific effects that need explicit start/stop
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle(PAUSED_CLASS, paused);
-  const contentEl = document.getElementById(CONTENT_ID);
+  setContentAnimationState(paused);
 
-  if (contentEl) {
-    contentEl.style.animationPlayState = paused ? 'paused' : '';
-    contentEl.style.setProperty('--nw-anim-state', paused ? 'paused' : 'running');
-  }
+  const effect = PAUSABLE_EFFECTS[document.documentElement.getAttribute('data-theme') ?? ''];
 
-  const theme = document.documentElement.getAttribute('data-theme');
-
-  if (theme === 'sakura') {
-    if (paused) stopPetals();
-    else startPetals();
-  }
-
-  if (theme === 'storm') {
-    if (paused) stopStormRain();
-    else startStormRain();
-  }
-
-  if (theme === 'cyber') {
-    if (paused) stopCyberGleam();
-    else startCyberGleam();
-  }
+  if (!effect) return;
+  if (paused) effect.stop();
+  else effect.start();
 }
 
 // restore saved paused state on load
