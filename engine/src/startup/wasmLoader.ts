@@ -1,3 +1,4 @@
+import { HREF_ATTRIBUTE, TRUE_STRING, WASM_PREFIX } from '../shared/constants';
 import { showSpinner, hideSpinner } from '../ui/overlays/spinner';
 import { toRootRelative } from '../shared/utility';
 
@@ -6,6 +7,7 @@ let GoTiny: (new () => Go) | null = null;
 // lazily injects the TinyGo wasm_exec runtime script; no-ops if already loaded
 async function loadTinyRuntime(): Promise<void> {
   if (GoTiny) return;
+  // wrapped in a promise because script loading is event based (onload/onerror) rather than awaitable
   await new Promise<void>((resolve, reject) => {
     const text = document.createElement('script');
 
@@ -35,10 +37,10 @@ async function loadAndExecute(file: string): Promise<void> {
 // handles a click on a wasm: link — shows spinner, loads and executes the wasm file, then hides spinner
 export async function handleWasm(anchor: HTMLAnchorElement): Promise<void> {
   if (anchor.dataset.pending) return;
-  anchor.dataset.pending = 'true';
+  anchor.dataset.pending = TRUE_STRING;
   showSpinner();
 
-  const { file } = parseWasmUrl(anchor.getAttribute('href')!);
+  const { file } = parseWasmUrl(anchor.getAttribute(HREF_ATTRIBUTE)!);
   await loadAndExecute(file);
 
   delete anchor.dataset.pending;
@@ -47,7 +49,7 @@ export async function handleWasm(anchor: HTMLAnchorElement): Promise<void> {
 
 // parses a "wasm:file.wasm?key=val" href into a file path and query params object
 function parseWasmUrl(href: string): { file: string; params: Record<string, string> } {
-  const withoutProtocol = href.replace('wasm:', '');
+  const withoutProtocol = href.replace(WASM_PREFIX, '');
   const [file, queryString] = withoutProtocol.split('?');
   const params: Record<string, string> = {};
 

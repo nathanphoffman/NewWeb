@@ -1,14 +1,14 @@
 import { createSpriteSpawner, type SpriteLook } from './sprites';
-import { randomBetween, SPRITE_HEIGHT_TO_WIDTH } from '../../shared/constants';
+import { CSS_NONE, SPRITE_HEIGHT_TO_WIDTH, randomBetween } from '../../shared/constants';
 
 // simple jellyfish silhouette
 const JELLY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 50">
     <path d="M20,2 C31,2 38,12 38,20 C38,26 33,29 20,29 C7,29 2,26 2,20 C2,12 9,2 20,2 Z" fill="currentColor" opacity="0.55"/>
-    <path d="M8,28 C8,38 6,44 5,49" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.5"/>
-    <path d="M14,29 C14,40 12,45 11,50" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.5"/>
-    <path d="M20,29 C20,41 20,46 20,50" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.5"/>
-    <path d="M26,29 C26,40 28,45 29,50" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.5"/>
-    <path d="M32,28 C32,38 34,44 35,49" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.5"/>
+    <path d="M8,28 C8,38 6,44 5,49" stroke="currentColor" stroke-width="1.4" fill=CSS_NONE opacity="0.5"/>
+    <path d="M14,29 C14,40 12,45 11,50" stroke="currentColor" stroke-width="1.4" fill=CSS_NONE opacity="0.5"/>
+    <path d="M20,29 C20,41 20,46 20,50" stroke="currentColor" stroke-width="1.4" fill=CSS_NONE opacity="0.5"/>
+    <path d="M26,29 C26,40 28,45 29,50" stroke="currentColor" stroke-width="1.4" fill=CSS_NONE opacity="0.5"/>
+    <path d="M32,28 C32,38 34,44 35,49" stroke="currentColor" stroke-width="1.4" fill=CSS_NONE opacity="0.5"/>
   </svg>`;
 const JELLY_COLORS = ['#7fd8e8', '#a8f0d0', '#d8a8f0', '#88b8ff', '#f0a8d8'];
 const JELLY_SIZE_PX = { min: 24, max: 58 };

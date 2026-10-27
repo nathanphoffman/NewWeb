@@ -1,63 +1,20 @@
+import { CONTENT_ID, ERROR_TOAST_TYPE, HTTPS_PREFIX, HTTP_PREFIX, LOADED_CLASS, WASM_PREFIX } from '../shared/constants';
 import { makeElement } from "../ui/dom";
 import { navigateTo, navigateWithData } from "../navigation/nav";
 import { replacePage } from "../navigation/navLinks";
 import { handleRedirect } from "../navigation/redirect";
-import type { FieldDef } from "../shared/types";
 import { hydrateExistingContent, scrollToAnchor } from "../ui/page";
 import { toMarkdownPath } from "../navigation/navPaths";
-import { showFormModal, showMarkdownModal } from "../ui/overlays/modals";
+import { showMarkdownModal } from "../ui/overlays/modals";
 import { showToast } from "../ui/overlays/toast";
-import { handleWasm } from "./wasmLoader";
+import { isKeyAllowed } from "./wasmClicks";
 import { store } from "./engineCode";
 import { updateViewDataBtn } from "./markdownUpdates";
 import init, { render as wasmRender } from '../../build/pkg/engine.js';
 
-let allowedKeys = new Set<string>();
-
-// splits a comma separated data-keys attribute into key names
-function parseKeys(attribute: string | undefined): string[] {
-  return (attribute ?? '').split(',').filter(Boolean);
-}
-
-// runs the wasm for a link, then locks key access again once it finishes
-function runWasmLink(anchor: HTMLAnchorElement, keys: string[], formKeys: string[] = []): void {
-  allowedKeys = new Set([...keys, ...formKeys]);
-
-  handleWasm(anchor).finally(() => {
-    for (const entryKey of formKeys) store.delete(entryKey);
-    allowedKeys = new Set();
-
-    if (formKeys.length > 0) updateViewDataBtn();
-  });
-}
-
-// saves the submitted form values to the store and runs the wasm with access to them
-function submitWasmForm(anchor: HTMLAnchorElement, values: Record<string, string>): void {
-  for (const [entryKey, value] of Object.entries(values)) store.set(entryKey, value);
-  runWasmLink(anchor, parseKeys(anchor.dataset.keys), Object.keys(values));
-}
-
-// intercepts wasm: link clicks — shows a form if fields are declared, then executes the wasm with scoped key access
-export function handleWASMClick(event: MouseEvent, anchor: HTMLAnchorElement, href: string) {
-  if (!href.startsWith('wasm:')) return;
-
-  event.preventDefault();
-  const fieldsJson = anchor.dataset.fields;
-
-  if (!fieldsJson) {
-    runWasmLink(anchor, parseKeys(anchor.dataset.keys));
-
-    return;
-  }
-
-  const fieldSections = JSON.parse(fieldsJson) as FieldDef[][];
-  const linkText = anchor.textContent?.trim() ?? 'Submit';
-  showFormModal(linkText, fieldSections, values => submitWasmForm(anchor, values));
-}
-
 // sends http(s) urls through the redirect countdown and everything else through in-app navigation
 function redirectOrNavigate(address: string, reason?: string): void {
-  if (address.startsWith('http://') || address.startsWith('https://')) handleRedirect(address, reason);
+  if (address.startsWith(HTTP_PREFIX) || address.startsWith(HTTPS_PREFIX)) handleRedirect(address, reason);
   else navigateTo(address);
 }
 
@@ -67,11 +24,11 @@ function installHostApi(): void {
     redirect: redirectOrNavigate,
     replace: (address) => replacePage(address),
     info:    (markdown) => showToast(markdown, 'info'),
-    error:   (markdown) => showToast(markdown, 'error'),
+    error:   (markdown) => showToast(markdown, ERROR_TOAST_TYPE),
     more:    (markdown) => showMarkdownModal(markdown),
     load:    (address, data) => navigateWithData(address, data),
     store:   (entryKey, value) => { store.set(entryKey, value); updateViewDataBtn(); },
-    get:     (entryKey) => allowedKeys.has(entryKey) ? (store.get(entryKey) ?? '') : '',
+    get:     (entryKey) => isKeyAllowed(entryKey) ? (store.get(entryKey) ?? '') : '',
   };
 }
 
@@ -93,7 +50,7 @@ async function showInitialPage(): Promise<void> {
   const path = prettyLocationPath();
   const initialPage = path === '/' ? 'main' : path;
   const initialAnchor = location.hash ? location.hash.slice(1) : null;
-  const content = document.getElementById('content')!;
+  const content = document.getElementById(CONTENT_ID)!;
 
   if (content.dataset.nwSsgPath === path) {
     // stand in for the replaceState replacePage() would have done, so back/forward and
@@ -109,9 +66,9 @@ async function showInitialPage(): Promise<void> {
 
 // shows the boot error in place of the page so a failed start is visible
 function showBootError(error: unknown): void {
-  const content = document.getElementById('content')!;
+  const content = document.getElementById(CONTENT_ID)!;
   content.replaceChildren(makeElement('pre', '', `Boot error: ${error}`));
-  content.classList.add('nw-loaded');
+  content.classList.add(LOADED_CLASS);
 }
 
 // slim bootstrap: initializes the wasm renderer and exposes the newweb host API without auth or config loading

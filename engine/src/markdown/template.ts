@@ -13,6 +13,7 @@ function interpolate(text: string, context: Record<string, unknown>): string {
 // fetches each partial once and returns them keyed by url
 async function fetchPartials(urls: string[]): Promise<Map<string, string>> {
   const partialMap = new Map<string, string>();
+  // partials are fetched in parallel since they don't depend on each other
   await Promise.all(urls.map(async address => {
     partialMap.set(address, await fetch(toRootRelative(address)).then(response => response.text()));
   }));
@@ -36,6 +37,7 @@ async function processForeach(markdown: string, data: Record<string, unknown>): 
 
   const partialMap = await fetchPartials(urls);
 
+  // each directive is replaced by its partial repeated once per array item
   return markdown.replace(pattern, (_, arrayKey, address) => {
     const items = data[arrayKey];
 

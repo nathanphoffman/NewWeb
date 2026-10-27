@@ -1,3 +1,4 @@
+import { ERROR_TOAST_TYPE, HREF_ATTRIBUTE, MORE_PREFIX } from '../shared/constants';
 import { showToast } from '../ui/overlays/toast';
 import { showMarkdownModal } from '../ui/overlays/modals';
 import { fetchMd, renderNoData } from './nav';
@@ -12,13 +13,13 @@ export async function replacePage(path: string, anchor: string | null = null): P
 
 // fetches markdown from a "more:" link and displays it in a modal
 export async function handleMore(anchor: HTMLAnchorElement): Promise<void> {
-  const address = anchor.getAttribute('href')!.replace('more:', '');
+  const address = anchor.getAttribute(HREF_ATTRIBUTE)!.replace(MORE_PREFIX, '');
   const markdown = await fetchMd(address);
   showMarkdownModal(markdown);
 }
 
 // shows an error toast suggesting the user add https:// to a link that looks like a bare URL
 export function warnBareUrl(href: string): void {
-  showToast(`Link "${href}" looks like a URL — did you mean https://${href}?`, 'error');
+  showToast(`Link "${href}" looks like a URL — did you mean https://${href}?`, ERROR_TOAST_TYPE);
 }
 

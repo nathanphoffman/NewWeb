@@ -35,6 +35,7 @@ function playFlash(band: HTMLElement): void {
   band.style.opacity = '1';
   const hold = randomBetween(FLASH_HOLD_MS.min, FLASH_HOLD_MS.max);
 
+  // after the hold time, fade the band out and remove it once the fade has finished
   setTimeout(() => {
     band.style.transition = `opacity ${FLASH_FADE_OUT_MS}ms ease-out`;
     band.style.opacity = '0';

@@ -1,4 +1,5 @@
-import { DECIMAL_RADIX } from '../shared/constants';
+import { makeElement } from './dom';
+import { BUTTON_TAG, CLICK_EVENT, DECIMAL_RADIX, DIALOG_TAG, ERROR_EVENT } from '../shared/constants';
 
 // HEAD-checks an image URL and returns true if it fits within the configured max size
 async function checkSize(source: string, maxBytes: number): Promise<boolean> {
@@ -19,28 +20,28 @@ async function checkSize(source: string, maxBytes: number): Promise<boolean> {
   }
 }
 
+// builds an <img> with its source and alt text
+function makeImage(source: string, altText: string, className = ''): HTMLImageElement {
+  const image = makeElement('img', className);
+  image.alt = altText;
+  image.src = source;
+
+  return image;
+}
+
+// builds a <figcaption> for the alt text, or nothing when there is none
+function makeCaption(altText: string, className: string): HTMLElement[] {
+  return altText ? [makeElement('figcaption', className, altText)] : [];
+}
+
 // opens an image in a fullscreen lightbox dialog
 function showLightbox(source: string, altText: string): void {
-  const dialog = document.createElement('dialog');
-  dialog.className = 'nw-lightbox';
-  const close = document.createElement('button');
-  close.className = 'nw-lightbox__close';
-  close.textContent = '×';
+  const dialog = makeElement(DIALOG_TAG, 'nw-lightbox');
+  const close = makeElement(BUTTON_TAG, 'nw-lightbox__close', '×');
   close.setAttribute('aria-label', 'Close');
-  const image = document.createElement('img');
-  image.src = source;
-  image.alt = altText;
-  dialog.appendChild(close);
-  dialog.appendChild(image);
 
-  if (altText) {
-    const caption = document.createElement('figcaption');
-    caption.className = 'nw-lightbox__caption';
-    caption.textContent = altText;
-    dialog.appendChild(caption);
-  }
-
-  dialog.addEventListener('click', () => dialog.remove());
+  dialog.append(close, makeImage(source, altText), ...makeCaption(altText, 'nw-lightbox__caption'));
+  dialog.addEventListener(CLICK_EVENT, () => dialog.remove());
   document.body.appendChild(dialog);
   dialog.showModal();
 }
@@ -50,46 +51,31 @@ function showLightbox(source: string, altText: string): void {
 // (see .nw-image-frame__reveal in images.css) instead of popping in and shoving
 // the rest of the page down instantly.
 function buildFrame(source: string, altText: string, onOpen: (source: string, altText: string) => void): HTMLElement {
-  const figure = document.createElement('figure');
-  figure.className = 'nw-image-frame';
+  const figure = makeElement('figure', 'nw-image-frame');
+  const reveal = makeElement('div', 'nw-image-frame__reveal');
+  const inner = makeElement('div', 'nw-image-frame__inner');
 
-  const reveal = document.createElement('div');
-  reveal.className = 'nw-image-frame__reveal';
-  const inner = document.createElement('div');
-  inner.className = 'nw-image-frame__inner';
-
-  const image = document.createElement('img');
-  image.alt = altText;
-  image.className = 'nw-image-frame__img';
-
+  // both outcomes reveal the frame, so a broken image doesn't leave an empty collapsed gap
   const onReady = () => figure.classList.add('nw-image-frame--loaded');
+  const image = makeElement('img', 'nw-image-frame__img');
+  image.alt = altText;
   image.addEventListener('load', onReady, { once: true });
-  image.addEventListener('error', onReady, { once: true });
+  image.addEventListener(ERROR_EVENT, onReady, { once: true });
   image.src = source;
-  inner.appendChild(image);
 
-  if (altText) {
-    const caption = document.createElement('figcaption');
-    caption.className = 'nw-image-frame__caption';
-    caption.textContent = altText;
-    inner.appendChild(caption);
-  }
-
+  inner.append(image, ...makeCaption(altText, 'nw-image-frame__caption'));
   reveal.appendChild(inner);
   figure.appendChild(reveal);
-  figure.addEventListener('click', () => onOpen(source, altText));
+  figure.addEventListener(CLICK_EVENT, () => onOpen(source, altText));
 
   return figure;
 }
 
 // creates a button that loads an oversized image on demand instead of auto-loading it
 function buildFallback(altText: string, loadFrame: () => HTMLElement): HTMLElement {
-  const button = document.createElement('button');
-  const text = "Image size is beyond set limit, click to load it anyway.";
-
-  button.className = 'nw-img-load-btn';
-  button.textContent = altText ? `${altText} — ${text}` : text;
-  button.addEventListener('click', () => button.replaceWith(loadFrame()));
+  const text = 'Image size is beyond set limit, click to load it anyway.';
+  const button = makeElement(BUTTON_TAG, 'nw-img-load-btn', altText ? `${altText} — ${text}` : text);
+  button.addEventListener(CLICK_EVENT, () => button.replaceWith(loadFrame()));
 
   return button;
 }
@@ -100,6 +86,7 @@ export async function processImages(container: Element, maxBytes: number): Promi
     container.querySelectorAll<HTMLElement>('span.nw-img-placeholder')
   );
 
+  // each placeholder is checked independently so one slow image doesn't hold up the rest
   await Promise.all(placeholders.map(async span => {
     const source = span.dataset.src ?? '';
     const altText = span.dataset.alt ?? '';

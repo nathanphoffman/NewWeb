@@ -9,35 +9,54 @@ function camelToLabel(text: string): string {
   return text.replace(/([A-Z])/g, ' $1').replace(/^./, character => character.toUpperCase());
 }
 
+const DEFAULT_FIELD_TYPE = 'text';
+const FIELD_KEY_PREFIX = 'form.';
+
+// builds a FieldDef, filling in the parts every field shares
+function makeField(name: string, overrides: Partial<FieldDef> = {}): FieldDef {
+  return {
+    key: `${FIELD_KEY_PREFIX}${name}`,
+    label: camelToLabel(name),
+    type: DEFAULT_FIELD_TYPE,
+    maxlength: null,
+    options: null,
+    ...overrides,
+  };
+}
+
+// reads the digit limit from text like "3", returning null when it is missing or not a number
+function parseLimit(limitText: string): number | null {
+  const parsed = parseInt(limitText, DECIMAL_RADIX);
+
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+// parses the part after the name: either "a|b|c" options, or "type" / "type:limit"
+function parseFieldDetails(name: string, details: string): FieldDef {
+  if (details.includes('|')) {
+    return makeField(name, { type: 'select', options: details.split('|').map(option => option.trim()) });
+  }
+
+  const [type, limitText = ''] = details.split(':');
+  if (!KNOWN_TYPES.has(type)) return makeField(name);
+
+  return makeField(name, { type, maxlength: parseLimit(limitText) });
+}
+
+// parses one definition such as "name", "age:number:3" or "role:admin|user"
+function parseFieldDefinition(definition: string): FieldDef {
+  const colonIndex = definition.indexOf(':');
+  if (colonIndex === -1) return makeField(definition);
+
+  const name = definition.slice(0, colonIndex).trim();
+  const details = definition.slice(colonIndex + 1).trim();
+
+  return parseFieldDetails(name, details);
+}
+
 // parses a comma-separated field definition string (e.g. "name, age:number:3, role:admin|user") into FieldDef objects
 export function parseFields(text: string): FieldDef[] {
-  return text.split(',').map(text => text.trim()).filter(Boolean).map(definition => {
-    const colonIdx = definition.indexOf(':');
+  const definitions = text.split(',').map(definition => definition.trim()).filter(Boolean);
 
-    if (colonIdx === -1) {
-      return { key: `form.${definition}`, label: camelToLabel(definition), type: 'text', maxlength: null, options: null };
-    }
-
-    const name = definition.slice(0, colonIdx).trim();
-    const rest = definition.slice(colonIdx + 1).trim();
-    const entryKey = `form.${name}`;
-    const label = camelToLabel(name);
-
-    if (rest.includes('|')) {
-      return { key: entryKey, label, type: 'select', maxlength: null, options: rest.split('|').map(o => o.trim()) };
-    }
-
-    const sepIdx = rest.indexOf(':');
-    const typePart = sepIdx === -1 ? rest : rest.slice(0, sepIdx);
-    const limitStr = sepIdx === -1 ? '' : rest.slice(sepIdx + 1);
-
-    if (KNOWN_TYPES.has(typePart)) {
-      const parsed = limitStr ? parseInt(limitStr, DECIMAL_RADIX) : null;
-      const maxlength = parsed !== null && !Number.isNaN(parsed) ? parsed : null;
-
-      return { key: entryKey, label, type: typePart, maxlength, options: null };
-    }
-
-    return { key: entryKey, label, type: 'text', maxlength: null, options: null };
-  });
+  return definitions.map(parseFieldDefinition);
 }

@@ -1,4 +1,6 @@
-import { createAnimationToggle, createCanvasLayer, startFrameLoop } from './canvasLayer';
+import { CONTENT_ID } from '../../shared/constants';
+import { createCanvasLayer } from './canvasLayer';
+import { createAnimationToggle, startFrameLoop } from './animationLoop';
 
 const STREAK_LENGTH = 90;     // px total length of gleam
 const SEGMENT_COUNT = 24;     // segments (keeps corners clean)
@@ -81,7 +83,7 @@ function setUpCyberGleam(): () => void {
   let progress = 0;
 
   const stopLoop = startFrameLoop(elapsedMs => {
-    const content = document.getElementById('content');
+    const content = document.getElementById(CONTENT_ID);
 
     if (!content) return;
 

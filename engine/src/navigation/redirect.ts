@@ -1,4 +1,4 @@
-import { MS_PER_SECOND } from '../shared/constants';
+import { MS_PER_SECOND, TRUE_STRING, WASM_PREFIX } from '../shared/constants';
 import { showMarkdownModal } from '../ui/overlays/modals';
 import { showSuspendedBar } from '../ui/overlays/suspended-bar';
 import type { Modal } from '../shared/types';
@@ -39,8 +39,8 @@ function startCountdown(dialog: Modal, address: string): number {
 
 // marks all wasm links as suspended and shows a bar letting the user resume or dismiss a cancelled redirect
 function suspendPage(address: string): void {
-  document.querySelectorAll('a[href^="wasm:"]')
-    .forEach(anchor => (anchor as HTMLAnchorElement).dataset.suspended = 'true');
+  document.querySelectorAll('a[href^=WASM_PREFIX]')
+    .forEach(anchor => (anchor as HTMLAnchorElement).dataset.suspended = TRUE_STRING);
   showSuspendedBar(address);
 }
 

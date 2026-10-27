@@ -1,3 +1,4 @@
+import { CLICK_EVENT } from '../shared/constants';
 import { updateViewDataBtn } from "./markdownUpdates";
 import { buildInfoMd, dataModalMd, showDataModal, store } from "./engineCode";
 import { showMarkdownModal } from "../ui/overlays/modals";
@@ -5,7 +6,7 @@ import { showMarkdownModal } from "../ui/overlays/modals";
 // attaches a document click listener for wasm gear buttons, showing the script info modal on click
 export function startGearButtonListener() {
     // gear info button — show script description and data declaration
-    document.addEventListener('click', (event: MouseEvent) => {
+    document.addEventListener(CLICK_EVENT, (event: MouseEvent) => {
         const button = (event.target as Element).closest('.nw-wasm-info') as HTMLElement | null;
 
         if (!button) return;

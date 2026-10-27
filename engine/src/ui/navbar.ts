@@ -1,4 +1,4 @@
-import { PAUSED_CLASS, PAUSED_STORAGE_KEY } from '../shared/constants';
+import { CLICK_EVENT, PAUSED_CLASS, PAUSED_STORAGE_KEY } from '../shared/constants';
 import { showSettingsModal } from './overlays/settings';
 import { showDataModal, store } from '../startup/engineCode';
 import { applyAnimPaused } from '../themes/theme';
@@ -16,7 +16,7 @@ function initializeHamburger(): void {
     hamburger.setAttribute('aria-expanded', String(open));
   };
 
-  document.body.addEventListener('click', (event) => {
+  document.body.addEventListener(CLICK_EVENT, (event) => {
     const clicked = event.target as Node;
 
     if ((clicked as HTMLElement).id === HAMBURGER_ID) toggleHamburger();
@@ -38,7 +38,7 @@ function initializeAnimationToggle(): void {
   };
 
   syncLabel();
-  animToggle.addEventListener('click', () => {
+  animToggle.addEventListener(CLICK_EVENT, () => {
     const nowPaused = !document.documentElement.classList.contains(PAUSED_CLASS);
     applyAnimPaused(nowPaused);
     localStorage.setItem(PAUSED_STORAGE_KEY, String(nowPaused));
@@ -48,7 +48,8 @@ function initializeAnimationToggle(): void {
 
 // wires the navbar settings button to open the settings dialog
 function initializeSettingsButton(): void {
-  document.getElementById('nw-settings')!.addEventListener('click', () =>
+  // the entries are read lazily so the dialog always shows the data stored right now
+  document.getElementById('nw-settings')!.addEventListener(CLICK_EVENT, () =>
     showSettingsModal(() => [...store.entries()], showDataModal),
   );
 }

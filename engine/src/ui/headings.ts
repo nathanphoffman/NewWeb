@@ -7,6 +7,7 @@ function slugify(text: string): string {
 // assigns slugified id attributes to headings that don't already have one, de-duplicating with a counter
 export function addHeadingIds(container: Element): void {
   const seen = new Map<string, number>();
+  // gives each heading a unique slug id, adding -1, -2 ... to repeats so anchor links stay unambiguous
   container.querySelectorAll<HTMLElement>('h1,h2,h3,h4,h5,h6').forEach(heading => {
     if (heading.id) return;
     const base = slugify(heading.textContent ?? '');

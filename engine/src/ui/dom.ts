@@ -1,3 +1,4 @@
+import { SPAN_TAG, TRUE_STRING } from '../shared/constants';
 // creates an element with an optional class name and text, so builders don't repeat three lines per element
 export function makeElement<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -22,10 +23,10 @@ export function parseSvg(markup: string): SVGSVGElement {
 
 // builds the globe marker shown next to external links
 export function makeLinkIcon(): HTMLElement {
-  const icon = document.createElement('span');
+  const icon = document.createElement(SPAN_TAG);
   icon.className = 'nw-link-icon';
   icon.textContent = '🌐';
-  icon.setAttribute('aria-hidden', 'true');
+  icon.setAttribute('aria-hidden', TRUE_STRING);
 
   return icon;
 }

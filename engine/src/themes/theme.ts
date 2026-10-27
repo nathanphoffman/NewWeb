@@ -1,4 +1,4 @@
-import { PAUSED_CLASS, PAUSED_STORAGE_KEY, THEME_STORAGE_KEY } from '../shared/constants';
+import { CONTENT_ID, DARK_DEFAULT_THEME, LIGHT_DEFAULT_THEME, PAUSED_CLASS, PAUSED_STORAGE_KEY, THEME_SELECT_ID, THEME_STORAGE_KEY, TRUE_STRING } from '../shared/constants';
 import { startPetals, stopPetals } from './effects/sakura';
 import { startStormRain, stopStormRain } from './effects/storm';
 import { startCyberGleam, stopCyberGleam } from './effects/cyber';
@@ -29,7 +29,7 @@ function getSuggestedTheme(): string | null {
 
 // appends "(site default)" to the suggested theme's option in the theme picker dropdown
 function annotateSuggestion(suggested: string | null): void {
-  const select = document.getElementById('nw-theme-select') as HTMLSelectElement;
+  const select = document.getElementById(THEME_SELECT_ID) as HTMLSelectElement;
   Array.from(select.options).forEach(option => {
     const base = option.text.replace(' (site default)', '');
     option.text = option.value === suggested ? `${base} (site default)` : base;
@@ -49,7 +49,7 @@ function suggestTheme(names: string[]): void {
 
 // sets the data-theme attribute and starts/stops any theme-specific visual effects (matrix rain, petals, etc.)
 function applyTheme(theme: string): void {
-  const select = document.getElementById('nw-theme-select') as HTMLSelectElement;
+  const select = document.getElementById(THEME_SELECT_ID) as HTMLSelectElement;
   document.documentElement.setAttribute('data-theme', theme);
   select.value = theme;
 
@@ -64,7 +64,7 @@ function applyTheme(theme: string): void {
 // pauses or resumes all page animations, including theme-specific effects that need explicit start/stop
 export function applyAnimPaused(paused: boolean): void {
   document.documentElement.classList.toggle(PAUSED_CLASS, paused);
-  const contentEl = document.getElementById('content');
+  const contentEl = document.getElementById(CONTENT_ID);
 
   if (contentEl) {
     contentEl.style.animationPlayState = paused ? 'paused' : '';
@@ -90,7 +90,7 @@ export function applyAnimPaused(paused: boolean): void {
 }
 
 // restore saved paused state on load
-const savedPaused = localStorage.getItem(PAUSED_STORAGE_KEY) === 'true';
+const savedPaused = localStorage.getItem(PAUSED_STORAGE_KEY) === TRUE_STRING;
 applyAnimPaused(savedPaused);
 
 // theme picker — saved > page suggestion > system preference
@@ -99,14 +99,14 @@ const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
 if (savedTheme) {
   applyTheme(savedTheme);
 } else {
-  const systemDefault = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'carbon' : 'quill';
+  const systemDefault = window.matchMedia('(prefers-color-scheme: dark)').matches ? DARK_DEFAULT_THEME : LIGHT_DEFAULT_THEME;
   applyTheme(systemDefault);
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    if (!localStorage.getItem(THEME_STORAGE_KEY)) applyTheme(event.matches ? 'carbon' : 'quill');
+    if (!localStorage.getItem(THEME_STORAGE_KEY)) applyTheme(event.matches ? DARK_DEFAULT_THEME : LIGHT_DEFAULT_THEME);
   });
 }
 
-document.getElementById('nw-theme-select')!.addEventListener('change', (event: Event) => {
+document.getElementById(THEME_SELECT_ID)!.addEventListener('change', (event: Event) => {
   const value = (event.target as HTMLSelectElement).value;
   applyTheme(value);
   localStorage.setItem(THEME_STORAGE_KEY, value);

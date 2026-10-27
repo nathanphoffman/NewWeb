@@ -93,8 +93,9 @@ const css = transformSync(rawCss, { loader: 'css', minify: true }).code;
 const js = readFileSync(join(root, jsBundleFile), 'utf8');
 
 let html = readFileSync(join(root, templateFile), 'utf8');
-html = html.replace('<!-- STYLES -->', `<style>\n${css}</style>`);
-html = html.replace('<!-- SCRIPT -->', `<script type="module">\n${js}</script>`);
+// replacer functions, because a plain replacement string treats $` and $' in the bundle as special patterns
+html = html.replace('<!-- STYLES -->', () => `<style>\n${css}</style>`);
+html = html.replace('<!-- SCRIPT -->', () => `<script type="module">\n${js}</script>`);
 
 writeFileSync(join(root, outputFile), html);
 console.log(`✓ ${outputFile} written`);

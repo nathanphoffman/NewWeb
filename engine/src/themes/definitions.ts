@@ -1,3 +1,4 @@
+import { DARK_DEFAULT_THEME, LIGHT_DEFAULT_THEME } from '../shared/constants';
 
 import { addCats, removeCats } from './effects/cats';
 import { startMatrixRain, stopMatrixRain } from './effects/terminal';
@@ -21,7 +22,7 @@ type ThemeDefinitions = ThemeObject[]
 
 const THEME_DEFINITIONS: ThemeDefinitions = [
         { name: "glacier", displayName: "Glacier" },
-        { name: "carbon", displayName: "Carbon" },
+        { name: DARK_DEFAULT_THEME, displayName: "Carbon" },
         { name: "terminal", displayName: "Terminal", startAnimation: startMatrixRain, stopAnimation: stopMatrixRain },
         { name: "beach", displayName: "Beach" },
         { name: "space", displayName: "Space" },
@@ -41,7 +42,7 @@ const THEME_DEFINITIONS: ThemeDefinitions = [
         { name: "chromatic", displayName: "Chromatic" },
         { name: "daguerreotype", displayName: "Daguerreotype" },
         { name: "ember", displayName: "Ember" },
-        { name: "quill", displayName: "Quill" },
+        { name: LIGHT_DEFAULT_THEME, displayName: "Quill" },
         { name: "obsidian", displayName: "Obsidian" },
         { name: "scriptorium", displayName: "Scriptorium" },
         { name: "voidcore", displayName: "Voidcore" },

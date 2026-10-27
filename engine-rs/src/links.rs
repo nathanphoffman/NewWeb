@@ -19,6 +19,7 @@ pub fn make_root_relative(target: CowStr<'_>) -> CowStr<'_> {
     }
 }
 
+// links that already have a scheme, anchor or leading slash are left as they are
 fn needs_leading_slash(url: &str) -> bool {
     !(url.is_empty() || url.starts_with('#') || url.starts_with('/') || has_scheme(url))
 }
@@ -34,6 +35,7 @@ fn has_scheme(url: &str) -> bool {
 
             !scheme.is_empty()
                 && scheme.starts_with(|c: char| c.is_ascii_alphabetic())
+                // a scheme is a letter followed by letters, digits, + - or . (RFC 3986)
                 && scheme.chars().all(|c| c.is_ascii_alphanumeric() || matches!(c, '+' | '-' | '.'))
         }
     }
