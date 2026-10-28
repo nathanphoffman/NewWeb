@@ -11,32 +11,28 @@ function saveImageLimit(typed: string): void {
   if (!Number.isNaN(value) && value > 0) setMaxImageKb(value);
 }
 
+// builds the settings dialog: saving or viewing data closes it, and cancel just closes it
+function buildSettingsDialog(entryCount: number, onViewData: () => void): HTMLDialogElement {
+  const dialog = makeElement(DIALOG_TAG, 'nw-settings-modal');
+  const images = buildImageSection();
+  const closeDialog = () => dialog.remove();
+
+  dialog.append(
+    makeElement('h2', '', 'Settings'),
+    images.section,
+    buildAnimationSection(),
+    buildDataSection(entryCount, () => { closeDialog(); onViewData(); }),
+    buildActions(() => { saveImageLimit(images.input.value); closeDialog(); }, closeDialog),
+  );
+
+  return dialog;
+}
+
 // builds and opens the settings dialog with sections for image size, animations, and session data
 export function showSettingsModal(
   getEntries: () => [string, string][],
   onViewData: () => void,
 ): void {
   closeModals();
-
-  const dialog = makeElement(DIALOG_TAG, 'nw-settings-modal');
-  const images = buildImageSection();
-  const closeDialog = () => dialog.remove();
-
-  const save = () => {
-    saveImageLimit(images.input.value);
-    closeDialog();
-  };
-  const viewData = () => {
-    closeDialog();
-    onViewData();
-  };
-
-  dialog.append(
-    makeElement('h2', '', 'Settings'),
-    images.section,
-    buildAnimationSection(),
-    buildDataSection(getEntries().length, viewData),
-    buildActions(save, closeDialog),
-  );
-  openDialog(dialog);
+  openDialog(buildSettingsDialog(getEntries().length, onViewData));
 }
