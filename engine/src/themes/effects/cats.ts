@@ -1,4 +1,3 @@
-import { CSS_NONE } from '../../shared/constants';
 import { parseSvg } from '../../ui/dom';
 
 // Noto Emoji cat face (U+1F431) — Apache 2.0, google/noto-emoji

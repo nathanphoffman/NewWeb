@@ -3,7 +3,7 @@ import { navigateTo, navigateWithData } from "../navigation/nav";
 import { replacePage } from "../navigation/navLinks";
 import { toMarkdownPath } from "../navigation/navPaths";
 import { handleRedirect } from "../navigation/redirect";
-import { CONTENT_ID, ERROR_TOAST_TYPE, HTTP_PREFIX, HTTPS_PREFIX, LOADED_CLASS, WASM_PREFIX } from '../shared/constants';
+import { CONTENT_ID, ERROR_TOAST_TYPE, HTTP_PREFIX, HTTPS_PREFIX, LOADED_CLASS } from '../shared/constants';
 import { makeElement } from "../ui/dom";
 import { showMarkdownModal } from "../ui/overlays/modals";
 import { showToast } from "../ui/overlays/toast";

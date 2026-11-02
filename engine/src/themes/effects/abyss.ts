@@ -1,4 +1,4 @@
-import { CSS_NONE, randomBetween, SPRITE_HEIGHT_TO_WIDTH } from '../../shared/constants';
+import { randomBetween, SPRITE_HEIGHT_TO_WIDTH } from '../../shared/constants';
 import { createSpriteSpawner, type SpriteLook } from './sprites';
 
 // simple jellyfish silhouette

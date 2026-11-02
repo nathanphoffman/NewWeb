@@ -1,4 +1,4 @@
-import { MS_PER_SECOND, TRUE_STRING, WASM_PREFIX } from '../shared/constants';
+import { MS_PER_SECOND, TRUE_STRING } from '../shared/constants';
 import type { Modal } from '../shared/types';
 import { showMarkdownModal } from '../ui/overlays/modals';
 import { showSuspendedBar } from '../ui/overlays/suspended-bar';
