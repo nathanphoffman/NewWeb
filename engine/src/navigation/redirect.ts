@@ -1,7 +1,7 @@
 import { MS_PER_SECOND, TRUE_STRING, WASM_PREFIX } from '../shared/constants';
+import type { Modal } from '../shared/types';
 import { showMarkdownModal } from '../ui/overlays/modals';
 import { showSuspendedBar } from '../ui/overlays/suspended-bar';
-import type { Modal } from '../shared/types';
 
 const REDIRECT_COUNTDOWN_SECONDS = 3;
 

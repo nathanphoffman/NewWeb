@@ -1,6 +1,6 @@
 import { randomBetween } from '../../shared/constants';
-import { createCanvasLayer } from './canvasLayer';
 import { createAnimationToggle, startFrameLoop } from './animationLoop';
+import { createCanvasLayer } from './canvasLayer';
 
 const LEAN_RADIANS = 0.18;
 const PIXELS_PER_DROP = 14000;

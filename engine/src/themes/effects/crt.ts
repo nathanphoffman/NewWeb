@@ -1,5 +1,5 @@
-import { isAnimationPaused } from './canvasLayer';
 import { randomBetween } from '../../shared/constants';
+import { isAnimationPaused } from './canvasLayer';
 
 const FLASH_FADE_IN_MS = 80;
 const FLASH_FADE_OUT_MS = 260;

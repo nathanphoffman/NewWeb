@@ -38,6 +38,7 @@ function parseFieldDetails(name: string, details: string): FieldDef {
   }
 
   const [type, limitText = ''] = details.split(':');
+
   if (!KNOWN_TYPES.has(type)) return makeField(name);
 
   return makeField(name, { type, maxlength: parseLimit(limitText) });
@@ -46,6 +47,7 @@ function parseFieldDetails(name: string, details: string): FieldDef {
 // parses one definition such as "name", "age:number:3" or "role:admin|user"
 function parseFieldDefinition(definition: string): FieldDef {
   const colonIndex = definition.indexOf(':');
+
   if (colonIndex === -1) return makeField(definition);
 
   const name = definition.slice(0, colonIndex).trim();

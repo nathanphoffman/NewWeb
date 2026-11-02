@@ -1,8 +1,8 @@
 import { CONTENT_ID, DARK_DEFAULT_THEME, LIGHT_DEFAULT_THEME, PAUSED_CLASS, PAUSED_STORAGE_KEY, THEME_SELECT_ID, THEME_STORAGE_KEY, TRUE_STRING } from '../shared/constants';
+import { getAnimatedThemes, getThemeDefinition } from "./definitions"
+import { startCyberGleam, stopCyberGleam } from './effects/cyber';
 import { startPetals, stopPetals } from './effects/sakura';
 import { startStormRain, stopStormRain } from './effects/storm';
-import { startCyberGleam, stopCyberGleam } from './effects/cyber';
-import { getAnimatedThemes, getThemeDefinition } from "./definitions"
 
 let pageSuggestions: string[] = [];
 
@@ -51,6 +51,7 @@ function suggestTheme(names: string[]): void {
 function applyTheme(theme: string): void {
   const select = document.getElementById(THEME_SELECT_ID) as HTMLSelectElement;
   document.documentElement.setAttribute('data-theme', theme);
+
   select.value = theme;
 
   const themes = getAnimatedThemes()
@@ -86,6 +87,7 @@ export function applyAnimPaused(paused: boolean): void {
   const effect = PAUSABLE_EFFECTS[document.documentElement.getAttribute('data-theme') ?? ''];
 
   if (!effect) return;
+
   if (paused) effect.stop();
   else effect.start();
 }

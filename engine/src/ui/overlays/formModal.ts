@@ -24,9 +24,13 @@ function buildPlaceholderOption(label: string): HTMLOptionElement {
 // builds the <select> control for a dropdown field, starting on a disabled placeholder
 function buildSelect(field: FieldDef): HTMLSelectElement {
   const select = makeElement('select');
+
   select.id = field.key;
+
   select.name = field.key;
+
   select.required = true;
+
   select.append(buildPlaceholderOption(field.label), ...field.options!.map(buildOption));
 
   return select;

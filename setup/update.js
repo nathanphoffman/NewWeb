@@ -19,11 +19,13 @@ async function update() {
   for (const file of FILES) {
     console.log(`→ fetching ${file.url}`);
     const res = await fetch(file.url);
+
     if (!res.ok) throw new Error(`failed to fetch ${file.url}: ${res.status} ${res.statusText}`);
     await mkdir(dirname(file.dest), { recursive: true });
     await writeFile(file.dest, Buffer.from(await res.arrayBuffer()));
     console.log(`✓ updated ${file.dest}`);
   }
+
   console.log('newweb engine updated to latest.');
 }
 

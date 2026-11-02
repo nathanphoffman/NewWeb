@@ -13,6 +13,7 @@ exports.default = async function(context) {
 
   // Remove chrome-sandbox — without it, Electron won't fatal on missing SUID perms
   const sandbox = path.join(appOutDir, 'chrome-sandbox');
+
   if (fs.existsSync(sandbox)) fs.unlinkSync(sandbox);
 
   // Rename the real binary and replace it with a wrapper that passes --no-sandbox

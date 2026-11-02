@@ -1,7 +1,7 @@
 import { CLICK_EVENT, PAUSED_CLASS, PAUSED_STORAGE_KEY } from '../shared/constants';
-import { showSettingsModal } from './overlays/settings';
 import { showDataModal, store } from '../startup/engineCode';
 import { applyAnimPaused } from '../themes/theme';
+import { showSettingsModal } from './overlays/settings';
 
 const HAMBURGER_ID = 'nw-hamburger';
 

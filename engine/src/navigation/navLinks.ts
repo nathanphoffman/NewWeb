@@ -1,6 +1,6 @@
 import { ERROR_TOAST_TYPE, HREF_ATTRIBUTE, MORE_PREFIX } from '../shared/constants';
-import { showToast } from '../ui/overlays/toast';
 import { showMarkdownModal } from '../ui/overlays/modals';
+import { showToast } from '../ui/overlays/toast';
 import { fetchMd, renderNoData } from './nav';
 import { prettyUrl, toMarkdownPath } from './navPaths';
 

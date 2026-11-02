@@ -1,6 +1,6 @@
-import { HTTPS_PREFIX, HTTP_PREFIX, SPAN_TAG, WASM_PREFIX } from '../shared/constants';
-import { makeLinkIcon } from '../ui/dom';
+import { HTTP_PREFIX, HTTPS_PREFIX, SPAN_TAG, WASM_PREFIX } from '../shared/constants';
 import { toRootRelative } from '../shared/utility';
+import { makeLinkIcon } from '../ui/dom';
 
 const DEFAULT_LABEL = 'A New Web Project';
 const DEFAULT_HREF = 'main';

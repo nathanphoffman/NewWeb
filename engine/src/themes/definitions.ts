@@ -1,12 +1,11 @@
 import { DARK_DEFAULT_THEME, LIGHT_DEFAULT_THEME } from '../shared/constants';
-
-import { addCats, removeCats } from './effects/cats';
-import { startMatrixRain, stopMatrixRain } from './effects/terminal';
-import { startPetals, stopPetals } from './effects/sakura';
-import { startCRTFlicker, stopCRTFlicker } from './effects/crt';
-import { startStormRain, stopStormRain } from './effects/storm';
-import { startCyberGleam, stopCyberGleam } from './effects/cyber';
 import { startJellyfish, stopJellyfish } from './effects/abyss';
+import { addCats, removeCats } from './effects/cats';
+import { startCRTFlicker, stopCRTFlicker } from './effects/crt';
+import { startCyberGleam, stopCyberGleam } from './effects/cyber';
+import { startPetals, stopPetals } from './effects/sakura';
+import { startStormRain, stopStormRain } from './effects/storm';
+import { startMatrixRain, stopMatrixRain } from './effects/terminal';
 
 // an animator starts or stops a theme's visual effect
 type ThemeAnimator = () => void

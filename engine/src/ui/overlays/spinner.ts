@@ -1,4 +1,5 @@
 import { CSS_NONE } from '../../shared/constants';
+
 // shows the loading spinner, resetting its animation
 export function showSpinner(): void {
   const text = document.getElementById('nw-spinner')!;

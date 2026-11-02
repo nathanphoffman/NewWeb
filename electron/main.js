@@ -16,6 +16,7 @@ protocol.registerSchemesAsPrivileged([{
 // This keeps the port visible to the protocol handler via url.hostname.
 function getProxyPort(hostname) {
   const m = hostname.match(/^(\d+)\.localhost$/);
+
   return m ? m[1] : null;
 }
 
@@ -30,29 +31,38 @@ function isBrowserAsset(pathname) {
 function isPrivateHost(hostname) {
   if (hostname.endsWith('.local')) return true;
   const ipv4 = hostname.match(/^(\d+)\.(\d+)/);
+
   if (ipv4) {
     const [a, b] = [Number(ipv4[1]), Number(ipv4[2])];
+
     return a === 10 || a === 127 ||
       (a === 172 && b >= 16 && b <= 31) ||
       (a === 192 && b === 168);
   }
+
   return false;
 }
 
 // Fetch remote content and reject HTML responses — only markdown sites are supported
 async function fetchContent(fetchUrl, displayHost) {
   let res;
+
   try {
     res = await net.fetch(fetchUrl);
   } catch (err) {
     const md = `# Cannot Connect\n\nCould not reach **${displayHost}**.\n\n\`\`\`\n${err.message}\n\`\`\``;
+
     return new Response(md, { headers: { 'Content-Type': 'text/plain' } });
   }
+
   const ct = res.headers.get('content-type') || '';
+
   if (ct.includes('text/html')) {
     const md = `# Not a NewWeb Site\n\n**${displayHost}** returned an HTML page instead of a markdown file.\n\nOnly sites that serve \`.md\` files can be viewed in the NewWeb browser.`;
+
     return new Response(md, { headers: { 'Content-Type': 'text/plain' } });
   }
+
   return res;
 }
 
@@ -80,20 +90,26 @@ app.whenReady().then(() => {
     if (url.hostname === 'localhost' || proxyPort) {
       if (isBrowserAsset(pathname)) {
         const filePath = path.join(ROOT, pathname === '/' ? 'index.html' : pathname);
+
         return net.fetch('file://' + filePath);
       }
+
       if (proxyPort) {
         return fetchContent(`http://localhost:${proxyPort}${pathname}`, `localhost:${proxyPort}`);
       }
+
       return net.fetch('file://' + path.join(ROOT, pathname));
     }
 
     // external NewWeb site — browser assets still from disk, content fetched remotely
     if (isBrowserAsset(pathname)) {
       const filePath = path.join(ROOT, pathname === '/' ? 'index.html' : pathname);
+
       return net.fetch('file://' + filePath);
     }
+
     const scheme = isPrivateHost(url.hostname) ? 'http' : 'https';
+
     return fetchContent(`${scheme}://${url.hostname}${pathname}${url.search}`, url.hostname);
   });
 
@@ -113,9 +129,11 @@ app.whenReady().then(() => {
     if (url.startsWith('file://')) return;
     const parsed = new URL(url);
     const proxyPort = getProxyPort(parsed.hostname);
+
     // suppress the app's own default landing pages from the address bar
     if (parsed.hostname === 'localhost' && !proxyPort &&
         (parsed.pathname === '/' || parsed.pathname === '/welcome' || parsed.pathname === '/main')) return;
+
     // display port-encoded hostnames as localhost:PORT
     const displayHost = proxyPort ? `localhost:${proxyPort}` : parsed.hostname;
     const displayPath = parsed.pathname !== '/' ? parsed.pathname : '';
@@ -124,8 +142,10 @@ app.whenReady().then(() => {
 
   ipcMain.on('navigate-to', (_, url) => {
     const parsed = new URL(url);
+
     // encode port as subdomain: localhost:3000 → 3000.localhost
     const hostname = parsed.port ? `${parsed.port}.localhost` : parsed.hostname;
+
     // bare domain with no path — default to the site's home page
     const pathname = (parsed.pathname === '/' || parsed.pathname === '') ? '/main' : parsed.pathname;
     const target = `newweb://${hostname}${pathname}${parsed.search}${parsed.hash}`;
@@ -141,6 +161,7 @@ app.whenReady().then(() => {
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (/^https?:\/\//.test(url)) shell.openExternal(url);
+
     return { action: 'deny' };
   });
 

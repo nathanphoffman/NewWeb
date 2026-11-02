@@ -1,6 +1,6 @@
+import { highlightBlock } from '../../markdown/highlight';
 import { BUTTON_TAG, CLICK_EVENT, DIALOG_TAG } from '../../shared/constants';
 import type { Modal } from '../../shared/types';
-import { highlightBlock } from '../../markdown/highlight';
 import { makeElement } from '../dom';
 
 // removes all open <dialog> elements from the DOM

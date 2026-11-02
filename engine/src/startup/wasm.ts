@@ -1,16 +1,16 @@
-import { CONTENT_ID, ERROR_TOAST_TYPE, HTTPS_PREFIX, HTTP_PREFIX, LOADED_CLASS, WASM_PREFIX } from '../shared/constants';
-import { makeElement } from "../ui/dom";
+import init, { render as wasmRender } from '../../build/pkg/engine.js';
 import { navigateTo, navigateWithData } from "../navigation/nav";
 import { replacePage } from "../navigation/navLinks";
-import { handleRedirect } from "../navigation/redirect";
-import { hydrateExistingContent, scrollToAnchor } from "../ui/page";
 import { toMarkdownPath } from "../navigation/navPaths";
+import { handleRedirect } from "../navigation/redirect";
+import { CONTENT_ID, ERROR_TOAST_TYPE, HTTP_PREFIX, HTTPS_PREFIX, LOADED_CLASS, WASM_PREFIX } from '../shared/constants';
+import { makeElement } from "../ui/dom";
 import { showMarkdownModal } from "../ui/overlays/modals";
 import { showToast } from "../ui/overlays/toast";
-import { isKeyAllowed } from "./wasmClicks";
+import { hydrateExistingContent, scrollToAnchor } from "../ui/page";
 import { store } from "./engineCode";
 import { updateViewDataBtn } from "./markdownUpdates";
-import init, { render as wasmRender } from '../../build/pkg/engine.js';
+import { isKeyAllowed } from "./wasmClicks";
 
 // sends http(s) urls through the redirect countdown and everything else through in-app navigation
 function redirectOrNavigate(address: string, reason?: string): void {

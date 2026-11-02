@@ -1,12 +1,13 @@
 import { HREF_ATTRIBUTE, TRUE_STRING, WASM_PREFIX } from '../shared/constants';
-import { showSpinner, hideSpinner } from '../ui/overlays/spinner';
 import { toRootRelative } from '../shared/utility';
+import { hideSpinner, showSpinner } from '../ui/overlays/spinner';
 
 let GoTiny: (new () => Go) | null = null;
 
 // lazily injects the TinyGo wasm_exec runtime script; no-ops if already loaded
 async function loadTinyRuntime(): Promise<void> {
   if (GoTiny) return;
+
   // wrapped in a promise because script loading is event based (onload/onerror) rather than awaitable
   await new Promise<void>((resolve, reject) => {
     const text = document.createElement('script');

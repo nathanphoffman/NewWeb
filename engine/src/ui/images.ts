@@ -1,5 +1,5 @@
-import { makeElement } from './dom';
 import { BUTTON_TAG, CLICK_EVENT, DECIMAL_RADIX, DIALOG_TAG, ERROR_EVENT } from '../shared/constants';
+import { makeElement } from './dom';
 
 // HEAD-checks an image URL and returns true if it fits within the configured max size
 async function checkSize(source: string, maxBytes: number): Promise<boolean> {

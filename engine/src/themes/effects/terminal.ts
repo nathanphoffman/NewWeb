@@ -1,5 +1,5 @@
-import { createCanvasLayer, isAnimationPaused } from './canvasLayer';
 import { createAnimationToggle, startFrameLoop } from './animationLoop';
+import { createCanvasLayer, isAnimationPaused } from './canvasLayer';
 
 const FONT_SIZE = 14;
 const MIN_FRAME_MS = 55; // ~18 fps — feels rain-like without hammering the GPU

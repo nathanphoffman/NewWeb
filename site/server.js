@@ -23,13 +23,16 @@ const MIME = {
 // and don't ask for text/html
 function isNavigationRequest(req) {
   const mode = req.headers.get('sec-fetch-mode');
+
   if (mode) return mode === 'navigate';
+
   return (req.headers.get('accept') || '').includes('text/html');
 }
 
 function fileType(path) {
   try {
     const stat = statSync(path);
+
     return stat.isFile() ? 'file' : stat.isDirectory() ? 'dir' : null;
   } catch {
     return null;
@@ -55,10 +58,12 @@ const server = Bun.serve({
   fetch(req) {
     const url = new URL(req.url);
     let pathname = decodeURIComponent(url.pathname);
+
     if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
 
     // resolve within `dir` only — reject any path that escapes it (e.g. "..")
     const filePath = normalize(join(dir, pathname));
+
     if (filePath !== dir && !filePath.startsWith(dir + '/')) {
       return notFound();
     }
@@ -80,6 +85,7 @@ const server = Bun.serve({
     // client's own router rewrites the address bar to the extension-less form via
     // history.replaceState, so there's no redirect for a browser/CDN to cache wrong.
     const mdExists = pathname.endsWith('.md') ? fileType(filePath) === 'file' : fileType(filePath + '.md') === 'file';
+
     if (navigating && mdExists) return serveFile(join(dir, 'index.html'));
 
     // real file on disk (assets, or the SPA's own fetch() of a .md file) — serve as-is

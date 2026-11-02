@@ -1,4 +1,5 @@
 import { SPAN_TAG, TRUE_STRING } from '../shared/constants';
+
 // creates an element with an optional class name and text, so builders don't repeat three lines per element
 export function makeElement<K extends keyof HTMLElementTagNameMap>(
   tag: K,

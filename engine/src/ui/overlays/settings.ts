@@ -15,6 +15,7 @@ function saveImageLimit(typed: string): void {
 function buildSettingsDialog(entryCount: number, onViewData: () => void): HTMLDialogElement {
   const dialog = makeElement(DIALOG_TAG, 'nw-settings-modal');
   const images = buildImageSection();
+
   const closeDialog = () => dialog.remove();
 
   dialog.append(

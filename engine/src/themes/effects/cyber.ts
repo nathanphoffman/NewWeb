@@ -1,6 +1,6 @@
 import { CONTENT_ID } from '../../shared/constants';
-import { createCanvasLayer } from './canvasLayer';
 import { createAnimationToggle, startFrameLoop } from './animationLoop';
+import { createCanvasLayer } from './canvasLayer';
 
 const STREAK_LENGTH = 90;     // px total length of gleam
 const SEGMENT_COUNT = 24;     // segments (keeps corners clean)
@@ -58,6 +58,7 @@ function strokeGlowAndCore(context: CanvasRenderingContext2D, from: Point, to: P
     glow: `rgba(255,80,200,${(bell * 0.6).toFixed(2)})`,
     blur: GLOW_BLUR,
   });
+
   strokeSegment(context, from, to, {
     width: CORE_WIDTH,
     color: `rgba(${rgb},${(bell * 0.95).toFixed(2)})`,

@@ -1,5 +1,5 @@
+import { CSS_NONE, randomBetween, SPRITE_HEIGHT_TO_WIDTH } from '../../shared/constants';
 import { createSpriteSpawner, type SpriteLook } from './sprites';
-import { CSS_NONE, SPRITE_HEIGHT_TO_WIDTH, randomBetween } from '../../shared/constants';
 
 // simple jellyfish silhouette
 const JELLY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 50">

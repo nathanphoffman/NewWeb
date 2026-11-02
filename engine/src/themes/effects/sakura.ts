@@ -1,5 +1,5 @@
-import { createSpriteSpawner, type SpriteLook } from './sprites';
 import { randomBetween, SPRITE_HEIGHT_TO_WIDTH } from '../../shared/constants';
+import { createSpriteSpawner, type SpriteLook } from './sprites';
 
 const PETAL_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 15"><path d="M6,0 C10,2 12,7 11,11 C10,14 8,15 6,15 C4,15 2,14 1,11 C0,7 2,2 6,0 Z" fill="currentColor"/></svg>`;
 const PETAL_COLORS = ['#f0a0bc', '#fbc8d8', '#e87898', '#f8d0e0', '#eda8c0'];

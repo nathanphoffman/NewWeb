@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { toRootRelative } from '../src/shared/utility';
 
 test('toRootRelative puts a slash in front of a bare path', () => {

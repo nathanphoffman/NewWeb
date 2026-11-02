@@ -1,6 +1,6 @@
-import { BUTTON_TAG, HREF_ATTRIBUTE, HTTPS_PREFIX, HTTP_PREFIX, WASM_PREFIX } from '../shared/constants';
-import { makeLinkIcon } from './dom';
+import { BUTTON_TAG, HREF_ATTRIBUTE, HTTP_PREFIX, HTTPS_PREFIX, WASM_PREFIX } from '../shared/constants';
 import type { FieldDef } from '../shared/types';
+import { makeLinkIcon } from './dom';
 import { parseFields } from './fields';
 
 // matches a comment written as "name: value" and returns the value (which may span lines), or null if the name differs
@@ -25,6 +25,7 @@ function precedingComments(anchor: HTMLAnchorElement): string[] {
     const isBlankText = node.nodeType === Node.TEXT_NODE && node.textContent?.trim() === '';
 
     if (node.nodeType !== Node.COMMENT_NODE && !isBlankText) break;
+
     if (!isBlankText) comments.push((node as Comment).data.trim());
     node = node.previousSibling;
   }
@@ -44,7 +45,9 @@ function parseWasmDirectives(anchor: HTMLAnchorElement): { desc: string; keys: s
     const fields = commentValue(text, 'fields');
 
     if (reason !== null) desc = reason;
+
     if (data !== null) keys.push(...splitList(data));
+
     if (fields !== null) fieldSections.unshift(parseFields(fields));
   }
 

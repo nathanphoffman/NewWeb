@@ -1,10 +1,10 @@
-import { renderPage, scrollToAnchor } from '../ui/page';
-import { applyThemeSuggestion } from '../themes/theme';
-import { applyTitleDirective } from '../markdown/title';
-import { applyLogoDirective } from '../markdown/logo';
 import { processIncludes } from '../markdown/include';
+import { applyLogoDirective } from '../markdown/logo';
 import { processTemplate } from '../markdown/template';
+import { applyTitleDirective } from '../markdown/title';
 import { toRootRelative } from '../shared/utility';
+import { applyThemeSuggestion } from '../themes/theme';
+import { renderPage, scrollToAnchor } from '../ui/page';
 import { extractRefreshWasm, prettyUrl, splitAnchor, toMarkdownPath } from './navPaths';
 
 // fetches the text content of a markdown file

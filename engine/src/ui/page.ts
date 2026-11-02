@@ -1,10 +1,10 @@
-import { closeModals } from './overlays/modals';
-import { addHeadingIds } from './headings';
-import { annotateLinks } from './wasm-links';
-import { processImages } from './images';
 import { highlightBlock } from '../markdown/highlight';
-import { getMaxImageKb } from '../shared/imageLimit';
 import { BYTES_PER_KB, CONTENT_ID, FADE_OUT_TIMEOUT_MS, LOADED_CLASS } from '../shared/constants';
+import { getMaxImageKb } from '../shared/imageLimit';
+import { addHeadingIds } from './headings';
+import { processImages } from './images';
+import { closeModals } from './overlays/modals';
+import { annotateLinks } from './wasm-links';
 
 // waits for #content's opacity transition to finish (with a timeout fallback in case it never fires)
 function waitForFadeOut(content: HTMLElement): Promise<void> {

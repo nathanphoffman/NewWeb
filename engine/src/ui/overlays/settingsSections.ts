@@ -1,6 +1,6 @@
-import { applyAnimPaused } from '../../themes/theme';
 import { BUTTON_TAG, CLICK_EVENT, PAUSED_CLASS, PAUSED_STORAGE_KEY, SPAN_TAG, TRUE_STRING, VIEW_DATA_LABEL } from '../../shared/constants';
 import { getMaxImageKb, MAX_IMAGE_KB_LIMIT } from '../../shared/imageLimit';
+import { applyAnimPaused } from '../../themes/theme';
 import { makeElement } from '../dom';
 
 // creates a styled settings section container element

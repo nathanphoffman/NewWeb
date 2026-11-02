@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { extractRefreshWasm, looksLikeBareUrl, prettyUrl, splitAnchor, toMarkdownPath } from '../src/navigation/navPaths';
 
 test('looksLikeBareUrl flags hrefs that contain a common top level domain', () => {

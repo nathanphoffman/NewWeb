@@ -9,11 +9,13 @@ const engine = join(dir, 'engine');
 
 // only refresh the TinyGo runtime when tinygo is installed; otherwise keep the copy already in lib/
 let hasTinygo = true;
+
 try {
   execSync('command -v tinygo', { stdio: 'ignore', shell: '/bin/bash' });
 } catch {
   hasTinygo = false;
 }
+
 if (hasTinygo) {
   console.log('→ regenerating TinyGo wasm_exec runtime...');
   execSync('cp "$(tinygo env TINYGOROOT)/targets/wasm_exec.js" lib/wasm_exec_tiny.js', { cwd: engine, stdio: 'inherit', shell: '/bin/bash' });

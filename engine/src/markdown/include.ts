@@ -101,6 +101,7 @@ function renderDirective(directive: IncludeDirective, contents: Map<string, stri
 
   const entries = fileContents.flatMap(content => splitIntoEntries(content, marker));
   entries.sort((first, second) => first.key.localeCompare(second.key));
+
   if (directive.sortDir === 'desc') entries.reverse();
 
   const limited = directive.limitTo != null ? entries.slice(0, directive.limitTo) : entries;

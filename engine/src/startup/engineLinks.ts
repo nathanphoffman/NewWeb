@@ -1,7 +1,7 @@
 import { CLICK_EVENT } from '../shared/constants';
-import { updateViewDataBtn } from "./markdownUpdates";
-import { buildInfoMd, dataModalMd, showDataModal, store } from "./engineCode";
 import { showMarkdownModal } from "../ui/overlays/modals";
+import { buildInfoMd, dataModalMd, showDataModal, store } from "./engineCode";
+import { updateViewDataBtn } from "./markdownUpdates";
 
 // attaches a document click listener for wasm gear buttons, showing the script info modal on click
 export function startGearButtonListener() {

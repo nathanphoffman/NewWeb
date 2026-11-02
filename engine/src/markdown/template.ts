@@ -13,6 +13,7 @@ function interpolate(text: string, context: Record<string, unknown>): string {
 // fetches each partial once and returns them keyed by url
 async function fetchPartials(urls: string[]): Promise<Map<string, string>> {
   const partialMap = new Map<string, string>();
+
   // partials are fetched in parallel since they don't depend on each other
   await Promise.all(urls.map(async address => {
     partialMap.set(address, await fetch(toRootRelative(address)).then(response => response.text()));

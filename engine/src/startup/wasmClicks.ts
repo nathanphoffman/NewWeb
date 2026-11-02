@@ -1,9 +1,9 @@
 import { WASM_PREFIX } from "../shared/constants";
 import type { FieldDef } from "../shared/types";
 import { showFormModal } from "../ui/overlays/formModal";
-import { handleWasm } from "./wasmLoader";
 import { store } from "./engineCode";
 import { updateViewDataBtn } from "./markdownUpdates";
+import { handleWasm } from "./wasmLoader";
 
 let allowedKeys = new Set<string>();
 

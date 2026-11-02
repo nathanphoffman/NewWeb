@@ -4,13 +4,19 @@ let authTokens = {};
 // single entry point
 document.addEventListener('click', e => {
   const a = e.target.closest('a');
+
   if (!a) return;
   const href = a.getAttribute('href');
+
   if (!href) return;
 v
+
   if (href.startsWith('wasm:'))     { e.preventDefault(); handleWasm(a); }
+
   if (href.startsWith('more:'))     { e.preventDefault(); handleMore(a); }
+
   if (href.startsWith('md:'))       { e.preventDefault(); handleMd(a); }
+
   if (href.startsWith('custom://')) { e.preventDefault(); handleNav(a); }
 });
 
@@ -72,14 +78,19 @@ async function loadAndExecute(file, fields) {
 async function wasmFetch(url, data) {
   const requestDomain = new URL(url).hostname;
   const pageDomain = window.location.hostname;
+
   if (requestDomain !== pageDomain) {
     showToast('Cross-domain fetch prohibited', 'error');
+
     return null;
   }
+
   const domain = window.location.hostname;
   const token = authTokens[domain];
   const headers = { 'Content-Type': 'application/json' };
+
   if (token) headers['Authorization'] = `Bearer ${token}`;
+
   return fetch(url, {
     method: 'POST',
     headers,
@@ -98,12 +109,15 @@ ${count}...
   `);
   const interval = setInterval(() => {
     count--;
+
     if (count === 0) {
       clearInterval(interval);
       window.location = url;
     }
+
     updateModal(modal, `${count}...`);
   }, 1000);
+
   modal.onCancel = () => {
     clearInterval(interval);
     suspendPage(url);
@@ -134,28 +148,34 @@ function showModal(md) {
     if (dlg.onCancel) dlg.onCancel();
     dlg.remove();
   };
+
   document.body.appendChild(dlg);
   dlg.showModal();
+
   return dlg;
 }
 
 function updateModal(m, md) {
   const body = m.querySelector('.nw-modal-body');
+
   if (body) body.textContent = md;
 }
 
 function showSpinner() {
   let s = document.getElementById('nw-spinner');
+
   if (!s) {
     s = document.createElement('div');
     s.id = 'nw-spinner';
     document.body.appendChild(s);
   }
+
   s.style.display = 'block';
 }
 
 function hideSpinner() {
   const s = document.getElementById('nw-spinner');
+
   if (s) s.style.display = 'none';
 }
 
@@ -178,11 +198,14 @@ function renderPage(md) {
 // theme picker
 (function () {
   const sel = document.getElementById('nw-theme-select');
+
   const apply = theme => {
     document.documentElement.setAttribute('data-theme', theme);
     sel.value = theme;
   };
+
   const saved = localStorage.getItem('nw-theme');
+
   if (saved) apply(saved);
   sel.addEventListener('change', e => {
     apply(e.target.value);
@@ -201,6 +224,7 @@ window.addEventListener('popstate', async e => {
 (async () => {
   const go = new Go();
   const result = await WebAssembly.instantiateStreaming(fetch('engine.wasm'), go.importObject);
+
   go.run(result.instance);
   const initial = location.hash ? location.hash.slice(1) : 'main.md';
   history.replaceState({ mdUrl: initial }, '', location.hash || '#main.md');
@@ -215,16 +239,19 @@ function parseWasmUrl(href) {
   const withoutProtocol = href.replace('wasm:', '');
   const [file, qs] = withoutProtocol.split('?');
   const params = {};
+
   if (qs) qs.split('&').forEach(p => {
     const [k, v] = p.split('=');
     params[k] = v;
   });
+
   return { file, params };
 }
 
 function parseFields(text) {
   const parts = text.split(',').map(s => s.trim());
   parts.pop(); // remove label
+
   return parts.reduce((acc, f) => {
     const name = f.replace(/[*_+]/g, '').trim();
     const type = f.endsWith('*') ? 'password'
@@ -232,6 +259,7 @@ function parseFields(text) {
                : f.endsWith('+') ? 'select-many'
                : 'text';
     acc[name] = { type, value: null };
+
     return acc;
   }, {});
 }

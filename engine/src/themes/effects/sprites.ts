@@ -1,5 +1,6 @@
-import { parseSvg } from '../../ui/dom';
 import { MS_PER_SECOND, PAUSED_CLASS } from '../../shared/constants';
+import { parseSvg } from '../../ui/dom';
+
 const REMOVE_GRACE_SECONDS = 0.5;
 
 export type SpriteLook = {

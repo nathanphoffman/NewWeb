@@ -1,7 +1,7 @@
-import { CLICK_EVENT, HTTPS_PREFIX, HTTP_PREFIX, MORE_PREFIX } from '../shared/constants';
 import { navigateTo } from "../navigation/nav";
 import { handleMore, warnBareUrl } from "../navigation/navLinks";
 import { looksLikeBareUrl } from "../navigation/navPaths";
+import { CLICK_EVENT, HTTP_PREFIX, HTTPS_PREFIX, MORE_PREFIX } from '../shared/constants';
 import { extractALink, extractHrefAttribute } from "../shared/utility";
 import { handleNewWebPersonalDataLinks } from "./engineLinks";
 import { handleWASMClick } from "./wasmClicks";

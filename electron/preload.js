@@ -19,7 +19,9 @@ function navBtn(label, title, onClick) {
     'line-height:1',
     'flex-shrink:0',
   ].join(';');
+
   btn.addEventListener('click', onClick);
+
   return btn;
 }
 
@@ -59,6 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ipcRenderer.send('navigate-to', addr);
       input.blur();
     }
+
     if (e.key === 'Escape') input.blur();
   });
 

@@ -28,22 +28,27 @@ function prefixThemeCSS(rawCss, theme) {
 
   while (i < len) {
     while (i < len && /\s/.test(css[i])) i++;
+
     if (i >= len) break;
 
     const selStart = i;
+
     while (i < len && css[i] !== '{') i++;
     const selector = css.slice(selStart, i).trim();
+
     if (!selector || i >= len) break;
     i++; // skip '{'
 
     const isAtRule = /^@(keyframes|font-face|media|supports)/i.test(selector);
     let depth = 1;
     const bodyStart = i;
+
     while (i < len && depth > 0) {
       if (css[i] === '{') depth++;
       else if (css[i] === '}') depth--;
       i++;
     }
+
     const body = css.slice(bodyStart, i - 1);
 
     if (isAtRule) {
@@ -66,6 +71,7 @@ const bundledCssPath = join(root, 'build/engine.bundle.css');
 const bundledCss = existsSync(bundledCssPath)
   ? readFileSync(bundledCssPath, 'utf8')
   : '';
+
 if (existsSync(bundledCssPath)) rmSync(bundledCssPath);
 
 // lists every .css file under dir (including subfolders), sorted so core styles come before theme styles
@@ -84,7 +90,9 @@ const rawCss = bundledCss + '\n' + listCssFiles(stylesDir)
   .map(file => {
     const css = readFileSync(file, 'utf8');
     const themeMatch = basename(file).match(/^theme-(.+)\.css$/);
+
     if (themeMatch) return prefixThemeCSS(css, themeMatch[1]);
+
     return css;
   })
   .join('\n');
@@ -93,6 +101,7 @@ const css = transformSync(rawCss, { loader: 'css', minify: true }).code;
 const js = readFileSync(join(root, jsBundleFile), 'utf8');
 
 let html = readFileSync(join(root, templateFile), 'utf8');
+
 // replacer functions, because a plain replacement string treats $` and $' in the bundle as special patterns
 html = html.replace('<!-- STYLES -->', () => `<style>\n${css}</style>`);
 html = html.replace('<!-- SCRIPT -->', () => `<script type="module">\n${js}</script>`);

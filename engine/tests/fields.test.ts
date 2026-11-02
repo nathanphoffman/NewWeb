@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { parseFields } from '../src/ui/fields';
 
 test('parseFields turns a bare name into a text field with a readable label', () => {
