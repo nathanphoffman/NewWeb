@@ -35,7 +35,6 @@
 	const enosys = () => {
 		const err = new Error("not implemented");
 		err.code = "ENOSYS";
-
 		return err;
 	};
 
@@ -46,21 +45,17 @@
 			writeSync(fd, buf) {
 				outputBuf += decoder.decode(buf);
 				const nl = outputBuf.lastIndexOf("\n");
-
 				if (nl != -1) {
 					console.log(outputBuf.substr(0, nl));
 					outputBuf = outputBuf.substr(nl + 1);
 				}
-
 				return buf.length;
 			},
 			write(fd, buf, offset, length, position, callback) {
 				if (offset !== 0 || length !== buf.length || position !== null) {
 					callback(enosys());
-
 					return;
 				}
-
 				const n = this.writeSync(fd, buf);
 				callback(null, n);
 			},
@@ -118,7 +113,6 @@
 		global.performance = {
 			now() {
 				const [sec, nsec] = process.hrtime();
-
 				return sec * 1000 + nsec / 1000000;
 			},
 		};
@@ -153,23 +147,20 @@
 			const unboxValue = (v_ref) => {
 				reinterpretBuf.setBigInt64(0, v_ref, true);
 				const f = reinterpretBuf.getFloat64(0, true);
-
 				if (f === 0) {
 					return undefined;
 				}
-
 				if (!isNaN(f)) {
 					return f;
 				}
 
 				const id = v_ref & 0xffffffffn;
-
 				return this._values[id];
 			}
 
+
 			const loadValue = (addr) => {
 				let v_ref = mem().getBigUint64(addr, true);
-
 				return unboxValue(v_ref);
 			}
 
@@ -180,64 +171,47 @@
 					if (isNaN(v)) {
 						return nanHead << 32n;
 					}
-
 					if (v === 0) {
 						return (nanHead << 32n) | 1n;
 					}
-
 					reinterpretBuf.setFloat64(0, v, true);
-
 					return reinterpretBuf.getBigInt64(0, true);
 				}
 
 				switch (v) {
 					case undefined:
 						return 0n;
-
 					case null:
 						return (nanHead << 32n) | 2n;
-
 					case true:
 						return (nanHead << 32n) | 3n;
-
 					case false:
 						return (nanHead << 32n) | 4n;
 				}
 
 				let id = this._ids.get(v);
-
 				if (id === undefined) {
 					id = this._idPool.pop();
-
 					if (id === undefined) {
 						id = BigInt(this._values.length);
 					}
-
 					this._values[id] = v;
 					this._goRefCounts[id] = 0;
 					this._ids.set(v, id);
 				}
-
 				this._goRefCounts[id]++;
 				let typeFlag = 1n;
-
 				switch (typeof v) {
 					case "string":
 						typeFlag = 2n;
-
 						break;
-
 					case "symbol":
 						typeFlag = 3n;
-
 						break;
-
 					case "function":
 						typeFlag = 4n;
-
 						break;
 				}
-
 				return id | ((nanHead | typeFlag) << 32n);
 			}
 
@@ -252,11 +226,9 @@
 
 			const loadSliceOfValues = (array, len, cap) => {
 				const a = new Array(len);
-
 				for (let i = 0; i < len; i++) {
 					a[i] = loadValue(array + i * 8);
 				}
-
 				return a;
 			}
 
@@ -272,21 +244,17 @@
 					// https://github.com/WebAssembly/WASI/blob/snapshot-01/phases/snapshot/docs.md
 					fd_write: function(fd, iovs_ptr, iovs_len, nwritten_ptr) {
 						let nwritten = 0;
-
 						if (fd == 1) {
 							for (let iovs_i=0; iovs_i<iovs_len;iovs_i++) {
 								let iov_ptr = iovs_ptr+iovs_i*8; // assuming wasm32
 								let ptr = mem().getUint32(iov_ptr + 0, true);
 								let len = mem().getUint32(iov_ptr + 4, true);
 								nwritten += len;
-
 								for (let i=0; i<len; i++) {
 									let c = mem().getUint8(ptr+i);
-
 									if (c == 13) { // CR
 										// ignore
 									} else if (c == 10) { // LF
-
 										// write line
 										let line = decoder.decode(new Uint8Array(logLine));
 										logLine = [];
@@ -299,9 +267,7 @@
 						} else {
 							console.error('invalid file descriptor:', fd);
 						}
-
 						mem().setUint32(nwritten_ptr, nwritten, true);
-
 						return 0;
 					},
 					fd_read: () => wasi_ENOSYS,
@@ -315,12 +281,10 @@
 						this.exited = true;
 						this.exitCode = code;
 						this._resolveExitPromise();
-
 						throw wasmExit;
 					},
 					random_get: (bufPtr, bufLen) => {
 						crypto.getRandomValues(loadSlice(bufPtr, bufLen));
-
 						return 0;
 					},
 				},
@@ -335,7 +299,6 @@
 						// Do not sleep, only reactivate scheduler after the given timeout.
 						setTimeout(() => {
 							if (this.exited) return;
-
 							try {
 								this._inst.exports.go_scheduler();
 							} catch (e) {
@@ -349,10 +312,8 @@
 						// Note: TinyGo does not support finalizers so this is only called
 						// for one specific case, by js.go:jsString. and can/might leak memory.
 						const id = v_ref & 0xffffffffn;
-
 						if (this._goRefCounts?.[id] !== undefined) {
 							this._goRefCounts[id]--;
-
 							if (this._goRefCounts[id] === 0) {
 								const v = this._values[id];
 								this._values[id] = null;
@@ -368,7 +329,6 @@
 					"syscall/js.stringVal": (value_ptr, value_len) => {
 						value_ptr >>>= 0;
 						const s = loadString(value_ptr, value_len);
-
 						return boxValue(s);
 					},
 
@@ -377,7 +337,6 @@
 						let prop = loadString(p_ptr, p_len);
 						let v = unboxValue(v_ref);
 						let result = Reflect.get(v, prop);
-
 						return boxValue(result);
 					},
 
@@ -411,7 +370,6 @@
 						const v = unboxValue(v_ref);
 						const name = loadString(m_ptr, m_len);
 						const args = loadSliceOfValues(args_ptr, args_len, args_cap);
-
 						try {
 							const m = Reflect.get(v, name);
 							storeValue(ret_addr, Reflect.apply(m, v, args));
@@ -439,7 +397,6 @@
 					"syscall/js.valueNew": (ret_addr, v_ref, args_ptr, args_len, args_cap) => {
 						const v = unboxValue(v_ref);
 						const args = loadSliceOfValues(args_ptr, args_len, args_cap);
-
 						try {
 							storeValue(ret_addr, Reflect.construct(v, args));
 							mem().setUint8(ret_addr + 8, 1);
@@ -480,13 +437,10 @@
 
 						const dst = loadSlice(dest_addr, dest_len);
 						const src = unboxValue(src_ref);
-
 						if (!(src instanceof Uint8Array || src instanceof Uint8ClampedArray)) {
 							mem().setUint8(returned_status_addr, 0); // Return "not ok" status
-
 							return;
 						}
-
 						const toCopy = src.subarray(0, dst.length);
 						dst.set(toCopy);
 						mem().setUint32(num_bytes_copied_addr, toCopy.length, true);
@@ -502,13 +456,10 @@
 
 						const dst = unboxValue(dst_ref);
 						const src = loadSlice(src_addr, src_len);
-
 						if (!(dst instanceof Uint8Array || dst instanceof Uint8ClampedArray)) {
 							mem().setUint8(returned_status_addr, 0); // Return "not ok" status
-
 							return;
 						}
-
 						const toCopy = src.subarray(0, dst.length);
 						dst.set(toCopy);
 						mem().setUint32(num_bytes_copied_addr, toCopy.length, true);
@@ -533,7 +484,6 @@
 				global,
 				this,
 			];
-
 			this._goRefCounts = []; // number of references that Go has to a JS value, indexed by reference id
 			this._ids = new Map();  // mapping from JS values to reference ids
 			this._idPool = [];      // unused ids that have been garbage collected
@@ -554,7 +504,6 @@
 				}
 
 				await exitPromise;
-
 				return this.exitCode;
 			} else {
 				this._inst.exports._initialize();
@@ -565,13 +514,11 @@
 			if (this.exited) {
 				throw new Error("Go program has already exited");
 			}
-
 			try {
 				this._inst.exports.resume();
 			} catch (e) {
 				if (e !== wasmExit) throw e;
 			}
-
 			if (this.exited) {
 				this._resolveExitPromise();
 			}
@@ -579,14 +526,10 @@
 
 		_makeFuncWrapper(id) {
 			const go = this;
-
 			return function () {
 				const event = { id: id, this: this, args: arguments };
-
 				go._pendingEvent = event;
-
 				go._resume();
-
 				return event.result;
 			};
 		}
